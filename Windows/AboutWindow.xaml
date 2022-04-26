@@ -1,0 +1,31 @@
+﻿<Window x:Class="Sheas_Cealer.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Style="{DynamicResource CommonWindow}"
+        WindowStartupLocation="CenterScreen" Height="120" Width="500" MinWidth="500" ResizeMode="NoResize" Loaded="AboutWin_Loaded" KeyDown="AboutWin_KeyDown">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.1*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Button x:Name="DeveloperButton" Content="开发者: Space Time" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Foreground="#FF2196F3" ToolTip="https://www.spacetimee.xyz" Click="AboutButton_Click" />
+        <Button x:Name="UpdateButton" Content="版本号: ?.?.?" Grid.Row="1" Grid.Column="0" Margin="5" Foreground="#FF2196F3" ToolTip="https://spacetime.lanzouu.com/b017hp0lc" Click="AboutButton_Click" />
+        <Button x:Name="EmailButton" Content="联系邮箱" Grid.Row="1" Grid.Column="1" Margin="5" ToolTip="Zeus6_6@163.com" />
+
+        <Button x:Name="HomePageButton" Content="使用文档" Grid.Row="0" Grid.Column="2" Margin="5" ToolTip="https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Instruction" Click="AboutButton_Click" />
+        <Button x:Name="OpenSourceButton" Content="开源地址" Grid.Row="1" Grid.Column="2" Margin="5" ToolTip="https://github.com/SpaceTimee/Sheas-Cealer" Click="AboutButton_Click" />
+
+        <Button x:Name="PrivacyButton" Content="隐私政策" Grid.Row="0" Grid.Column="3" Margin="5" ToolTip="https://thoughts.teambition.com/share/6264eda98adeb10041b92fda#title=Sheas_Cealer_隐私政策" Click="AboutButton_Click" />
+        <Button x:Name="AgreementButton" Content="使用协议" Grid.Row="1" Grid.Column="3" Margin="5" ToolTip="https://thoughts.teambition.com/share/6264edd78adeb10041b92fdb#title=Sheas_Cealer_使用协议" Click="AboutButton_Click" />
+    </Grid>
+</Window>
