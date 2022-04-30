@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Style="{DynamicResource CommonWindow}"
-        WindowStartupLocation="CenterScreen" SizeToContent="Height" ResizeMode="CanMinimize" Width="500" MinWidth="500" Loaded="MainWin_Loaded" KeyDown="MainWin_KeyDown">
+        WindowStartupLocation="CenterScreen" SizeToContent="Height" ResizeMode="CanMinimize" Width="500" MinWidth="500" AllowDrop="True" Loaded="MainWin_Loaded" Closing="MainWin_Closing" KeyDown="MainWin_KeyDown" DragEnter="MainWin_DragEnter" Drop="MainWin_Drop">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="ShowBox" Text="(填入任意以 Chromium 为内核的浏览器的路径)" Foreground="#FFBFCDDB" Grid.Column="0" Margin="0,0,10,0" VerticalContentAlignment="Center" GotFocus="ShowBox_GotFocus" LostFocus="ShowBox_LostFocus" TextChanged="ShowBox_TextChanged" />
+            <TextBox x:Name="ShowBox" Text="(填入任意以 Chromium 为内核的浏览器的路径)" Foreground="#FFBFCDDB" Grid.Column="0" Margin="0,0,10,0" VerticalContentAlignment="Center" GotFocus="ShowBox_GotFocus" LostFocus="ShowBox_LostFocus" TextChanged="ShowBox_TextChanged" PreviewDragOver="MainWin_DragEnter" />
             <Button x:Name="ViewButton" Grid.Column="2" Content="浏览" Click="ViewButton_Click" />
         </Grid>
 
@@ -26,10 +26,12 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button x:Name="EditButton" Content="编辑" Grid.Column="0" Margin="0,0,5,0" Click="EditButton_Click" />
-            <Button x:Name="OpenButton" Content="启动" Grid.Column="1" Margin="5,0,5,0" IsDefault="True" IsEnabled="False" Click="OpenButton_Click" />
-            <Button x:Name="AboutButton" Content="关于" Grid.Column="2" Margin="5,0,0,0" Click="AboutButton_Click" />
+            <Button x:Name="ClashButton" Content="代理" Grid.Column="1" Margin="5,0,5,0" Click="ClashButton_Click" />
+            <Button x:Name="OpenButton" Content="启动" Grid.Column="2" Margin="5,0,5,0" IsDefault="True" IsEnabled="False" Click="OpenButton_Click" />
+            <Button x:Name="AboutButton" Content="关于" Grid.Column="3" Margin="5,0,0,0" Click="AboutButton_Click" />
         </Grid>
     </Grid>
 </Window>

@@ -9,14 +9,13 @@ namespace Sheas_Cealer
 {
     public partial class AboutWindow : Window
     {
-        public AboutWindow()
+        internal AboutWindow()
         {
             InitializeComponent();
         }
         private void AboutWin_Loaded(object sender, RoutedEventArgs e)
         {
-            try { UpdateButton.Content = "版本号: " + Assembly.GetExecutingAssembly().GetName().Version!.ToString()[0..^2]; }
-            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
+            UpdateButton.Content = "版本号: " + Assembly.GetExecutingAssembly().GetName().Version!.ToString()[0..^2];
         }
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
