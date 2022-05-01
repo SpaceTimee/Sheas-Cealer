@@ -121,7 +121,7 @@ namespace Sheas_Cealer
         {
             try
             {
-                OpenFileDialog openFileDialog = new() { Filter = "EXE (*.exe)|*.exe" };
+                OpenFileDialog openFileDialog = new() { Filter = "浏览器 (*.exe)|*.exe" };
 
                 if (openFileDialog.ShowDialog() == true)
                 {
