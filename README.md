@@ -1,6 +1,5 @@
 <h1 align="center">Sheas ◁ Cealer</h1>
 <h3 align="center">- Just Ceal It -</h3>
-
 </br>
 
 ## 自我介绍
@@ -46,5 +45,8 @@
 ## 联系方式
 1. **新 QQ 群: 338919498**
 2. **邮箱: Zeus6_6@163.com**
+
+## 许可证
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer?ref=badge_large)
 
 •ᴗ•
