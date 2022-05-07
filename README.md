@@ -4,6 +4,8 @@
 </br>
 
 ## 自我介绍
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer?ref=badge_shield)
+
 **Sheas Cealer**: 一只基于 **WPF(.Net5)** 的 SNI 伪造工具
 
 * 适用平台: Windows 10+
@@ -48,3 +50,7 @@
 2. **邮箱: Zeus6_6@163.com**
 
 •ᴗ•
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer?ref=badge_large)
