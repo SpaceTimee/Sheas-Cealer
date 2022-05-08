@@ -16,6 +16,7 @@ namespace Sheas_Cealer
     public partial class MainWindow : Window
     {
         private static string? CEALING_ARGUMENT;
+        private static readonly FileSystemWatcher CEALING_HOST_WATCHER = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
         private static readonly DispatcherTimer MONITOR_TIMER = new() { Interval = new TimeSpan(1000000) };  //0.1s
 
         internal MainWindow(string[] args)
@@ -34,28 +35,14 @@ namespace Sheas_Cealer
                     else if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.BrowserPath))
                         Dispatcher.Invoke(() => ShowBox.Text = Properties.Settings.Default.BrowserPath);
 
-                    string hostRules = string.Empty, hostResolverRules = string.Empty;
-                    FileStream hostStream = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json"), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-                    JArray hostJArray = JArray.Parse(new StreamReader(hostStream).ReadToEnd());
-                    foreach (var hostJToken in hostJArray)
-                    {
-                        hostResolverRules += "MAP " + hostJToken[1]!.ToString() + " " + hostJToken[2]!.ToString() + ",";
-                        foreach (var hostName in hostJToken[0]!)
-                            hostRules += "MAP " + hostName.ToString() + " " + hostJToken[1] + ",";
-                    }
-                    CEALING_ARGUMENT = @"/c @start .\""Uncealed-Browser.lnk"" --host-rules=""" + hostRules[0..^1] + @""" --host-resolver-rules=""" + hostResolverRules[0..^1] + @""" --test-type --ignore-certificate-errors";
+                    CEALING_HOST_WATCHER.Changed += CEALING_HOST_WATCHER_Changed;
+                    CEALING_HOST_WATCHER_Changed(null!, null!);
                 });
             }
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
         }
-        private void MainWin_Loaded(object sender, RoutedEventArgs e)
-        {
-            ShowBox.Focus();
-        }
-        private void MainWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            Environment.Exit(0);
-        }
+        private void MainWin_Loaded(object sender, RoutedEventArgs e) => ShowBox.Focus();
+        private void MainWin_Closing(object sender, System.ComponentModel.CancelEventArgs e) => Environment.Exit(0);
 
         private void ShowBox_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -185,10 +172,7 @@ namespace Sheas_Cealer
             }
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
         }
-        private void AboutButton_Click(object sender, RoutedEventArgs e)
-        {
-            new AboutWindow().ShowDialog();
-        }
+        private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWindow().ShowDialog();
 
         private void MONITOR_TIMER_Tick(object? sender, EventArgs e)
         {
@@ -196,6 +180,26 @@ namespace Sheas_Cealer
                 ClashButton.Content = "代理";
             else
                 ClashButton.Content = "停代";
+        }
+
+        private void CEALING_HOST_WATCHER_Changed(object sender, FileSystemEventArgs e)
+        {
+            try
+            {
+                string hostRules = string.Empty, hostResolverRules = string.Empty;
+                FileStream hostStream = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json"), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                JArray hostJArray = JArray.Parse(new StreamReader(hostStream).ReadToEnd());
+
+                foreach (var hostJToken in hostJArray)
+                {
+                    hostResolverRules += "MAP " + hostJToken[1]!.ToString() + " " + hostJToken[2]!.ToString() + ",";
+                    foreach (var hostName in hostJToken[0]!)
+                        hostRules += "MAP " + hostName.ToString() + " " + hostJToken[1] + ",";
+                }
+
+                CEALING_ARGUMENT = @"/c @start .\""Uncealed-Browser.lnk"" --host-rules=""" + hostRules[0..^1] + @""" --host-resolver-rules=""" + hostResolverRules[0..^1] + @""" --test-type --ignore-certificate-errors";
+            }
+            catch { return; }
         }
 
         private void MainWin_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)

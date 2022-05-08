@@ -45,16 +45,10 @@ namespace Sheas_Cealer
     //使用IconRemover
     public partial class MainWindow
     {
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            IconRemover.RemoveIcon(this);
-        }
+        protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
     }
     public partial class AboutWindow
     {
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            IconRemover.RemoveIcon(this);
-        }
+        protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
     }
 }

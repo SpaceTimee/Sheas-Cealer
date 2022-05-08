@@ -16,9 +16,6 @@ namespace Sheas_Cealer
         public override void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
         }
-        public override void Process_Exited(object sender, EventArgs e)
-        {
-            Environment.Exit(0);
-        }
+        public override void Process_Exited(object sender, EventArgs e) => Environment.Exit(0);
     }
 }

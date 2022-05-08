@@ -13,10 +13,7 @@ namespace Sheas_Cealer
         {
             InitializeComponent();
         }
-        private void AboutWin_Loaded(object sender, RoutedEventArgs e)
-        {
-            UpdateButton.Content = "版本号: " + Assembly.GetExecutingAssembly().GetName().Version!.ToString()[0..^2];
-        }
+        private void AboutWin_Loaded(object sender, RoutedEventArgs e) => UpdateButton.Content = "版本号: " + Assembly.GetExecutingAssembly().GetName().Version!.ToString()[0..^2];
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
