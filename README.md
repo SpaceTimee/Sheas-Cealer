@@ -48,8 +48,9 @@
 **Space Time**
 
 ## 联系方式
-1. **新 QQ 群: 338919498**
-2. **邮箱: Zeus6_6@163.com**
+1. **新 QQ 群 (主群): 338919498**
+2. 新 TG 群 (分群) (宽松管理) (低情商: 懒得管): [PixCealerChat](https://t.me/PixCealerChat)
+3. **邮箱: Zeus6_6@163.com**
 
 ## 许可证
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer?ref=badge_large)
