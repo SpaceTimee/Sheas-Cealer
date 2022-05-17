@@ -136,9 +136,9 @@ namespace Sheas_Cealer
                 if (ClashButton.Content.ToString() == "代理")
                 {
                     proxyKey.SetValue("ProxyEnable", 1);
-                    proxyKey.SetValue("ProxyServer", "127.0.0.1:7890");
+                    proxyKey.SetValue("ProxyServer", "127.0.0.1:7880");
 
-                    new Clash().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, string.Empty);
+                    new Clash().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "-d .");
                 }
                 else
                 {
