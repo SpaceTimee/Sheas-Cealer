@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using IWshRuntimeLibrary;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
+using YamlDotNet.RepresentationModel;
 using File = System.IO.File;
 
 namespace Sheas_Cealer
@@ -119,24 +120,19 @@ namespace Sheas_Cealer
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
         }
 
-        private void EditButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                ProcessStartInfo processStartInfo = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json")) { UseShellExecute = true };
-                Process.Start(processStartInfo);
-            }
-            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
-        }
         private void ClashButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 RegistryKey proxyKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true)!;
-                if (ClashButton.Content.ToString() == "代理")
+                if (ClashButton.Content.ToString() == "启动代理")
                 {
+                    YamlStream configStream = new();
+                    configStream.Load(File.OpenText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"config.yaml")));
+                    YamlMappingNode configMap = (YamlMappingNode)configStream.Documents[0].RootNode;
+
                     proxyKey.SetValue("ProxyEnable", 1);
-                    proxyKey.SetValue("ProxyServer", "127.0.0.1:7880");
+                    proxyKey.SetValue("ProxyServer", "127.0.0.1:" + configMap["mixed-port"]);
 
                     new Clash().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "-d .");
                 }
@@ -172,14 +168,33 @@ namespace Sheas_Cealer
             }
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
         }
+
+        private void ConfigButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ProcessStartInfo processStartInfo = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"config.yaml")) { UseShellExecute = true };
+                Process.Start(processStartInfo);
+            }
+            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
+        }
+        private void HostButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ProcessStartInfo processStartInfo = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json")) { UseShellExecute = true };
+                Process.Start(processStartInfo);
+            }
+            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
+        }
         private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWindow().ShowDialog();
 
         private void MONITOR_TIMER_Tick(object? sender, EventArgs e)
         {
             if (Process.GetProcessesByName("Cealing-Clash").Length == 0)
-                ClashButton.Content = "代理";
+                ClashButton.Content = "启动代理";
             else
-                ClashButton.Content = "停代";
+                ClashButton.Content = "停止代理";
         }
 
         private void CEALING_HOST_WATCHER_Changed(object sender, FileSystemEventArgs e)
