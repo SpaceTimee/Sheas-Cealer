@@ -12,7 +12,7 @@
 
 ## 注意事项
 1. 最新的 **Cealing-Host.json** 内置伪造规则可在 [Cealing Host 存储库](https://github.com/SpaceTimee/Cealing-Host) 获取
-2. 自动更新时不会覆盖已有的 **Cealing-Host.json** 文件，如有需要应**手动覆盖或修改**
+2. 自动更新时不会覆盖已有的 **Cealing-Host.json** 和 **config.yaml** 文件，如有需要应**手动覆盖或修改**
 3. 本项目仅供**学习参考**，无意绕过任何审查设备的审查
 4. 为避免不必要的麻烦，食用前请先阅读**注意事项**和**用户协议**
 5. Sheas Cealer 仍处于**开发阶段**，但每个正式版发布前会尽量确保其**稳定可用**
@@ -49,7 +49,7 @@
 
 ## 联系方式
 1. **新 QQ 群 (主群): 338919498**
-2. 新 TG 群 (分群) (宽松管理) (低情商: 懒得管): [PixCealerChat](https://t.me/PixCealerChat)
+2. 新 TG 群 (分群) (宽松管理): [PixCealerChat](https://t.me/PixCealerChat)
 3. **邮箱: Zeus6_6@163.com**
 
 ## 许可证
