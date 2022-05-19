@@ -128,8 +128,13 @@ namespace Sheas_Cealer
                 if (ClashButton.Content.ToString() == "启动代理")
                 {
                     YamlStream configStream = new();
-                    configStream.Load(File.OpenText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"config.yaml")));
-                    YamlMappingNode configMap = (YamlMappingNode)configStream.Documents[0].RootNode;
+                    YamlMappingNode configMap;
+                    try
+                    {
+                        configStream.Load(File.OpenText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"config.yaml")));
+                        configMap = (YamlMappingNode)configStream.Documents[0].RootNode;
+                    }
+                    catch { throw new Exception("规则无法识别，请检查代理规则是否含有语法错误"); }
 
                     proxyKey.SetValue("ProxyEnable", 1);
                     proxyKey.SetValue("ProxyServer", "127.0.0.1:" + configMap["mixed-port"]);
@@ -150,6 +155,8 @@ namespace Sheas_Cealer
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(CEALING_ARGUMENT))
+                    throw new Exception("规则无法识别，请检查伪造规则是否含有语法错误");
                 if (MessageBox.Show("启动前将关闭所选浏览器的所有进程，是否继续？", string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                     return;
 
