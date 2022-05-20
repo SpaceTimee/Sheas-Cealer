@@ -31,5 +31,8 @@
     [["*kobo.com"],"kob","23.6.64.137"],
     [["*dropbox.com"],"dro","162.125.85.18"],
     [["*bbc.com"],"bbc","146.75.36.81"],
-    [["*bbci.co.uk","*bbc.co.uk"],"bbci","23.56.25.35"]
+    [["*bbci.co.uk","*bbc.co.uk"],"bbci","23.56.25.35"],
+    [["*discord.com"],"dis","162.159.137.232"],
+    [["cdn.discordapp.com"],"disc","162.159.129.233"],
+    [["*joinpeertube.org"],"joi","94.130.212.178"]
 ]

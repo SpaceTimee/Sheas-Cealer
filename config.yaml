@@ -1,12 +1,5 @@
 mixed-port: 7880
-allow-lan: true
 ipv6: true
 log-level: silent
 rules:
   - 'MATCH,DIRECT'
-
-proxies:
-  - name: Local
-    type: socks5
-    server: 127.0.0.1
-    port: 1080

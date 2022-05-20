@@ -12,11 +12,12 @@
 
 ## 注意事项
 1. 最新的 **Cealing-Host.json** 内置伪造规则可在 [Cealing Host 存储库](https://github.com/SpaceTimee/Cealing-Host) 获取
-2. 自动更新时不会覆盖已有的 **Cealing-Host.json** 和 **config.yaml** 文件，如有需要应**手动覆盖或修改**
-3. 本项目仅供**学习参考**，无意绕过任何审查设备的审查
-4. 为避免不必要的麻烦，食用前请先阅读**注意事项**和**用户协议**
-5. Sheas Cealer 仍处于**开发阶段**，但每个正式版发布前会尽量确保其**稳定可用**
-6. Github Release 中会保留目前能够使用的**所有版本**，但强烈推荐使用**最新版**
+2. 其他所有配置文件的获取请参考 [Sheas Cealer Archive](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Archive)
+3. 自动更新时不会覆盖已有的 **Cealing-Host.json** 和 **config.yaml** 配置文件，如有需要应**手动覆盖或修改**
+4. 本项目仅供**学习参考**，无意绕过任何审查设备的审查
+5. 为避免不必要的麻烦，食用前请先阅读**注意事项**和**用户协议**
+6. Sheas Cealer 仍处于**开发阶段**，但每个正式版发布前会尽量确保其**稳定可用**
+7. Github Release 中会保留目前能够使用的**所有版本**，但强烈推荐使用**最新版**
 
 ## 用户协议
 1. [隐私政策](https://thoughts.teambition.com/share/6264eda98adeb10041b92fda#title=Sheas_Cealer_隐私政策)
