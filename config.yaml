@@ -1,5 +1,0 @@
-mixed-port: 7880
-ipv6: true
-log-level: silent
-rules:
-  - 'MATCH,DIRECT'
