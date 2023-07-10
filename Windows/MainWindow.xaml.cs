@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using IWshRuntimeLibrary;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
+using OnaCore;
 using YamlDotNet.RepresentationModel;
 using File = System.IO.File;
 
@@ -16,9 +20,11 @@ namespace Sheas_Cealer
 {
     public partial class MainWindow : Window
     {
-        private static string? CEALING_ARGUMENT;
+        private readonly HttpClient MAIN_CLIENT = new();    //当前窗口使用的唯一的 HttpClient
         private static readonly FileSystemWatcher CEALING_HOST_WATCHER = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
         private static readonly DispatcherTimer MONITOR_TIMER = new() { Interval = new TimeSpan(1000000) };  //0.1s
+        private static string? CEALING_ARGUMENT;
+        private static bool IS_HOST_MENU_OPENED;
 
         internal MainWindow(string[] args)
         {
@@ -131,7 +137,7 @@ namespace Sheas_Cealer
                     YamlMappingNode configMap;
                     try
                     {
-                        configStream.Load(File.OpenText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"config.yaml")));
+                        configStream.Load(File.OpenText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Config.yaml")));
                         configMap = (YamlMappingNode)configStream.Documents[0].RootNode;
                     }
                     catch { throw new Exception("规则无法识别，请检查代理规则是否含有语法错误"); }
@@ -139,7 +145,7 @@ namespace Sheas_Cealer
                     proxyKey.SetValue("ProxyEnable", 1);
                     proxyKey.SetValue("ProxyServer", "127.0.0.1:" + configMap["mixed-port"]);
 
-                    new Clash().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "-d .");
+                    new Clash().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"-f .\Cealing-Config.yaml");
                 }
                 else
                 {
@@ -176,16 +182,55 @@ namespace Sheas_Cealer
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
         }
 
-        private void ConfigButton_Click(object sender, RoutedEventArgs e)
+        private void ConfigOpenButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                ProcessStartInfo processStartInfo = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"config.yaml")) { UseShellExecute = true };
+                ProcessStartInfo processStartInfo = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Config.yaml")) { UseShellExecute = true };
                 Process.Start(processStartInfo);
             }
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
         }
-        private void HostButton_Click(object sender, RoutedEventArgs e)
+
+        private void HostMenuButton_MouseEnter(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                IS_HOST_MENU_OPENED = true;
+
+                double hostButtonHeight = HostMenuButton.ActualHeight;
+                AnimateHostButton(new Thickness(0, -hostButtonHeight - 5, 0, hostButtonHeight + 5), new Thickness(0, -hostButtonHeight * 2 - 10, 0, hostButtonHeight * 2 + 10));
+            }
+            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
+        }
+        private void HostMenuButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            try { AnimateHostButton(new Thickness(5, 0, 5, 0), new Thickness(5, 0, 5, 0)); }
+            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
+        }
+        private void HostMenuButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                IS_HOST_MENU_OPENED = !IS_HOST_MENU_OPENED;
+
+                if (IS_HOST_MENU_OPENED)
+                {
+                    double hostButtonHeight = HostMenuButton.ActualHeight;
+                    AnimateHostButton(new Thickness(0, -hostButtonHeight - 5, 0, hostButtonHeight + 5), new Thickness(0, -hostButtonHeight * 2 - 10, 0, hostButtonHeight * 2 + 10));
+                }
+                else
+                    AnimateHostButton(new Thickness(5, 0, 5, 0), new Thickness(5, 0, 5, 0));
+            }
+            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
+        }
+        private void AnimateHostButton(Thickness hostOpenButtonThickness, Thickness hostUpdateButtonThickness)
+        {
+            HostOpenButton.BeginAnimation(MarginProperty, new ThicknessAnimation(hostOpenButtonThickness, TimeSpan.FromSeconds(0.25)));
+            HostUpdateButton.BeginAnimation(MarginProperty, new ThicknessAnimation(hostUpdateButtonThickness, TimeSpan.FromSeconds(0.25)));
+        }
+
+        private void HostOpenButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -194,6 +239,26 @@ namespace Sheas_Cealer
             }
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
         }
+        private async void HostUpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string hostUpdateString = await Http.GetAsync<string>(@"https://gitlab.com/SpaceTimee/Cealing-Host/-/raw/main/Cealing-Host.json", MAIN_CLIENT);
+                StreamReader hostLocalStreamReader = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json"));
+                string hostLocalString = hostLocalStreamReader.ReadToEnd();
+                hostLocalStreamReader.Close();
+
+                if (Regex.Replace(hostLocalString, @"\r", string.Empty) == hostUpdateString)
+                    MessageBox.Show("太腻害了，你的伪造规则和存储库里的一模一样");
+                else if (MessageBox.Show("你的伪造规则和存储库里的不太一样，需要与存储库同步吗", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json"), hostUpdateString);
+                    MessageBox.Show("同步已完成");
+                }
+            }
+            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
+        }
+
         private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWindow().ShowDialog();
 
         private void MONITOR_TIMER_Tick(object? sender, EventArgs e)

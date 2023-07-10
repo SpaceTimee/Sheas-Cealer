@@ -8,10 +8,10 @@
     <PackageReleaseNotes>Just Ceal It</PackageReleaseNotes>
     <Authors>Space Time</Authors>
     <Company>Space Time</Company>
-    <AssemblyVersion>1.0.4</AssemblyVersion>
-    <Version>1.0.4</Version>
-    <FileVersion>1.0.4</FileVersion>
-    <InformationalVersion>1.0.4</InformationalVersion>
+    <AssemblyVersion>1.0.5</AssemblyVersion>
+    <Version>1.0.5</Version>
+    <FileVersion>1.0.5</FileVersion>
+    <InformationalVersion>1.0.5</InformationalVersion>
     <PackageTags>Tool;Sheas;Cealer;Sni</PackageTags>
     <ApplicationIcon>Sheas-Cealer-Logo.ico</ApplicationIcon>
     <PackageIcon>Sheas Cealer Logo.png</PackageIcon>
@@ -30,6 +30,7 @@
     <IsPublishable>True</IsPublishable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <ErrorReport>none</ErrorReport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -48,13 +49,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AdditionalFiles Remove="app.manifest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove=".gitattributes" />
     <None Remove=".gitignore" />
-    <None Remove="Cealing-Clash.exe" />
-    <None Remove="Cealing-Host.json" />
-    <None Remove="Clash.exe" />
-    <None Remove="config.yaml" />
-    <None Remove="Country.mmdb" />
+    <None Remove="app.manifest" />
     <None Remove="README.md" />
     <None Remove="Sheas-Cealer-Logo.ico" />
   </ItemGroup>
@@ -78,6 +79,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Ona-Core">
+      <HintPath>..\Ona-Core\bin\Release\net5.0-windows10.0.22000.0\Ona-Core.dll</HintPath>
+    </Reference>
     <Reference Include="Sheas-Core">
       <HintPath>D:\Git-Repository\Sheas-Core\bin\Release\Sheas-Core.dll</HintPath>
     </Reference>
