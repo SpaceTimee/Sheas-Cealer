@@ -6,7 +6,7 @@ using System.Windows.Interop;
 namespace Sheas_Cealer
 {
     //定义IconRemover
-    internal static class IconRemover
+    internal static partial class IconRemover
     {
         private const int GWL_EXSTYLE = -20;
         private const int WS_EX_DLGMODALFRAME = 0x0001;
@@ -16,14 +16,15 @@ namespace Sheas_Cealer
         private const int SWP_FRAMECHANGED = 0x0020;
         private const uint WM_SETICON = 0x0080;
 
-        [DllImport("user32.dll")]
-        private static extern int GetWindowLong(IntPtr hwnd, int index);
-        [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
-        [DllImport("user32.dll")]
-        private static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter, int x, int y, int width, int height, uint flags);
-        [DllImport("user32.dll")]
-        private static extern IntPtr SendMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
+        [LibraryImport("user32.dll", EntryPoint = "GetWindowLongW")]
+        private static partial int GetWindowLong(IntPtr hwnd, int index);
+        [LibraryImport("user32.dll", EntryPoint = "SetWindowLongW")]
+        private static partial int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+        [LibraryImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static partial bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter, int x, int y, int width, int height, uint flags);
+        [LibraryImport("user32.dll", EntryPoint = "SendMessageW")]
+        private static partial IntPtr SendMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
 
         internal static void RemoveIcon(Window window)
         {

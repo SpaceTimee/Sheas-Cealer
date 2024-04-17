@@ -18,30 +18,21 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="ShowBox" Text="(填入任意以 Chromium 为内核的浏览器的路径)" Foreground="#FFBFCDDB" Grid.Column="0" Margin="0,0,10,0" VerticalContentAlignment="Center" GotFocus="ShowBox_GotFocus" LostFocus="ShowBox_LostFocus" TextChanged="ShowBox_TextChanged" PreviewDragOver="MainWin_DragEnter" />
-            <Button x:Name="ViewButton" Grid.Column="2" Content="浏览" Click="ViewButton_Click" />
+            <TextBox x:Name="PathBox" Text="(填入任意以 Chromium 为内核的浏览器的路径)" Foreground="#FFBFCDDB" Grid.Column="0" Margin="0,0,10,0" VerticalContentAlignment="Center" GotFocus="PathBox_GotFocus" LostFocus="PathBox_LostFocus" TextChanged="PathBox_TextChanged" PreviewDragOver="MainWin_DragEnter" />
+            <Button x:Name="BrowseButton" Grid.Column="2" Content="浏览" Click="BrowseButton_Click" />
         </Grid>
 
-        <Grid Grid.Row="1" Margin="0,5,0,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Button x:Name="ClashButton" Content="启动代理" Grid.Column="0" Margin="5,0,5,0" Click="ClashButton_Click" />
-            <Button x:Name="OpenButton" Content="启动伪造" Grid.Column="1" Margin="5,0,5,0" IsDefault="True" IsEnabled="False" Click="OpenButton_Click" />
-        </Grid>
+        <Button x:Name="StartButton" Content="启动伪造" Grid.Row="1" Margin="5" IsDefault="True" IsEnabled="False" Click="StartButton_Click" />
 
-        <Grid Grid.Row="2" Margin="0,5,0,5">
+        <Grid Grid.Row="2" Margin="0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="ConfigButton" Content="代理规则" Grid.Column="0" Margin="5,0,5,0" Click="ConfigOpenButton_Click" />
-            <Button x:Name="HostMenuButton" Content="伪造规则🔺" Grid.Column="1" Margin="5,0,5,0" Panel.ZIndex="1" MouseEnter="HostMenuButton_MouseEnter" MouseLeave="HostMenuButton_MouseLeave" Click="HostMenuButton_Click" />
-            <Button x:Name="HostOpenButton" Content="打开伪造规则" Grid.Column="1" Margin="5,0,5,0" Background="Orange" MouseEnter="HostMenuButton_MouseEnter" MouseLeave="HostMenuButton_MouseLeave" Click="HostOpenButton_Click" />
-            <Button x:Name="HostUpdateButton" Content="更新伪造规则" Grid.Column="1" Margin="5,0,5,0" Background="Orange" MouseEnter="HostMenuButton_MouseEnter" MouseLeave="HostMenuButton_MouseLeave" Click="HostUpdateButton_Click" />
-            <Button x:Name="AboutButton" Content="关于项目" Grid.Column="2" Margin="5,0,5,0" Click="AboutButton_Click" Cursor="Hand" />
+            <Button x:Name="HostEditButton" Content="编辑规则" Grid.Column="0" Margin="5,0" Click="HostEditButton_Click" />
+            <Button x:Name="HostUpdateButton" Content="更新规则" Grid.Column="1" Margin="5,0" Click="HostUpdateButton_Click" />
+            <Button x:Name="AboutButton" Content="关于项目" Grid.Column="2" Margin="5,0" Click="AboutButton_Click" />
         </Grid>
     </Grid>
 </Window>

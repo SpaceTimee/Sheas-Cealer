@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,18 +16,14 @@ namespace Sheas_Cealer
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (sender == UpdateButton)
-                    MessageBox.Show("密码: 3wnj");
+            if (sender == UpdateButton)
+                MessageBox.Show("密码: 3wnj");
 
-                ProcessStartInfo processStartInfo = new(sender == EmailButton ? "mailto:" : string.Empty + ((Button)sender).ToolTip) { UseShellExecute = true };
-                Process.Start(processStartInfo);
-            }
-            catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); return; }
+            ProcessStartInfo processStartInfo = new(sender == EmailButton ? "mailto:" : string.Empty + ((Button)sender).ToolTip) { UseShellExecute = true };
+            Process.Start(processStartInfo);
         }
 
-        private void AboutWin_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void AboutWin_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
                 Close();

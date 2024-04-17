@@ -4,9 +4,9 @@ using SheasCore;
 
 namespace Sheas_Cealer
 {
-    internal class Clash : Proc
+    internal class Command : Proc
     {
-        internal Clash() : base("Cealing-Clash.exe")
+        internal Command() : base("Cmd.exe")
         {
         }
 
@@ -16,8 +16,6 @@ namespace Sheas_Cealer
         public override void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
         }
-        public override void Process_Exited(object sender, EventArgs e)
-        {
-        }
+        public override void Process_Exited(object sender, EventArgs e) => Environment.Exit(0);
     }
 }
