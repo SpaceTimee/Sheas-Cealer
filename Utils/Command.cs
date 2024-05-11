@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using SheasCore;
 
-namespace Sheas_Cealer
+namespace Sheas_Cealer.Utils
 {
     internal class Command : Proc
     {

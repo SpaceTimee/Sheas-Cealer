@@ -32,6 +32,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_DuplicateKeyHandling = Fail
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_ConfirmAddLanguageFile = True
+		RESX_NeutralResourcesLanguage = en-US
 		SolutionGuid = {33005A8D-2D3D-4101-AFF0-F68B29FE9B28}
+		RESX_SortFileContentOnSave = True
+		RESX_Rules = {"EnabledRules":["StringFormat","WhiteSpaceLead","WhiteSpaceTail","PunctuationLead"]}
 	EndGlobalSection
 EndGlobal

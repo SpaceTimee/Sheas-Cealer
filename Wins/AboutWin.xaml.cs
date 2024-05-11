@@ -1,25 +1,23 @@
 ﻿using System.Diagnostics;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Sheas_Cealer
+namespace Sheas_Cealer.Wins
 {
-    public partial class AboutWindow : Window
+    public partial class AboutWin : Window
     {
-        internal AboutWindow()
+        internal AboutWin()
         {
             InitializeComponent();
         }
-        private void AboutWin_Loaded(object sender, RoutedEventArgs e) => UpdateButton.Content = "版本号: " + Assembly.GetExecutingAssembly().GetName().Version!.ToString()[0..^2];
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender == UpdateButton)
+            if (sender == VersionButton)
                 MessageBox.Show("密码: 3wnj");
 
-            ProcessStartInfo processStartInfo = new(sender == EmailButton ? "mailto:" : string.Empty + ((Button)sender).ToolTip) { UseShellExecute = true };
+            ProcessStartInfo processStartInfo = new(sender == EmailButton ? "mailto:" : string.Empty + (sender as Button)!.ToolTip) { UseShellExecute = true };
             Process.Start(processStartInfo);
         }
 

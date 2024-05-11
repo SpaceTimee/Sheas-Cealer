@@ -1,0 +1,94 @@
+﻿<Window x:Class="Sheas_Cealer.Wins.MainWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:preses="clr-namespace:Sheas_Cealer.Preses"
+        xmlns:convs="clr-namespace:Sheas_Cealer.Convs"
+        xmlns:consts="clr-namespace:Sheas_Cealer.Consts"
+        xmlns:utils="clr-namespace:Sheas_Cealer.Utils"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance preses:MainPres}" AllowDrop="True" 
+        Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" SizeToContent="Height" Width="500" MinWidth="500"
+        Loaded="MainWin_Loaded" Closing="MainWin_Closing" DragEnter="MainWin_DragEnter" Drop="MainWin_Drop" KeyDown="MainWin_KeyDown">
+    <Window.Resources>
+        <consts:MainConst x:Key="MainConst" />
+    </Window.Resources>
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox utils:FocusExtension.IsFocused="{Binding IsContentBoxFocused}"
+                     Grid.Column="0" Margin="5" VerticalContentAlignment="Center"
+                     TextChanged="ContentBox_TextChanged" PreviewDragOver="MainWin_DragEnter">
+                <TextBox.Text>
+                    <MultiBinding Mode="OneWay" UpdateSourceTrigger="PropertyChanged">
+                        <MultiBinding.Converter>
+                            <convs:MainContentBoxTextConv />
+                        </MultiBinding.Converter>
+                        
+                        <Binding Path="Mode" />
+                        <Binding Path="IsFocused" RelativeSource="{RelativeSource Self}" />
+                        <Binding Path="BrowserPath" />
+                        <Binding Path="UpstreamUrl" />
+                        <Binding Path="ExtraArgs" />
+                        
+                    </MultiBinding>
+                </TextBox.Text>
+                <TextBox.Foreground>
+                    <MultiBinding Mode="OneWay">
+                        <MultiBinding.Converter>
+                            <convs:MainContentBoxForegroundConv />
+                        </MultiBinding.Converter>
+                        
+                        <Binding Path="Mode" />
+                        <Binding Path="IsFocused" RelativeSource="{RelativeSource Self}" />
+                        <Binding Path="BrowserPath" />
+                        <Binding Path="UpstreamUrl" />
+                        <Binding Path="ExtraArgs" />
+                        
+                    </MultiBinding>
+                </TextBox.Foreground>
+            </TextBox>
+            <Button Grid.Column="1" Margin="5" Content="{Binding BrowseButtonContent, Source={StaticResource MainConst}}"
+                    Click="BrowseButton_Click" />
+            <Button Grid.Column="2" Margin="5" Content="{Binding SwitchModeButtonContent, Source={StaticResource MainConst}}"
+                    Click="SwitchModeButton_Click" />
+            
+        </Grid>
+
+        <Button IsDefault="True"
+                Grid.Row="1" Margin="5" Content="{Binding StartCealButtonContent, Source={StaticResource MainConst}}"
+                Click="StartCealButton_Click" />
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <Button x:Name="EditHostButton"
+                    Grid.Column="0" Margin="5" Content="{Binding EditHostButtonContent, Source={StaticResource MainConst}}"
+                    Click="EditHostButton_Click" />
+            <Button x:Name="UpdateHostButton"
+                    Grid.Column="1" Margin="5" Content="{Binding UpdateHostButtonContent, Source={StaticResource MainConst}}"
+                    Click="UpdateHostButton_Click" />
+            <Button x:Name="AboutButton"
+                    Grid.Column="2" Margin="5" Content="{Binding AboutButtonContent, Source={StaticResource MainConst}}"
+                    Click="AboutButton_Click" />
+            
+        </Grid>
+    </Grid>
+</Window>

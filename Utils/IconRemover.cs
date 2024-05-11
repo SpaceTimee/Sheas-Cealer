@@ -2,10 +2,11 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using Sheas_Cealer.Utils;
 
-namespace Sheas_Cealer
+namespace Sheas_Cealer.Utils
 {
-    //定义IconRemover
+    // 定义IconRemover
     internal static partial class IconRemover
     {
         private const int GWL_EXSTYLE = -20;
@@ -28,27 +29,30 @@ namespace Sheas_Cealer
 
         internal static void RemoveIcon(Window window)
         {
-            //获取该窗口句柄
+            // 获取该窗口句柄
             IntPtr hwnd = new WindowInteropHelper(window).Handle;
 
-            //将窗口更改为不显示窗口图标
+            // 将窗口更改为不显示窗口图标
             _ = SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_DLGMODALFRAME);
 
-            //更新窗口的非客户区域来显示更改
+            // 更新窗口的非客户区域来显示更改
             SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 
-            //防止自定义图标生效
+            // 防止自定义图标生效
             SendMessage(hwnd, WM_SETICON, new IntPtr(1), IntPtr.Zero);
             SendMessage(hwnd, WM_SETICON, IntPtr.Zero, IntPtr.Zero);
         }
     }
+}
 
-    //使用IconRemover
-    public partial class MainWindow
+namespace Sheas_Cealer.Wins
+{
+    // 使用IconRemover
+    public partial class MainWin
     {
         protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
     }
-    public partial class AboutWindow
+    public partial class AboutWin
     {
         protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
     }
