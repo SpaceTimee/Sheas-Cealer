@@ -24,13 +24,24 @@
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
+            <Button Grid.Column="0" Margin="5"
+                    Click="SwitchModeButton_Click">
+                <Button.Content>
+                    <Binding Path="Mode">
+                        <Binding.Converter>
+                            <convs:MainSwitchModeButtonContentConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Content>
+            </Button>
+
             <TextBox x:Name="ContentText" utils:FocusExtension.IsFocused="{Binding IsContentBoxFocused}"
-                     Grid.Column="0" Margin="5" VerticalContentAlignment="Center"
+                     Grid.Column="1" Margin="5" VerticalContentAlignment="Center"
                      TextChanged="ContentBox_TextChanged" PreviewDragOver="MainWin_DragEnter">
                 <TextBox.Text>
                     <MultiBinding Mode="OneWay" UpdateSourceTrigger="PropertyChanged">
@@ -61,10 +72,16 @@
                     </MultiBinding>
                 </TextBox.Foreground>
             </TextBox>
-            <Button Grid.Column="1" Margin="5" Content="{Binding BrowseButtonContent, Source={StaticResource MainConst}}"
-                    Click="BrowseButton_Click" />
-            <Button Grid.Column="2" Margin="5" Content="{Binding SwitchModeButtonContent, Source={StaticResource MainConst}}"
-                    Click="SwitchModeButton_Click" />
+            <Button Grid.Column="2" Margin="5"
+                    Click="FunctionButton_Click">
+                <Button.Content>
+                    <Binding Path="Mode">
+                        <Binding.Converter>
+                            <convs:MainFunctionButtonContentConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Content>
+            </Button>
 
         </Grid>
 
@@ -79,7 +96,6 @@
                     </MultiBinding.Converter>
 
                     <Binding Path="BrowserPath" />
-                    <Binding Path="UpstreamUrl" />
                     <Binding Path="ExtraArgs" />
 
                 </MultiBinding>
@@ -98,7 +114,15 @@
                     Click="EditHostButton_Click" />
             <Button x:Name="UpdateHostButton"
                     Grid.Column="1" Margin="5" Content="{Binding UpdateHostButtonContent, Source={StaticResource MainConst}}"
-                    Click="UpdateHostButton_Click" />
+                    Click="UpdateHostButton_Click">
+                <Button.IsEnabled>
+                    <Binding Path="UpstreamUrl">
+                        <Binding.Converter>
+                            <convs:MainUpdateHostButtonIsEnabledConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.IsEnabled>
+            </Button>
             <Button x:Name="AboutButton"
                     Grid.Column="2" Margin="5" Content="{Binding AboutButtonContent, Source={StaticResource MainConst}}"
                     Click="AboutButton_Click" />

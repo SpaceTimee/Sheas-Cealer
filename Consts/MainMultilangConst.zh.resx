@@ -120,9 +120,6 @@
   <data name="AboutButtonContent" xml:space="preserve">
     <value>关于项目</value>
   </data>
-  <data name="BrowseButtonContent" xml:space="preserve">
-    <value>浏览</value>
-  </data>
   <data name="BrowserPathPlaceHolder" xml:space="preserve">
     <value>(填入任意以 Chromium 为内核的浏览器的路径)</value>
   </data>
@@ -132,11 +129,26 @@
   <data name="ExtraArgsPlaceHolder" xml:space="preserve">
     <value>(填入任意额外的 Chromium 启动参数)</value>
   </data>
-  <data name="SwitchModeButtonContent" xml:space="preserve">
-    <value>切换</value>
+  <data name="FunctionButtonBrowserPathContent" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="FunctionButtonExtraArgsContent" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="FunctionButtonUpstreamUrlContent" xml:space="preserve">
+    <value>重置</value>
   </data>
   <data name="StartCealButtonContent" xml:space="preserve">
     <value>启动伪造</value>
+  </data>
+  <data name="SwitchModeButtonBrowserPathContent" xml:space="preserve">
+    <value>文件路径 &gt;</value>
+  </data>
+  <data name="SwitchModeButtonExtraArgsContent" xml:space="preserve">
+    <value>额外参数 &gt;</value>
+  </data>
+  <data name="SwitchModeButtonUpstreamUrlContent" xml:space="preserve">
+    <value>上游链接 &gt;</value>
   </data>
   <data name="UpdateHostButtonContent" xml:space="preserve">
     <value>更新规则</value>

@@ -70,15 +70,6 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Browse 的本地化字符串。
-        /// </summary>
-        public static string BrowseButtonContent {
-            get {
-                return ResourceManager.GetString("BrowseButtonContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 (Fill in the path of a Chromium-based browser) 的本地化字符串。
         /// </summary>
         public static string BrowserPathPlaceHolder {
@@ -106,6 +97,33 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Browse 的本地化字符串。
+        /// </summary>
+        public static string FunctionButtonBrowserPathContent {
+            get {
+                return ResourceManager.GetString("FunctionButtonBrowserPathContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear 的本地化字符串。
+        /// </summary>
+        public static string FunctionButtonExtraArgsContent {
+            get {
+                return ResourceManager.GetString("FunctionButtonExtraArgsContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Reset 的本地化字符串。
+        /// </summary>
+        public static string FunctionButtonUpstreamUrlContent {
+            get {
+                return ResourceManager.GetString("FunctionButtonUpstreamUrlContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Start Cealing 的本地化字符串。
         /// </summary>
         public static string StartCealButtonContent {
@@ -115,11 +133,29 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Switch 的本地化字符串。
+        ///   查找类似 Browser Path &gt; 的本地化字符串。
         /// </summary>
-        public static string SwitchModeButtonContent {
+        public static string SwitchModeButtonBrowserPathContent {
             get {
-                return ResourceManager.GetString("SwitchModeButtonContent", resourceCulture);
+                return ResourceManager.GetString("SwitchModeButtonBrowserPathContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Additional Args &gt; 的本地化字符串。
+        /// </summary>
+        public static string SwitchModeButtonExtraArgsContent {
+            get {
+                return ResourceManager.GetString("SwitchModeButtonExtraArgsContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Upstream Url &gt; 的本地化字符串。
+        /// </summary>
+        public static string SwitchModeButtonUpstreamUrlContent {
+            get {
+                return ResourceManager.GetString("SwitchModeButtonUpstreamUrlContent", resourceCulture);
             }
         }
         

@@ -100,9 +100,6 @@
   <data name="AboutButtonContent" xml:space="preserve">
     <value>About Me</value>
   </data>
-  <data name="BrowseButtonContent" xml:space="preserve">
-    <value>Browse</value>
-  </data>
   <data name="BrowserPathPlaceHolder" xml:space="preserve">
     <value>(Fill in the path of a Chromium-based browser)</value>
   </data>
@@ -112,11 +109,26 @@
   <data name="ExtraArgsPlaceHolder" xml:space="preserve">
     <value>(fill in extra Chromium startup arguments)</value>
   </data>
-  <data name="SwitchModeButtonContent" xml:space="preserve">
-    <value>Switch</value>
+  <data name="FunctionButtonBrowserPathContent" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="FunctionButtonExtraArgsContent" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="FunctionButtonUpstreamUrlContent" xml:space="preserve">
+    <value>Reset</value>
   </data>
   <data name="StartCealButtonContent" xml:space="preserve">
     <value>Start Cealing</value>
+  </data>
+  <data name="SwitchModeButtonBrowserPathContent" xml:space="preserve">
+    <value>Browser Path &gt;</value>
+  </data>
+  <data name="SwitchModeButtonExtraArgsContent" xml:space="preserve">
+    <value>Additional Args &gt;</value>
+  </data>
+  <data name="SwitchModeButtonUpstreamUrlContent" xml:space="preserve">
+    <value>Upstream Url &gt;</value>
   </data>
   <data name="UpdateHostButtonContent" xml:space="preserve">
     <value>Update Host</value>

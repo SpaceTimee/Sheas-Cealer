@@ -11,10 +11,9 @@ namespace Sheas_Cealer.Convs
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             string? browserPath = values[0] as string;
-            string? upstreamUrl = values[1] as string;
-            string? extraArgs = values[2] as string;
+            string? extraArgs = values[1] as string;
 
-            if (File.Exists(browserPath) && Path.GetFileName(browserPath).ToLower().EndsWith(".exe") && MainConst.UrlRegex().IsMatch(upstreamUrl!) && MainConst.ArgsRegex().IsMatch(extraArgs!))
+            if (File.Exists(browserPath) && Path.GetFileName(browserPath).ToLower().EndsWith(".exe") && (MainConst.ArgsRegex().IsMatch(extraArgs!) || extraArgs == MainConst.ExtraArgsPlaceHolder))
                 return true;
 
             return false;

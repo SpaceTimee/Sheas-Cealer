@@ -70,15 +70,22 @@ namespace Sheas_Cealer.Wins
             else
                 throw new UnreachableException();
         }
-        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        private void FunctionButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new() { Filter = "浏览器 (*.exe)|*.exe" };
-
-            if (openFileDialog.ShowDialog() == true)
+            if (MainPres!.Mode == MainConst.Mode.browserPathMode)
             {
-                MainPres!.IsContentBoxFocused = true;
-                MainPres!.BrowserPath = openFileDialog.FileName;
+                OpenFileDialog openFileDialog = new() { Filter = "浏览器 (*.exe)|*.exe" };
+
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    MainPres!.IsContentBoxFocused = true;
+                    MainPres!.BrowserPath = openFileDialog.FileName;
+                }
             }
+            else if (MainPres!.Mode == MainConst.Mode.upstreamUrlMode)
+                MainPres!.UpstreamUrl = MainConst.DefaultUpstreamUrl;
+            else if (MainPres!.Mode == MainConst.Mode.extraArgsMode)
+                MainPres!.ExtraArgs = string.Empty;
         }
         private void SwitchModeButton_Click(object sender, RoutedEventArgs e)
         {
