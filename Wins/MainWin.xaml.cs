@@ -61,18 +61,14 @@ namespace Sheas_Cealer.Wins
         {
             TextBox? ContentBox = sender as TextBox;
 
-            switch (MainPres!.Mode)
-            {
-                case MainConst.Mode.browserPathMode:
-                    MainPres.BrowserPath = ContentBox!.Text;
-                    return;
-                case MainConst.Mode.upstreamUrlMode:
-                    MainPres.UpstreamUrl = ContentBox!.Text;
-                    return;
-                case MainConst.Mode.extraArgsMode:
-                    MainPres.ExtraArgs = ContentBox!.Text;
-                    return;
-            };
+            if (MainPres!.Mode == MainConst.Mode.browserPathMode)
+                MainPres.BrowserPath = ContentBox!.Text;
+            else if (MainPres!.Mode == MainConst.Mode.upstreamUrlMode)
+                MainPres.UpstreamUrl = ContentBox!.Text;
+            else if (MainPres!.Mode == MainConst.Mode.extraArgsMode)
+                MainPres.ExtraArgs = ContentBox!.Text;
+            else
+                throw new UnreachableException();
         }
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
@@ -123,7 +119,6 @@ namespace Sheas_Cealer.Wins
         private async void UpdateHostButton_Click(object sender, RoutedEventArgs e)
         {
             string hostUrl = MainPres!.UpstreamUrl;
-
             string UpdateHostString = await Http.GetAsync<string>(hostUrl, MainClient);
             StreamReader hostLocalStreamReader = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json"));
             string hostLocalString = hostLocalStreamReader.ReadToEnd();

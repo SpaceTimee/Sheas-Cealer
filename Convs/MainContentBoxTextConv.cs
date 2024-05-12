@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Data;
 using Sheas_Cealer.Consts;
 
@@ -18,9 +19,9 @@ namespace Sheas_Cealer.Convs
 
             if (mode == MainConst.Mode.browserPathMode)
             {
-                if((bool)!isFocused! && string.IsNullOrEmpty(browserPath))
+                if ((bool)!isFocused! && string.IsNullOrEmpty(browserPath))
                     return MainConst.BrowserPathPlaceHolder;
-                else if((bool)isFocused! && browserPath == MainConst.BrowserPathPlaceHolder)
+                else if ((bool)isFocused! && browserPath == MainConst.BrowserPathPlaceHolder)
                     return string.Empty;
                 else
                     return browserPath!;
@@ -45,7 +46,7 @@ namespace Sheas_Cealer.Convs
             }
             else
             {
-                throw new Exception("Invalid mode");
+                throw new UnreachableException();
             }
         }
 

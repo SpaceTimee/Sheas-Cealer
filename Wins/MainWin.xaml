@@ -29,7 +29,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBox utils:FocusExtension.IsFocused="{Binding IsContentBoxFocused}"
+            <TextBox x:Name="ContentText" utils:FocusExtension.IsFocused="{Binding IsContentBoxFocused}"
                      Grid.Column="0" Margin="5" VerticalContentAlignment="Center"
                      TextChanged="ContentBox_TextChanged" PreviewDragOver="MainWin_DragEnter">
                 <TextBox.Text>
@@ -37,13 +37,13 @@
                         <MultiBinding.Converter>
                             <convs:MainContentBoxTextConv />
                         </MultiBinding.Converter>
-                        
+
                         <Binding Path="Mode" />
                         <Binding Path="IsFocused" RelativeSource="{RelativeSource Self}" />
                         <Binding Path="BrowserPath" />
                         <Binding Path="UpstreamUrl" />
                         <Binding Path="ExtraArgs" />
-                        
+
                     </MultiBinding>
                 </TextBox.Text>
                 <TextBox.Foreground>
@@ -51,13 +51,13 @@
                         <MultiBinding.Converter>
                             <convs:MainContentBoxForegroundConv />
                         </MultiBinding.Converter>
-                        
+
                         <Binding Path="Mode" />
                         <Binding Path="IsFocused" RelativeSource="{RelativeSource Self}" />
                         <Binding Path="BrowserPath" />
                         <Binding Path="UpstreamUrl" />
                         <Binding Path="ExtraArgs" />
-                        
+
                     </MultiBinding>
                 </TextBox.Foreground>
             </TextBox>
@@ -65,12 +65,26 @@
                     Click="BrowseButton_Click" />
             <Button Grid.Column="2" Margin="5" Content="{Binding SwitchModeButtonContent, Source={StaticResource MainConst}}"
                     Click="SwitchModeButton_Click" />
-            
+
         </Grid>
 
         <Button IsDefault="True"
                 Grid.Row="1" Margin="5" Content="{Binding StartCealButtonContent, Source={StaticResource MainConst}}"
-                Click="StartCealButton_Click" />
+                Click="StartCealButton_Click">
+
+            <Button.IsEnabled>
+                <MultiBinding>
+                    <MultiBinding.Converter>
+                        <convs:MainStartCealButtonIsEnabledConv />
+                    </MultiBinding.Converter>
+
+                    <Binding Path="BrowserPath" />
+                    <Binding Path="UpstreamUrl" />
+                    <Binding Path="ExtraArgs" />
+
+                </MultiBinding>
+            </Button.IsEnabled>
+        </Button>
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -78,7 +92,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
+
             <Button x:Name="EditHostButton"
                     Grid.Column="0" Margin="5" Content="{Binding EditHostButtonContent, Source={StaticResource MainConst}}"
                     Click="EditHostButton_Click" />
@@ -88,7 +102,7 @@
             <Button x:Name="AboutButton"
                     Grid.Column="2" Margin="5" Content="{Binding AboutButtonContent, Source={StaticResource MainConst}}"
                     Click="AboutButton_Click" />
-            
+
         </Grid>
     </Grid>
 </Window>

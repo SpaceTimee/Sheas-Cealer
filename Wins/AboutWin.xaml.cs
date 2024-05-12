@@ -14,10 +14,10 @@ namespace Sheas_Cealer.Wins
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender == VersionButton)
+            if (sender as Button == VersionButton)
                 MessageBox.Show("密码: 3wnj");
 
-            ProcessStartInfo processStartInfo = new(sender == EmailButton ? "mailto:" : string.Empty + (sender as Button)!.ToolTip) { UseShellExecute = true };
+            ProcessStartInfo processStartInfo = new(sender as Button == EmailButton ? "mailto:" : string.Empty + (sender as Button)!.ToolTip) { UseShellExecute = true };
             Process.Start(processStartInfo);
         }
 

@@ -12,7 +12,7 @@ namespace Sheas_Cealer.Consts
         [GeneratedRegex(@"^\r$")]
         internal static partial Regex HostRegex();
 
-        [GeneratedRegex(@"^((((ht|f)tps?):\/\/)?[a-zA-Z0-9](-*[a-zA-Z0-9])*(\.[a-zA-Z0-9](-*[a-zA-Z0-9])*)*(:\d{1,5})?(\/[a-zA-Z0-9.-_\~\!\$\&\'\(\)\*\+\,\;\=\:\@\%]*)*)?$")]
+        [GeneratedRegex(@"^((((ht|f)tps?):\/\/)?[a-zA-Z0-9](-*[a-zA-Z0-9])*(\.[a-zA-Z0-9](-*[a-zA-Z0-9])*)*(:\d{1,5})?(\/[a-zA-Z0-9.\-_\~\!\$\&\'\(\)\*\+\,\;\=\:\@\%]*)*)?$")]
         internal static partial Regex UrlRegex();
 
         [GeneratedRegex(@"^(--[a-z](-?[a-z])*( --[a-z](-?[a-z])*)*)?$")]
