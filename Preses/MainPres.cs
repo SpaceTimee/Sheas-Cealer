@@ -1,65 +1,65 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Sheas_Cealer.Consts;
 using File = System.IO.File;
 
-namespace Sheas_Cealer.Preses
+namespace Sheas_Cealer.Preses;
+
+internal partial class MainPres : ObservableObject
 {
-    internal partial class MainPres : ObservableObject
+    internal MainPres(string[] args)
     {
-        private static readonly MainConst MainConst = new();
+        int browserPathIndex = Array.FindIndex(args, arg => arg == "-b") + 1,
+        upstreamUrlIndex = Array.FindIndex(args, arg => arg == "-u") + 1,
+        extraArgsIndex = Array.FindIndex(args, arg => arg == "e") + 1;
 
-        internal MainPres(string[] args)
+        BrowserPath = browserPathIndex == 0 ?
+            (!string.IsNullOrWhiteSpace(Props.Settings.Default.BrowserPath) ? Props.Settings.Default.BrowserPath : string.Empty) :
+            args[browserPathIndex];
+
+        UpstreamUrl = upstreamUrlIndex == 0 ?
+            (!string.IsNullOrWhiteSpace(Props.Settings.Default.UpstreamUrl) ? Props.Settings.Default.UpstreamUrl : MainConst.DefaultUpstreamUrl) :
+            args[upstreamUrlIndex];
+
+        ExtraArgs = extraArgsIndex == 0 ?
+            (!string.IsNullOrWhiteSpace(Props.Settings.Default.ExtraArgs) ? Props.Settings.Default.ExtraArgs : string.Empty) :
+            args[extraArgsIndex];
+    }
+
+    [ObservableProperty]
+    private MainConst.SettingsMode mode = MainConst.SettingsMode.BrowserPathMode;
+
+    [ObservableProperty]
+    private string browserPath;
+    private partial void OnBrowserPathChanged(string value)
+    {
+        if (File.Exists(value) && Path.GetFileName(value).ToLower().EndsWith(".exe"))
         {
-            if (args.Length > 0)
-                BrowserPath = args[0];
-            else if (!string.IsNullOrWhiteSpace(Props.Settings.Default.BrowserPath))
-                BrowserPath = Props.Settings.Default.BrowserPath;
-
-            if (!string.IsNullOrWhiteSpace(Props.Settings.Default.UpstreamUrl))
-                UpstreamUrl = Props.Settings.Default.UpstreamUrl;
-
-            if (!string.IsNullOrWhiteSpace(Props.Settings.Default.ExtraArgs))
-                ExtraArgs = Props.Settings.Default.ExtraArgs;
+            Props.Settings.Default.BrowserPath = value;
+            Props.Settings.Default.Save();
         }
+    }
 
-        [ObservableProperty]
-        private MainConst.Mode mode = MainConst.Mode.browserPathMode;
-
-        [ObservableProperty]
-        private bool isContentBoxFocused = true;
-
-        [ObservableProperty]
-        private string browserPath = string.Empty;
-        partial void OnBrowserPathChanged(string value)
+    [ObservableProperty]
+    private string upstreamUrl;
+    private partial void OnUpstreamUrlChanged(string value)
+    {
+        if (MainConst.UpstreamUrlRegex().IsMatch(value))
         {
-            if (File.Exists(value) && Path.GetFileName(value).ToLower().EndsWith(".exe"))
-            {
-                Props.Settings.Default.BrowserPath = value;
-                Props.Settings.Default.Save();
-            }
+            Props.Settings.Default.UpstreamUrl = value;
+            Props.Settings.Default.Save();
         }
+    }
 
-        [ObservableProperty]
-        private string upstreamUrl = MainConst.DefaultUpstreamUrl;
-        partial void OnUpstreamUrlChanged(string value)
+    [ObservableProperty]
+    private string extraArgs;
+    private partial void OnExtraArgsChanged(string value)
+    {
+        if (MainConst.ExtraArgsRegex().IsMatch(value))
         {
-            if (MainConst.UrlRegex().IsMatch(value))
-            {
-                Props.Settings.Default.UpstreamUrl = value;
-                Props.Settings.Default.Save();
-            }
-        }
-
-        [ObservableProperty]
-        private string extraArgs = string.Empty;
-        partial void OnExtraArgsChanged(string value)
-        {
-            if (MainConst.ArgsRegex().IsMatch(value))
-            {
-                Props.Settings.Default.ExtraArgs = value;
-                Props.Settings.Default.Save();
-            }
+            Props.Settings.Default.ExtraArgs = value;
+            Props.Settings.Default.Save();
         }
     }
 }

@@ -4,27 +4,26 @@ using System.Globalization;
 using System.Windows.Data;
 using Sheas_Cealer.Consts;
 
-namespace Sheas_Cealer.Convs
+namespace Sheas_Cealer.Convs;
+
+internal class MainSwitchModeButtonContentConv : IValueConverter
 {
-    internal class MainSwitchModeButtonContentConv : IValueConverter
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            MainConst.Mode? mode = value as MainConst.Mode?;
+        MainConst.SettingsMode? mode = value as MainConst.SettingsMode?;
 
-            if (mode == MainConst.Mode.browserPathMode)
-                return MainConst.SwitchModeButtonBrowserPathContent;
-            else if (mode == MainConst.Mode.upstreamUrlMode)
-                return MainConst.SwitchModeButtonUpstreamUrlContent;
-            else if (mode == MainConst.Mode.extraArgsMode)
-                return MainConst.SwitchModeButtonExtraArgsContent;
+        if (mode == MainConst.SettingsMode.BrowserPathMode)
+            return MainConst.SwitchModeButtonBrowserPathContent;
+        else if (mode == MainConst.SettingsMode.UpstreamUrlMode)
+            return MainConst.SwitchModeButtonUpstreamUrlContent;
+        else if (mode == MainConst.SettingsMode.ExtraArgsMode)
+            return MainConst.SwitchModeButtonExtraArgsContent;
 
-            throw new UnreachableException();
-        }
+        throw new UnreachableException();
+    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

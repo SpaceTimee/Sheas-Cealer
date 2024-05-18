@@ -35,10 +35,9 @@
                     <MultiBinding.Converter>
                         <convs:AboutVersionButtonContentConv />
                     </MultiBinding.Converter>
-                    
+
                     <Binding Path="VersionButtonContent" Source="{StaticResource AboutConst}" />
                     <Binding Path="Version" Source="{StaticResource AboutConst}" />
-                    
                 </MultiBinding>
             </Button.Content>
         </Button>
@@ -58,6 +57,5 @@
         <Button x:Name="AgreementButton"
                 Content="{Binding AgreementButtonContent, Source={StaticResource AboutConst}}" Grid.Row="1" Grid.Column="3" Margin="5" ToolTip="{Binding AgreementButtonUrl, Source={StaticResource AboutConst}}"
                 Click="AboutButton_Click" />
-
     </Grid>
 </Window>

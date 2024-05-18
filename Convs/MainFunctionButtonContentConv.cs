@@ -4,27 +4,26 @@ using System.Globalization;
 using System.Windows.Data;
 using Sheas_Cealer.Consts;
 
-namespace Sheas_Cealer.Convs
+namespace Sheas_Cealer.Convs;
+
+internal class MainFunctionButtonContentConv : IValueConverter
 {
-    internal class MainFunctionButtonContentConv : IValueConverter
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            MainConst.Mode? mode = value as MainConst.Mode?;
+        MainConst.SettingsMode? mode = value as MainConst.SettingsMode?;
 
-            if (mode == MainConst.Mode.browserPathMode)
-                return MainConst.FunctionButtonBrowserPathContent;
-            else if (mode == MainConst.Mode.upstreamUrlMode)
-                return MainConst.FunctionButtonUpstreamUrlContent;
-            else if (mode == MainConst.Mode.extraArgsMode)
-                return MainConst.FunctionButtonExtraArgsContent;
+        if (mode == MainConst.SettingsMode.BrowserPathMode)
+            return MainConst.FunctionButtonBrowserPathContent;
+        else if (mode == MainConst.SettingsMode.UpstreamUrlMode)
+            return MainConst.FunctionButtonUpstreamUrlContent;
+        else if (mode == MainConst.SettingsMode.ExtraArgsMode)
+            return MainConst.FunctionButtonExtraArgsContent;
 
-            throw new UnreachableException();
-        }
+        throw new UnreachableException();
+    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

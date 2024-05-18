@@ -3,12 +3,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:preses="clr-namespace:Sheas_Cealer.Preses"
-        xmlns:convs="clr-namespace:Sheas_Cealer.Convs"
         xmlns:consts="clr-namespace:Sheas_Cealer.Consts"
-        xmlns:utils="clr-namespace:Sheas_Cealer.Utils"
+        xmlns:convs="clr-namespace:Sheas_Cealer.Convs"
+        xmlns:preses="clr-namespace:Sheas_Cealer.Preses"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance preses:MainPres}" AllowDrop="True" 
+        d:DataContext="{d:DesignInstance preses:MainPres}" AllowDrop="True"
         Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" SizeToContent="Height" Width="500" MinWidth="500"
         Loaded="MainWin_Loaded" Closing="MainWin_Closing" DragEnter="MainWin_DragEnter" Drop="MainWin_Drop" KeyDown="MainWin_KeyDown">
     <Window.Resources>
@@ -40,7 +39,7 @@
                 </Button.Content>
             </Button>
 
-            <TextBox x:Name="ContentText" utils:FocusExtension.IsFocused="{Binding IsContentBoxFocused}"
+            <TextBox x:Name="ContentBox"
                      Grid.Column="1" Margin="5" VerticalContentAlignment="Center"
                      TextChanged="ContentBox_TextChanged" PreviewDragOver="MainWin_DragEnter">
                 <TextBox.Text>
@@ -54,7 +53,6 @@
                         <Binding Path="BrowserPath" />
                         <Binding Path="UpstreamUrl" />
                         <Binding Path="ExtraArgs" />
-
                     </MultiBinding>
                 </TextBox.Text>
                 <TextBox.Foreground>
@@ -68,7 +66,6 @@
                         <Binding Path="BrowserPath" />
                         <Binding Path="UpstreamUrl" />
                         <Binding Path="ExtraArgs" />
-
                     </MultiBinding>
                 </TextBox.Foreground>
             </TextBox>
@@ -82,7 +79,6 @@
                     </Binding>
                 </Button.Content>
             </Button>
-
         </Grid>
 
         <Button IsDefault="True"
@@ -97,7 +93,6 @@
 
                     <Binding Path="BrowserPath" />
                     <Binding Path="ExtraArgs" />
-
                 </MultiBinding>
             </Button.IsEnabled>
         </Button>
@@ -126,7 +121,6 @@
             <Button x:Name="AboutButton"
                     Grid.Column="2" Margin="5" Content="{Binding AboutButtonContent, Source={StaticResource MainConst}}"
                     Click="AboutButton_Click" />
-
         </Grid>
     </Grid>
 </Window>
