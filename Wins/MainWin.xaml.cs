@@ -37,11 +37,7 @@ public partial class MainWin : Window
 
     private void MainWin_DragEnter(object sender, DragEventArgs e)
     {
-        if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            e.Effects = DragDropEffects.Link;
-        else
-            e.Effects = DragDropEffects.None;
-
+        e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Link : DragDropEffects.None;
         e.Handled = true;
     }
     private void MainWin_Drop(object sender, DragEventArgs e)
@@ -82,12 +78,13 @@ public partial class MainWin : Window
     }
     private void SwitchModeButton_Click(object sender, RoutedEventArgs e)
     {
-        if (MainPres!.Mode == MainConst.SettingsMode.BrowserPathMode)
-            MainPres!.Mode = MainConst.SettingsMode.UpstreamUrlMode;
-        else if (MainPres!.Mode == MainConst.SettingsMode.UpstreamUrlMode)
-            MainPres!.Mode = MainConst.SettingsMode.ExtraArgsMode;
-        else if (MainPres!.Mode == MainConst.SettingsMode.ExtraArgsMode)
-            MainPres!.Mode = MainConst.SettingsMode.BrowserPathMode;
+        MainPres!.Mode = MainPres!.Mode switch
+        {
+            MainConst.SettingsMode.BrowserPathMode => MainConst.SettingsMode.UpstreamUrlMode,
+            MainConst.SettingsMode.UpstreamUrlMode => MainConst.SettingsMode.ExtraArgsMode,
+            MainConst.SettingsMode.ExtraArgsMode => MainConst.SettingsMode.BrowserPathMode,
+            _ => throw new UnreachableException()
+        };
     }
 
     private void StartCealButton_Click(object sender, RoutedEventArgs e)

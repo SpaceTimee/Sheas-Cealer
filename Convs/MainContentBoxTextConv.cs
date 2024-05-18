@@ -15,41 +15,17 @@ internal class MainContentBoxTextConv : IMultiValueConverter
         string? upstreamUrl = values[3] as string;
         string? extraArgs = values[4] as string;
 
-        if (mode == MainConst.SettingsMode.BrowserPathMode)
+        return mode switch
         {
-            if ((bool)!isFocused! && string.IsNullOrEmpty(browserPath))
-                return MainConst.BrowserPathPlaceHolder;
-            else if ((bool)isFocused! && browserPath == MainConst.BrowserPathPlaceHolder)
-                return string.Empty;
-            else
-                return browserPath!;
-        }
-        else if (mode == MainConst.SettingsMode.UpstreamUrlMode)
-        {
-            if ((bool)!isFocused! && string.IsNullOrEmpty(upstreamUrl))
-                return MainConst.UpstreamUrlPlaceHolder;
-            else if ((bool)isFocused! && upstreamUrl == MainConst.UpstreamUrlPlaceHolder)
-                return string.Empty;
-            else
-                return upstreamUrl!;
-        }
-        else if (mode == MainConst.SettingsMode.ExtraArgsMode)
-        {
-            if ((bool)!isFocused! && string.IsNullOrEmpty(extraArgs))
-                return MainConst.ExtraArgsPlaceHolder;
-            else if ((bool)isFocused! && extraArgs == MainConst.ExtraArgsPlaceHolder)
-                return string.Empty;
-            else
-                return extraArgs!;
-        }
-        else
-        {
-            throw new UnreachableException();
-        }
+            MainConst.SettingsMode.BrowserPathMode => !isFocused.GetValueOrDefault() && string.IsNullOrEmpty(browserPath) ? MainConst.BrowserPathPlaceHolder :
+                isFocused.GetValueOrDefault() && browserPath == MainConst.BrowserPathPlaceHolder ? string.Empty : browserPath!,
+            MainConst.SettingsMode.UpstreamUrlMode => !isFocused.GetValueOrDefault() && string.IsNullOrEmpty(upstreamUrl) ? MainConst.UpstreamUrlPlaceHolder :
+                isFocused.GetValueOrDefault() && upstreamUrl == MainConst.UpstreamUrlPlaceHolder ? string.Empty : upstreamUrl!,
+            MainConst.SettingsMode.ExtraArgsMode => !isFocused.GetValueOrDefault() && string.IsNullOrEmpty(extraArgs) ? MainConst.ExtraArgsPlaceHolder :
+                isFocused.GetValueOrDefault() && extraArgs == MainConst.ExtraArgsPlaceHolder ? string.Empty : extraArgs!,
+            _ => throw new UnreachableException(),
+        };
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture) => throw new NotImplementedException();
 }

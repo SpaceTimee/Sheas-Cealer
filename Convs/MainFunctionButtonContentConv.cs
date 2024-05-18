@@ -12,18 +12,14 @@ internal class MainFunctionButtonContentConv : IValueConverter
     {
         MainConst.SettingsMode? mode = value as MainConst.SettingsMode?;
 
-        if (mode == MainConst.SettingsMode.BrowserPathMode)
-            return MainConst.FunctionButtonBrowserPathContent;
-        else if (mode == MainConst.SettingsMode.UpstreamUrlMode)
-            return MainConst.FunctionButtonUpstreamUrlContent;
-        else if (mode == MainConst.SettingsMode.ExtraArgsMode)
-            return MainConst.FunctionButtonExtraArgsContent;
-
-        throw new UnreachableException();
+        return mode switch
+        {
+            MainConst.SettingsMode.BrowserPathMode => MainConst.FunctionButtonBrowserPathContent,
+            MainConst.SettingsMode.UpstreamUrlMode => MainConst.FunctionButtonUpstreamUrlContent,
+            MainConst.SettingsMode.ExtraArgsMode => MainConst.FunctionButtonExtraArgsContent,
+            _ => throw new UnreachableException()
+        };
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

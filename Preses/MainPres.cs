@@ -32,7 +32,7 @@ internal partial class MainPres : ObservableObject
 
     [ObservableProperty]
     private string browserPath;
-    private partial void OnBrowserPathChanged(string value)
+    partial void OnBrowserPathChanged(string value)
     {
         if (File.Exists(value) && Path.GetFileName(value).ToLower().EndsWith(".exe"))
         {
@@ -43,7 +43,7 @@ internal partial class MainPres : ObservableObject
 
     [ObservableProperty]
     private string upstreamUrl;
-    private partial void OnUpstreamUrlChanged(string value)
+    partial void OnUpstreamUrlChanged(string value)
     {
         if (MainConst.UpstreamUrlRegex().IsMatch(value))
         {
@@ -54,7 +54,7 @@ internal partial class MainPres : ObservableObject
 
     [ObservableProperty]
     private string extraArgs;
-    private partial void OnExtraArgsChanged(string value)
+    partial void OnExtraArgsChanged(string value)
     {
         if (MainConst.ExtraArgsRegex().IsMatch(value))
         {

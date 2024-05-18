@@ -62,7 +62,6 @@
                         </MultiBinding.Converter>
 
                         <Binding Path="Mode" />
-                        <Binding Path="IsFocused" RelativeSource="{RelativeSource Self}" />
                         <Binding Path="BrowserPath" />
                         <Binding Path="UpstreamUrl" />
                         <Binding Path="ExtraArgs" />
