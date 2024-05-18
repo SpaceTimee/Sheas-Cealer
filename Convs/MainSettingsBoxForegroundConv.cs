@@ -6,7 +6,7 @@ using Sheas_Cealer.Consts;
 
 namespace Sheas_Cealer.Convs;
 
-internal class MainContentBoxForegroundConv : IMultiValueConverter
+internal class MainSettingsBoxForegroundConv : IMultiValueConverter
 {
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
@@ -17,9 +17,9 @@ internal class MainContentBoxForegroundConv : IMultiValueConverter
 
         switch (mode)
         {
-            case MainConst.SettingsMode.BrowserPathMode when browserPath == MainConst.BrowserPathPlaceHolder:
-            case MainConst.SettingsMode.UpstreamUrlMode when upstreamUrl == MainConst.UpstreamUrlPlaceHolder:
-            case MainConst.SettingsMode.ExtraArgsMode when extraArgs == MainConst.ExtraArgsPlaceHolder:
+            case MainConst.SettingsMode.BrowserPathMode when browserPath == MainConst.SettingsBoxBrowserPathPlaceHolder:
+            case MainConst.SettingsMode.UpstreamUrlMode when upstreamUrl == MainConst.SettingsBoxUpstreamUrlPlaceHolder:
+            case MainConst.SettingsMode.ExtraArgsMode when extraArgs == MainConst.SettingsBoxExtraArgsPlaceHolder:
                 return new SolidColorBrush(Color.FromRgb(191, 205, 219));
         }
 

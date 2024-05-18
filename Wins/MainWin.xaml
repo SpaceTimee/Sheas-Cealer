@@ -29,23 +29,23 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" Margin="5"
-                    Click="SwitchModeButton_Click">
+                    Click="SettingsModeButton_Click">
                 <Button.Content>
                     <Binding Path="Mode">
                         <Binding.Converter>
-                            <convs:MainSwitchModeButtonContentConv />
+                            <convs:MainSettingsModeButtonContentConv />
                         </Binding.Converter>
                     </Binding>
                 </Button.Content>
             </Button>
 
-            <TextBox x:Name="ContentBox"
+            <TextBox x:Name="SettingsBox"
                      Grid.Column="1" Margin="5" VerticalContentAlignment="Center"
-                     TextChanged="ContentBox_TextChanged" PreviewDragOver="MainWin_DragEnter">
+                     TextChanged="SettingsBox_TextChanged" PreviewDragOver="MainWin_DragEnter">
                 <TextBox.Text>
                     <MultiBinding Mode="OneWay" UpdateSourceTrigger="PropertyChanged">
                         <MultiBinding.Converter>
-                            <convs:MainContentBoxTextConv />
+                            <convs:MainSettingsBoxTextConv />
                         </MultiBinding.Converter>
 
                         <Binding Path="Mode" />
@@ -58,7 +58,7 @@
                 <TextBox.Foreground>
                     <MultiBinding Mode="OneWay">
                         <MultiBinding.Converter>
-                            <convs:MainContentBoxForegroundConv />
+                            <convs:MainSettingsBoxForegroundConv />
                         </MultiBinding.Converter>
 
                         <Binding Path="Mode" />
@@ -69,11 +69,11 @@
                 </TextBox.Foreground>
             </TextBox>
             <Button Grid.Column="2" Margin="5"
-                    Click="FunctionButton_Click">
+                    Click="SettingsFunctionButton_Click">
                 <Button.Content>
                     <Binding Path="Mode">
                         <Binding.Converter>
-                            <convs:MainFunctionButtonContentConv />
+                            <convs:MainSettingsFunctionButtonContentConv />
                         </Binding.Converter>
                     </Binding>
                 </Button.Content>

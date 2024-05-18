@@ -2,6 +2,7 @@
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Sheas_Cealer.Consts;
+using Sheas_Cealer.Props;
 using File = System.IO.File;
 
 namespace Sheas_Cealer.Preses;
@@ -15,20 +16,20 @@ internal partial class MainPres : ObservableObject
         extraArgsIndex = Array.FindIndex(args, arg => arg == "e") + 1;
 
         BrowserPath = browserPathIndex == 0 ?
-            (!string.IsNullOrWhiteSpace(Props.Settings.Default.BrowserPath) ? Props.Settings.Default.BrowserPath : string.Empty) :
+            (!string.IsNullOrWhiteSpace(Settings.Default.BrowserPath) ? Settings.Default.BrowserPath : string.Empty) :
             args[browserPathIndex];
 
         UpstreamUrl = upstreamUrlIndex == 0 ?
-            (!string.IsNullOrWhiteSpace(Props.Settings.Default.UpstreamUrl) ? Props.Settings.Default.UpstreamUrl : MainConst.DefaultUpstreamUrl) :
+            (!string.IsNullOrWhiteSpace(Settings.Default.UpstreamUrl) ? Settings.Default.UpstreamUrl : MainConst.DefaultUpstreamUrl) :
             args[upstreamUrlIndex];
 
         ExtraArgs = extraArgsIndex == 0 ?
-            (!string.IsNullOrWhiteSpace(Props.Settings.Default.ExtraArgs) ? Props.Settings.Default.ExtraArgs : string.Empty) :
+            (!string.IsNullOrWhiteSpace(Settings.Default.ExtraArgs) ? Settings.Default.ExtraArgs : string.Empty) :
             args[extraArgsIndex];
     }
 
     [ObservableProperty]
-    private MainConst.SettingsMode mode = MainConst.SettingsMode.BrowserPathMode;
+    private MainConst.SettingsMode mode;
 
     [ObservableProperty]
     private string browserPath;
@@ -36,8 +37,8 @@ internal partial class MainPres : ObservableObject
     {
         if (File.Exists(value) && Path.GetFileName(value).ToLower().EndsWith(".exe"))
         {
-            Props.Settings.Default.BrowserPath = value;
-            Props.Settings.Default.Save();
+            Settings.Default.BrowserPath = value;
+            Settings.Default.Save();
         }
     }
 
@@ -47,8 +48,8 @@ internal partial class MainPres : ObservableObject
     {
         if (MainConst.UpstreamUrlRegex().IsMatch(value))
         {
-            Props.Settings.Default.UpstreamUrl = value;
-            Props.Settings.Default.Save();
+            Settings.Default.UpstreamUrl = value;
+            Settings.Default.Save();
         }
     }
 
@@ -58,8 +59,8 @@ internal partial class MainPres : ObservableObject
     {
         if (MainConst.ExtraArgsRegex().IsMatch(value))
         {
-            Props.Settings.Default.ExtraArgs = value;
-            Props.Settings.Default.Save();
+            Settings.Default.ExtraArgs = value;
+            Settings.Default.Save();
         }
     }
 }

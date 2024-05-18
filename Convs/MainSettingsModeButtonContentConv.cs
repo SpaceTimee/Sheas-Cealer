@@ -5,7 +5,7 @@ using Sheas_Cealer.Consts;
 
 namespace Sheas_Cealer.Convs;
 
-internal class MainSwitchModeButtonContentConv : IValueConverter
+internal class MainSettingsModeButtonContentConv : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
@@ -13,9 +13,9 @@ internal class MainSwitchModeButtonContentConv : IValueConverter
 
         return mode switch
         {
-            MainConst.SettingsMode.BrowserPathMode => MainConst.SwitchModeButtonBrowserPathContent,
-            MainConst.SettingsMode.UpstreamUrlMode => MainConst.SwitchModeButtonUpstreamUrlContent,
-            MainConst.SettingsMode.ExtraArgsMode => MainConst.SwitchModeButtonExtraArgsContent,
+            MainConst.SettingsMode.BrowserPathMode => MainConst.SettingsModeButtonBrowserPathContent,
+            MainConst.SettingsMode.UpstreamUrlMode => MainConst.SettingsModeButtonUpstreamUrlContent,
+            MainConst.SettingsMode.ExtraArgsMode => MainConst.SettingsModeButtonExtraArgsContent,
             _ => throw new NotImplementedException()
         };
     }

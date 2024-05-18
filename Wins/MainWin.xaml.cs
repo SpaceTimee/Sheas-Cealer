@@ -28,11 +28,10 @@ public partial class MainWin : Window
     {
         InitializeComponent();
 
-        MainPres = new(args);
-        DataContext = MainPres;
+        DataContext = MainPres = new(args);
         CealingHostWatcher.Changed += CealingHostWatcher_Changed;
     }
-    private void MainWin_Loaded(object sender, RoutedEventArgs e) => ContentBox.Focus();
+    private void MainWin_Loaded(object sender, RoutedEventArgs e) => SettingsBox.Focus();
     private void MainWin_Closing(object sender, CancelEventArgs e) => Environment.Exit(0);
 
     private void MainWin_DragEnter(object sender, DragEventArgs e)
@@ -46,37 +45,44 @@ public partial class MainWin : Window
             MainPres!.BrowserPath = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
     }
 
-    private void ContentBox_TextChanged(object sender, TextChangedEventArgs e)
+    private void SettingsBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        TextBox? ContentBox = sender as TextBox;
+        TextBox? SettingsBox = sender as TextBox;
 
-        if (MainPres!.Mode == MainConst.SettingsMode.BrowserPathMode)
-            MainPres.BrowserPath = ContentBox!.Text;
-        else if (MainPres!.Mode == MainConst.SettingsMode.UpstreamUrlMode)
-            MainPres.UpstreamUrl = ContentBox!.Text;
-        else if (MainPres!.Mode == MainConst.SettingsMode.ExtraArgsMode)
-            MainPres.ExtraArgs = ContentBox!.Text;
-        else
-            throw new UnreachableException();
-    }
-    private void FunctionButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (MainPres!.Mode == MainConst.SettingsMode.BrowserPathMode)
+        switch (MainPres!.Mode)
         {
-            OpenFileDialog openFileDialog = new() { Filter = "浏览器 (*.exe)|*.exe" };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                ContentBox.Focus();
-                MainPres!.BrowserPath = openFileDialog.FileName;
-            }
+            case MainConst.SettingsMode.BrowserPathMode:
+                MainPres!.BrowserPath = SettingsBox!.Text;
+                return;
+            case MainConst.SettingsMode.UpstreamUrlMode:
+                MainPres!.UpstreamUrl = SettingsBox!.Text;
+                return;
+            case MainConst.SettingsMode.ExtraArgsMode:
+                MainPres!.ExtraArgs = SettingsBox!.Text;
+                return;
+            default:
+                throw new UnreachableException();
         }
-        else if (MainPres!.Mode == MainConst.SettingsMode.UpstreamUrlMode)
-            MainPres!.UpstreamUrl = MainConst.DefaultUpstreamUrl;
-        else if (MainPres!.Mode == MainConst.SettingsMode.ExtraArgsMode)
-            MainPres!.ExtraArgs = string.Empty;
     }
-    private void SwitchModeButton_Click(object sender, RoutedEventArgs e)
+    private void SettingsFunctionButton_Click(object sender, RoutedEventArgs e)
+    {
+        OpenFileDialog openFileDialog = new() { Filter = "浏览器 (*.exe)|*.exe" };
+
+        switch (MainPres!.Mode)
+        {
+            case MainConst.SettingsMode.BrowserPathMode when openFileDialog.ShowDialog().GetValueOrDefault():
+                SettingsBox.Focus();
+                MainPres!.BrowserPath = openFileDialog.FileName;
+                return;
+            case MainConst.SettingsMode.UpstreamUrlMode:
+                MainPres!.UpstreamUrl = MainConst.DefaultUpstreamUrl;
+                return;
+            case MainConst.SettingsMode.ExtraArgsMode:
+                MainPres!.ExtraArgs = string.Empty;
+                return;
+        }
+    }
+    private void SettingsModeButton_Click(object sender, RoutedEventArgs e)
     {
         MainPres!.Mode = MainPres!.Mode switch
         {
@@ -117,9 +123,8 @@ public partial class MainWin : Window
     {
         string hostUrl = MainPres!.UpstreamUrl;
         string UpdateHostString = await Http.GetAsync<string>(hostUrl, MainClient);
-        StreamReader hostLocalStreamReader = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json"));
+        using StreamReader hostLocalStreamReader = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json"));
         string hostLocalString = hostLocalStreamReader.ReadToEnd();
-        hostLocalStreamReader.Close();
 
         if (hostLocalString.Replace("\r", string.Empty) == UpdateHostString)
             MessageBox.Show("本地伪造规则和上游一模一样");

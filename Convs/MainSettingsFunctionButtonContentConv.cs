@@ -6,7 +6,7 @@ using Sheas_Cealer.Consts;
 
 namespace Sheas_Cealer.Convs;
 
-internal class MainFunctionButtonContentConv : IValueConverter
+internal class MainSettingsFunctionButtonContentConv : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
@@ -14,9 +14,9 @@ internal class MainFunctionButtonContentConv : IValueConverter
 
         return mode switch
         {
-            MainConst.SettingsMode.BrowserPathMode => MainConst.FunctionButtonBrowserPathContent,
-            MainConst.SettingsMode.UpstreamUrlMode => MainConst.FunctionButtonUpstreamUrlContent,
-            MainConst.SettingsMode.ExtraArgsMode => MainConst.FunctionButtonExtraArgsContent,
+            MainConst.SettingsMode.BrowserPathMode => MainConst.SettingsFunctionButtonBrowserPathContent,
+            MainConst.SettingsMode.UpstreamUrlMode => MainConst.SettingsFunctionButtonUpstreamUrlContent,
+            MainConst.SettingsMode.ExtraArgsMode => MainConst.SettingsFunctionButtonExtraArgsContent,
             _ => throw new UnreachableException()
         };
     }
