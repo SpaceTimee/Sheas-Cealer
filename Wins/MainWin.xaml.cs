@@ -3,10 +3,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using IWshRuntimeLibrary;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using OnaCore;
@@ -21,6 +24,7 @@ public partial class MainWin : Window
 {
     private static string CealArgs = string.Empty;
     private static readonly HttpClient MainClient = new();
+    private static DispatcherTimer HoldButtonTimer = new() { Interval = TimeSpan.FromSeconds(1) };
     private static readonly FileSystemWatcher CealingHostWatcher = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static MainPres? MainPres;
 
@@ -29,7 +33,11 @@ public partial class MainWin : Window
         InitializeComponent();
 
         DataContext = MainPres = new(args);
-        CealingHostWatcher.Changed += CealingHostWatcher_Changed;
+        Task.Run(() =>
+        {
+            CealingHostWatcher.Changed += CealingHostWatcher_Changed;
+            CealingHostWatcher_Changed(null!, null!);
+        });
     }
     private void MainWin_Loaded(object sender, RoutedEventArgs e) => SettingsBox.Focus();
     private void MainWin_Closing(object sender, CancelEventArgs e) => Environment.Exit(0);
@@ -47,44 +55,40 @@ public partial class MainWin : Window
 
     private void SettingsBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        TextBox? SettingsBox = sender as TextBox;
-
         switch (MainPres!.Mode)
         {
             case MainConst.SettingsMode.BrowserPathMode:
-                MainPres!.BrowserPath = SettingsBox!.Text;
+                MainPres.BrowserPath = SettingsBox.Text;
                 return;
             case MainConst.SettingsMode.UpstreamUrlMode:
-                MainPres!.UpstreamUrl = SettingsBox!.Text;
+                MainPres.UpstreamUrl = SettingsBox.Text;
                 return;
             case MainConst.SettingsMode.ExtraArgsMode:
-                MainPres!.ExtraArgs = SettingsBox!.Text;
+                MainPres.ExtraArgs = SettingsBox.Text;
                 return;
-            default:
-                throw new UnreachableException();
         }
     }
     private void SettingsFunctionButton_Click(object sender, RoutedEventArgs e)
     {
-        OpenFileDialog openFileDialog = new() { Filter = "浏览器 (*.exe)|*.exe" };
+        OpenFileDialog browserPathDialog = new() { Filter = "浏览器 (*.exe)|*.exe" };
 
         switch (MainPres!.Mode)
         {
-            case MainConst.SettingsMode.BrowserPathMode when openFileDialog.ShowDialog().GetValueOrDefault():
+            case MainConst.SettingsMode.BrowserPathMode when browserPathDialog.ShowDialog().GetValueOrDefault():
                 SettingsBox.Focus();
-                MainPres!.BrowserPath = openFileDialog.FileName;
+                MainPres.BrowserPath = browserPathDialog.FileName;
                 return;
             case MainConst.SettingsMode.UpstreamUrlMode:
-                MainPres!.UpstreamUrl = MainConst.DefaultUpstreamUrl;
+                MainPres.UpstreamUrl = MainConst.DefaultUpstreamUrl;
                 return;
             case MainConst.SettingsMode.ExtraArgsMode:
-                MainPres!.ExtraArgs = string.Empty;
+                MainPres.ExtraArgs = string.Empty;
                 return;
         }
     }
     private void SettingsModeButton_Click(object sender, RoutedEventArgs e)
     {
-        MainPres!.Mode = MainPres!.Mode switch
+        MainPres!.Mode = MainPres.Mode switch
         {
             MainConst.SettingsMode.BrowserPathMode => MainConst.SettingsMode.UpstreamUrlMode,
             MainConst.SettingsMode.UpstreamUrlMode => MainConst.SettingsMode.ExtraArgsMode,
@@ -95,6 +99,12 @@ public partial class MainWin : Window
 
     private void StartCealButton_Click(object sender, RoutedEventArgs e)
     {
+        if (HoldButtonTimer.IsEnabled)
+        {
+            HoldButtonTimer.Stop();
+            return;
+        }
+
         if (string.IsNullOrWhiteSpace(CealArgs))
             throw new Exception("规则无法识别，请检查伪造规则是否含有语法错误");
         if (MessageBox.Show("启动前将关闭所选浏览器的所有进程，是否继续？", string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
@@ -105,13 +115,50 @@ public partial class MainWin : Window
         uncealedBrowserShortcut.Description = "Created By Sheas Cealer";
         uncealedBrowserShortcut.Save();
 
-        foreach (Process browserProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainPres!.BrowserPath)))
+        foreach (Process browserProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainPres.BrowserPath)))
         {
             browserProcess.Kill();
             browserProcess.WaitForExit();
         }
 
-        new Command().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, CealArgs + " " + MainPres!.ExtraArgs);
+        new Command(true).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, CealArgs + (string.IsNullOrWhiteSpace(MainPres.ExtraArgs) ? "" : " " + MainPres.ExtraArgs));
+    }
+    private void StartCealButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        HoldButtonTimer = new() { Interval = TimeSpan.FromSeconds(1) };
+        HoldButtonTimer.Tick += StartCealButtonHoldButtonTimer_Tick;
+        HoldButtonTimer.Start();
+    }
+    private void StartCealButtonHoldButtonTimer_Tick(object? sender, EventArgs e)
+    {
+        HoldButtonTimer.Stop();
+
+        if (HoldButtonTimer.IsEnabled)
+        {
+            HoldButtonTimer.Stop();
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(CealArgs))
+            throw new Exception("规则无法识别，请检查伪造规则是否含有语法错误");
+        if (MessageBox.Show("启动前将关闭所选浏览器的所有进程，是否继续？", string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+            return;
+
+        IWshShortcut uncealedBrowserShortcut = (IWshShortcut)new WshShell().CreateShortcut(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Uncealed-Browser.lnk"));
+        uncealedBrowserShortcut.TargetPath = MainPres!.BrowserPath;
+        uncealedBrowserShortcut.Description = "Created By Sheas Cealer";
+        uncealedBrowserShortcut.Save();
+
+        foreach (Process browserProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainPres.BrowserPath)))
+        {
+            browserProcess.Kill();
+            browserProcess.WaitForExit();
+        }
+
+        if (string.IsNullOrWhiteSpace(MainPres.ExtraArgs))
+            MainPres.ExtraArgs = " " + MainPres.ExtraArgs;
+
+        new Command(false).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, CealArgs + (string.IsNullOrWhiteSpace(MainPres.ExtraArgs) ? "" : " " + MainPres.ExtraArgs));
     }
 
     private void EditHostButton_Click(object sender, RoutedEventArgs e)
@@ -140,6 +187,7 @@ public partial class MainWin : Window
                 Process.Start(new ProcessStartInfo(hostUrl) { UseShellExecute = true });
         }
     }
+    private void ThemesButton_Click(object sender, RoutedEventArgs e) => MainPres!.IsLightTheme = MainPres.IsLightTheme.HasValue ? (MainPres.IsLightTheme.Value ? null : true) : false;
     private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWin().ShowDialog();
 
     private void CealingHostWatcher_Changed(object sender, FileSystemEventArgs e)

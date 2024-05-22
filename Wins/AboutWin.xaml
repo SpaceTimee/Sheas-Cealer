@@ -6,7 +6,7 @@
         xmlns:convs="clr-namespace:Sheas_Cealer.Convs"
         xmlns:consts="clr-namespace:Sheas_Cealer.Consts"
         mc:Ignorable="d"
-        Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="500" MinWidth="500"
+        Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="600"
         KeyDown="AboutWin_KeyDown">
     <Window.Resources>
         <consts:AboutConst x:Key="AboutConst" />
@@ -18,7 +18,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.1*" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />

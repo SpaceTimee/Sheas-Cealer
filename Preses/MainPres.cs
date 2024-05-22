@@ -1,6 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Windows;
+using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
+using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Props;
 using File = System.IO.File;
@@ -30,6 +34,16 @@ internal partial class MainPres : ObservableObject
 
     [ObservableProperty]
     private MainConst.SettingsMode mode;
+
+    [ObservableProperty]
+    private bool? isLightTheme = null;
+    partial void OnIsLightThemeChanged(bool? value)
+    {
+        PaletteHelper paletteHelper = new();
+        Theme newTheme = paletteHelper.GetTheme();
+        newTheme.SetBaseTheme(value.HasValue ? (value.GetValueOrDefault() ? BaseTheme.Light : BaseTheme.Dark) : BaseTheme.Inherit);
+        paletteHelper.SetTheme(newTheme);
+    }
 
     [ObservableProperty]
     private string browserPath;

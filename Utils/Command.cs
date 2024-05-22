@@ -6,8 +6,11 @@ namespace Sheas_Cealer.Utils;
 
 internal class Command : Proc
 {
-    internal Command() : base("Cmd.exe")
+    internal bool EnvironmentExitAfterProcessExited = true;
+
+    internal Command(bool environmentExitAfterProcessExited) : base("Cmd.exe")
     {
+        EnvironmentExitAfterProcessExited = environmentExitAfterProcessExited;
     }
 
     public override void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
@@ -16,5 +19,9 @@ internal class Command : Proc
     public override void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
     }
-    public override void Process_Exited(object sender, EventArgs e) => Environment.Exit(0);
+    public override void Process_Exited(object sender, EventArgs e)
+    {
+        if (EnvironmentExitAfterProcessExited)
+            Environment.Exit(0);
+    }
 }

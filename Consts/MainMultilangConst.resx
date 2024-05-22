@@ -120,40 +120,70 @@
   <data name="AboutButtonContent" xml:space="preserve">
     <value>About Me</value>
   </data>
+  <data name="AboutButtonToolTip" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="BrowserPathModeName" xml:space="preserve">
+    <value>Browser Path</value>
+  </data>
   <data name="EditHostButtonContent" xml:space="preserve">
     <value>Edit Host</value>
   </data>
+  <data name="EditHostButtonToolTip" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ExtraArgsModeName" xml:space="preserve">
+    <value>Additional Args</value>
+  </data>
   <data name="SettingsBoxBrowserPathPlaceHolder" xml:space="preserve">
-    <value>(Fill in the path of a Chromium-based browser)</value>
+    <value>Fill in the path of a Chromium-based browser</value>
   </data>
   <data name="SettingsBoxExtraArgsPlaceHolder" xml:space="preserve">
-    <value>(Fill in extra Chromium startup arguments)</value>
+    <value>Fill in extra Chromium startup arguments</value>
   </data>
   <data name="SettingsBoxUpstreamUrlPlaceHolder" xml:space="preserve">
-    <value>(Fill in the link to an upstream Cealing Host)</value>
+    <value>Fill in the link to an upstream Cealing Host</value>
   </data>
   <data name="SettingsFunctionButtonBrowserPathContent" xml:space="preserve">
-    <value>Browse</value>
+    <value>Browse Path</value>
   </data>
   <data name="SettingsFunctionButtonExtraArgsContent" xml:space="preserve">
-    <value>Clear</value>
+    <value>Clear Args</value>
+  </data>
+  <data name="SettingsFunctionButtonToolTip" xml:space="preserve">
+    <value></value>
   </data>
   <data name="SettingsFunctionButtonUpstreamUrlContent" xml:space="preserve">
-    <value>Reset</value>
+    <value>Reset Url</value>
   </data>
-  <data name="SettingsModeButtonBrowserPathContent" xml:space="preserve">
-    <value>Browser Path &gt;</value>
-  </data>
-  <data name="SettingsModeButtonExtraArgsContent" xml:space="preserve">
-    <value>Additional Args &gt;</value>
-  </data>
-  <data name="SettingsModeButtonUpstreamUrlContent" xml:space="preserve">
-    <value>Upstream Url &gt;</value>
+  <data name="SettingsModeButtonToolTip" xml:space="preserve">
+    <value></value>
   </data>
   <data name="StartCealButtonContent" xml:space="preserve">
     <value>Start Cealing</value>
   </data>
+  <data name="StartCealButtonToolTip" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ThemesButtonDarkThemeContent" xml:space="preserve">
+    <value>Light Theme</value>
+  </data>
+  <data name="ThemesButtonInheritThemeContent" xml:space="preserve">
+    <value>Auto Theme</value>
+  </data>
+  <data name="ThemesButtonLightThemeContent" xml:space="preserve">
+    <value>Dark Theme</value>
+  </data>
+  <data name="ThemesButtonToolTip" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="UpdateHostButtonContent" xml:space="preserve">
     <value>Update Host</value>
+  </data>
+  <data name="UpdateHostButtonToolTip" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="UpstreamUrlModeName" xml:space="preserve">
+    <value>Upstream Url</value>
   </data>
 </root>

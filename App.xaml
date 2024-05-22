@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Red" SecondaryColor="Orange" />
+                <materialDesign:BundledTheme BaseTheme="Inherit" PrimaryColor="Red" SecondaryColor="Orange" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
@@ -15,12 +15,12 @@
                 <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
             </Style>
 
+            <Style BasedOn="{StaticResource MaterialDesignFilledTextBox}" TargetType="{x:Type TextBox}" />
+
             <Style BasedOn="{StaticResource MaterialDesignRaisedButton}" TargetType="{x:Type Button}">
                 <Setter Property="Height" Value="Auto" />
                 <Setter Property="Width" Value="Auto" />
-                <Setter Property="Background" Value="Red" />
             </Style>
-            <Style BasedOn="{StaticResource MaterialDesignCaptionHyperlink}" TargetType="{x:Type Hyperlink}" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

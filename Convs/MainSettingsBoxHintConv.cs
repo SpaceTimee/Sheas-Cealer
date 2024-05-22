@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
 using Sheas_Cealer.Consts;
 
 namespace Sheas_Cealer.Convs;
 
-internal class MainSettingsModeButtonContentConv : IValueConverter
+internal class MainSettingsBoxHintConv : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
@@ -13,10 +14,10 @@ internal class MainSettingsModeButtonContentConv : IValueConverter
 
         return mode switch
         {
-            MainConst.SettingsMode.BrowserPathMode => MainConst.UpstreamUrlModeName,
-            MainConst.SettingsMode.UpstreamUrlMode => MainConst.ExtraArgsModeName,
-            MainConst.SettingsMode.ExtraArgsMode => MainConst.BrowserPathModeName,
-            _ => throw new NotImplementedException()
+            MainConst.SettingsMode.BrowserPathMode => MainConst.BrowserPathModeName,
+            MainConst.SettingsMode.UpstreamUrlMode => MainConst.UpstreamUrlModeName,
+            MainConst.SettingsMode.ExtraArgsMode => MainConst.ExtraArgsModeName,
+            _ => throw new UnreachableException()
         };
     }
 
