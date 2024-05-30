@@ -3,13 +3,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using IWshRuntimeLibrary;
-using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using OnaCore;
@@ -33,14 +31,12 @@ public partial class MainWin : Window
         InitializeComponent();
 
         DataContext = MainPres = new(args);
-        Task.Run(() =>
-        {
-            CealingHostWatcher.Changed += CealingHostWatcher_Changed;
-            CealingHostWatcher_Changed(null!, null!);
-        });
+        CealingHostWatcher.Changed += CealingHostWatcher_Changed;
+        CealingHostWatcher_Changed(null!, null!);
     }
+    protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
     private void MainWin_Loaded(object sender, RoutedEventArgs e) => SettingsBox.Focus();
-    private void MainWin_Closing(object sender, CancelEventArgs e) => Environment.Exit(0);
+    private void MainWin_Closing(object sender, CancelEventArgs e) => Application.Current.Shutdown();
 
     private void MainWin_DragEnter(object sender, DragEventArgs e)
     {
@@ -97,13 +93,12 @@ public partial class MainWin : Window
         };
     }
 
-    private void StartCealButton_Click(object sender, RoutedEventArgs e)
+    internal void StartCealButton_Click(object sender, RoutedEventArgs e)
     {
         if (HoldButtonTimer.IsEnabled)
-        {
             HoldButtonTimer.Stop();
+        else
             return;
-        }
 
         if (string.IsNullOrWhiteSpace(CealArgs))
             throw new Exception("规则无法识别，请检查伪造规则是否含有语法错误");
@@ -121,7 +116,7 @@ public partial class MainWin : Window
             browserProcess.WaitForExit();
         }
 
-        new Command(true).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, CealArgs + (string.IsNullOrWhiteSpace(MainPres.ExtraArgs) ? "" : " " + MainPres.ExtraArgs));
+        new CommandProc(true).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, (CealArgs + " " + MainPres!.ExtraArgs).Trim());
     }
     private void StartCealButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
@@ -158,7 +153,7 @@ public partial class MainWin : Window
         if (string.IsNullOrWhiteSpace(MainPres.ExtraArgs))
             MainPres.ExtraArgs = " " + MainPres.ExtraArgs;
 
-        new Command(false).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, CealArgs + (string.IsNullOrWhiteSpace(MainPres.ExtraArgs) ? "" : " " + MainPres.ExtraArgs));
+        new CommandProc(false).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, CealArgs + (string.IsNullOrWhiteSpace(MainPres.ExtraArgs) ? "" : " " + MainPres.ExtraArgs));
     }
 
     private void EditHostButton_Click(object sender, RoutedEventArgs e)
@@ -170,8 +165,9 @@ public partial class MainWin : Window
     {
         string hostUrl = MainPres!.UpstreamUrl;
         string UpdateHostString = await Http.GetAsync<string>(hostUrl, MainClient);
-        using StreamReader hostLocalStreamReader = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json"));
-        string hostLocalString = hostLocalStreamReader.ReadToEnd();
+        string hostLocalString;
+        using (StreamReader hostLocalStreamReader = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json")))
+            hostLocalString = hostLocalStreamReader.ReadToEnd();
 
         if (hostLocalString.Replace("\r", string.Empty) == UpdateHostString)
             MessageBox.Show("本地伪造规则和上游一模一样");
@@ -190,7 +186,7 @@ public partial class MainWin : Window
     private void ThemesButton_Click(object sender, RoutedEventArgs e) => MainPres!.IsLightTheme = MainPres.IsLightTheme.HasValue ? (MainPres.IsLightTheme.Value ? null : true) : false;
     private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWin().ShowDialog();
 
-    private void CealingHostWatcher_Changed(object sender, FileSystemEventArgs e)
+    internal void CealingHostWatcher_Changed(object sender, FileSystemEventArgs e)
     {
         try
         {
@@ -206,25 +202,21 @@ public partial class MainWin : Window
                     hostJToken[1] = "c" + ruleIndex;
 
                 foreach (var hostName in hostJToken[0]!)
-                {
-                    if (hostName != hostJToken[1])
-                        hostRules += "MAP " + hostName + " " + hostJToken[1] + ",";
-                }
+                    hostRules += "MAP " + hostName + " " + hostJToken[1] + ",";
 
                 hostResolverRules += "MAP " + hostJToken[1] + " " + hostJToken[2] + ",";
 
                 ++ruleIndex;
             }
 
-            CealArgs = @"/c @start .\""Uncealed-Browser.lnk"" --host-rules=""" + hostRules[0..^1] + @""" --host-resolver-rules=""" + hostResolverRules[0..^1] + @""" --ignore-certificate-errors " + MainPres!.ExtraArgs;
+
+            CealArgs = @$"/c @start .\""Uncealed-Browser.lnk"" --host-rules=""{hostRules[0..^1]}"" --host-resolver-rules=""{hostResolverRules[0..^1]}"" --test-type --ignore-certificate-errors";
         }
         catch { CealArgs = string.Empty; }
     }
     private void MainWin_KeyDown(object sender, KeyEventArgs e)
     {
         if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.W)
-            Environment.Exit(0);
+            Application.Current.Shutdown();
     }
-
-    protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
 }

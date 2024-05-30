@@ -1,12 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Windows;
-using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
-using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Props;
+using Sheas_Cealer.Wins;
 using File = System.IO.File;
 
 namespace Sheas_Cealer.Preses;
@@ -17,7 +15,7 @@ internal partial class MainPres : ObservableObject
     {
         int browserPathIndex = Array.FindIndex(args, arg => arg == "-b") + 1,
         upstreamUrlIndex = Array.FindIndex(args, arg => arg == "-u") + 1,
-        extraArgsIndex = Array.FindIndex(args, arg => arg == "e") + 1;
+        extraArgsIndex = Array.FindIndex(args, arg => arg == "-e") + 1;
 
         BrowserPath = browserPathIndex == 0 ?
             (!string.IsNullOrWhiteSpace(Settings.Default.BrowserPath) ? Settings.Default.BrowserPath : string.Empty) :
@@ -30,6 +28,9 @@ internal partial class MainPres : ObservableObject
         ExtraArgs = extraArgsIndex == 0 ?
             (!string.IsNullOrWhiteSpace(Settings.Default.ExtraArgs) ? Settings.Default.ExtraArgs : string.Empty) :
             args[extraArgsIndex];
+
+        if (Array.Exists(args, args => args == "-d"))
+            new MainWin([]).StartCealButton_Click(null!, null!);
     }
 
     [ObservableProperty]
@@ -69,7 +70,7 @@ internal partial class MainPres : ObservableObject
 
     [ObservableProperty]
     private string extraArgs;
-    partial void OnExtraArgsChanged(string value)
+    private partial void OnExtraArgsChanged(string value)
     {
         if (MainConst.ExtraArgsRegex().IsMatch(value))
         {
