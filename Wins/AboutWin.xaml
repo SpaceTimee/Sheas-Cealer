@@ -3,15 +3,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:convs="clr-namespace:Sheas_Cealer.Convs"
         xmlns:consts="clr-namespace:Sheas_Cealer.Consts"
+        xmlns:convs="clr-namespace:Sheas_Cealer.Convs"
         mc:Ignorable="d"
         Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="600"
         KeyDown="AboutWin_KeyDown">
-    <Window.Resources>
-        <consts:AboutConst x:Key="AboutConst" />
-    </Window.Resources>
-
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -24,11 +20,10 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button x:Name="DeveloperButton"
-                Content="{Binding DeveloperButtonContent, Source={StaticResource AboutConst}}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Foreground="#FF2196F3" ToolTip="{Binding DeveloperButtonUrl, Source={StaticResource AboutConst}}"
+        <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Foreground="#FF2196F3" Content="{Binding Source={x:Static consts:AboutConst.DeveloperButtonContent}, Mode=OneTime}" ToolTip="{Binding Source={x:Static consts:AboutConst.DeveloperButtonUrl}, Mode=OneTime}"
                 Click="AboutButton_Click" />
         <Button x:Name="VersionButton"
-                Grid.Row="1" Grid.Column="0" Margin="5" Foreground="#FF2196F3" ToolTip="{Binding VersionButtonUrl, Source={StaticResource AboutConst}}"
+                Grid.Row="1" Grid.Column="0" Margin="5" Foreground="#FF2196F3" ToolTip="{Binding Source={x:Static consts:AboutConst.VersionButtonUrl}, Mode=OneTime}"
                 Click="AboutButton_Click">
             <Button.Content>
                 <MultiBinding Mode="OneTime">
@@ -36,26 +31,23 @@
                         <convs:AboutVersionButtonContentConv />
                     </MultiBinding.Converter>
 
-                    <Binding Path="VersionButtonContent" Source="{StaticResource AboutConst}" />
-                    <Binding Path="Version" Source="{StaticResource AboutConst}" />
+                    <Binding Source="{x:Static consts:AboutConst.VersionButtonLabelContent}" />
+                    <Binding Source="{x:Static consts:AboutConst.VersionButtonVersionContent}" />
                 </MultiBinding>
             </Button.Content>
         </Button>
         <Button x:Name="EmailButton"
-                Content="{Binding EmailButtonContent, Source={StaticResource AboutConst}}" Grid.Row="1" Grid.Column="1" Margin="5" ToolTip="{Binding EmailButtonUrl, Source={StaticResource AboutConst}}" />
-
-        <Button x:Name="InstructionButton"
-                Content="{Binding InstructionButtonContent, Source={StaticResource AboutConst}}" Grid.Row="0" Grid.Column="2" Margin="5" ToolTip="{Binding InstructionButtonUrl, Source={StaticResource AboutConst}}"
-                Click="AboutButton_Click" />
-        <Button x:Name="OpenSourceButton"
-                Content="{Binding OpenSourceButtonContent, Source={StaticResource AboutConst}}" Grid.Row="1" Grid.Column="2" Margin="5" ToolTip="{Binding OpenSourceButtonUrl, Source={StaticResource AboutConst}}"
+                Grid.Row="1" Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.EmailButtonContent}, Mode=OneTime}" ToolTip="{Binding Source={x:Static consts:AboutConst.EmailButtonUrl}, Mode=OneTime}"
                 Click="AboutButton_Click" />
 
-        <Button x:Name="PrivacyButton"
-                Content="{Binding PrivacyButtonContent, Source={StaticResource AboutConst}}" Grid.Row="0" Grid.Column="3" Margin="5" ToolTip="{Binding PrivacyButtonUrl, Source={StaticResource AboutConst}}"
+        <Button Grid.Row="0" Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.DocumentationButtonContent}, Mode=OneTime}" ToolTip="{Binding Source={x:Static consts:AboutConst.DocumentationButtonUrl}, Mode=OneTime}"
                 Click="AboutButton_Click" />
-        <Button x:Name="AgreementButton"
-                Content="{Binding AgreementButtonContent, Source={StaticResource AboutConst}}" Grid.Row="1" Grid.Column="3" Margin="5" ToolTip="{Binding AgreementButtonUrl, Source={StaticResource AboutConst}}"
+        <Button Grid.Row="1" Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.RepositoryButtonContent}, Mode=OneTime}" ToolTip="{Binding Source={x:Static consts:AboutConst.RepositoryButtonUrl}, Mode=OneTime}"
+                Click="AboutButton_Click" />
+
+        <Button Grid.Row="0" Grid.Column="3" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.PolicyButtonContent}, Mode=OneTime}" ToolTip="{Binding Source={x:Static consts:AboutConst.PolicyButtonUrl}, Mode=OneTime}"
+                Click="AboutButton_Click" />
+        <Button Grid.Row="1" Grid.Column="3" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.TermsButtonContent}, Mode=OneTime}" ToolTip="{Binding Source={x:Static consts:AboutConst.TermsButtonUrl}, Mode=OneTime}"
                 Click="AboutButton_Click" />
     </Grid>
 </Window>

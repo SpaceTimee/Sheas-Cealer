@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AgreementButtonContent" xml:space="preserve">
-    <value>ToS.</value>
+  <data name="TermsButtonContent" xml:space="preserve">
+    <value>ToS</value>
   </data>
   <data name="DeveloperButtonContent" xml:space="preserve">
     <value>Dev. Space Time</value>
@@ -126,16 +126,16 @@
   <data name="EmailButtonContent" xml:space="preserve">
     <value>Email</value>
   </data>
-  <data name="InstructionButtonContent" xml:space="preserve">
+  <data name="DocumentationButtonContent" xml:space="preserve">
     <value>Docs</value>
   </data>
-  <data name="OpenSourceButtonContent" xml:space="preserve">
+  <data name="RepositoryButtonContent" xml:space="preserve">
     <value>Repo</value>
   </data>
-  <data name="PrivacyButtonContent" xml:space="preserve">
-    <value>PP.</value>
+  <data name="PolicyButtonContent" xml:space="preserve">
+    <value>PP</value>
   </data>
-  <data name="VersionButtonContent" xml:space="preserve">
-    <value>Ver. </value>
+  <data name="VersionButtonLabelContent" xml:space="preserve">
+    <value>Ver.</value>
   </data>
 </root>

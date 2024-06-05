@@ -61,20 +61,20 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 ToS. 的本地化字符串。
-        /// </summary>
-        public static string AgreementButtonContent {
-            get {
-                return ResourceManager.GetString("AgreementButtonContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Dev. Space Time 的本地化字符串。
         /// </summary>
         public static string DeveloperButtonContent {
             get {
                 return ResourceManager.GetString("DeveloperButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Docs 的本地化字符串。
+        /// </summary>
+        public static string DocumentationButtonContent {
+            get {
+                return ResourceManager.GetString("DocumentationButtonContent", resourceCulture);
             }
         }
         
@@ -88,38 +88,38 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Docs 的本地化字符串。
+        ///   查找类似 PP 的本地化字符串。
         /// </summary>
-        public static string InstructionButtonContent {
+        public static string PolicyButtonContent {
             get {
-                return ResourceManager.GetString("InstructionButtonContent", resourceCulture);
+                return ResourceManager.GetString("PolicyButtonContent", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 Repo 的本地化字符串。
         /// </summary>
-        public static string OpenSourceButtonContent {
+        public static string RepositoryButtonContent {
             get {
-                return ResourceManager.GetString("OpenSourceButtonContent", resourceCulture);
+                return ResourceManager.GetString("RepositoryButtonContent", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 PP. 的本地化字符串。
+        ///   查找类似 ToS 的本地化字符串。
         /// </summary>
-        public static string PrivacyButtonContent {
+        public static string TermsButtonContent {
             get {
-                return ResourceManager.GetString("PrivacyButtonContent", resourceCulture);
+                return ResourceManager.GetString("TermsButtonContent", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Ver.  的本地化字符串。
+        ///   查找类似 Ver. 的本地化字符串。
         /// </summary>
-        public static string VersionButtonContent {
+        public static string VersionButtonLabelContent {
             get {
-                return ResourceManager.GetString("VersionButtonContent", resourceCulture);
+                return ResourceManager.GetString("VersionButtonLabelContent", resourceCulture);
             }
         }
     }

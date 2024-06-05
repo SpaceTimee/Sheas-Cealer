@@ -10,6 +10,7 @@ namespace Sheas_Cealer.Wins;
 public partial class AboutWin : Window
 {
     internal AboutWin() => InitializeComponent();
+    protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
 
     private void AboutButton_Click(object sender, RoutedEventArgs e)
     {
@@ -25,6 +26,4 @@ public partial class AboutWin : Window
         if (e.Key == Key.Escape)
             Close();
     }
-
-    protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
 }

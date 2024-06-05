@@ -31,7 +31,7 @@
 2. Zip 压缩包 (免安装): 下载 Sheas Cealer Zip.zip 并解压 -> 完成后即可直接使用
 
 ## 食用文档
-**[Sheas Cealer Instruction](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Instruction)**
+**[Sheas Cealer Documentation](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Documentation)**
 
 ## 项目构建
 [Sheas Cealer Build](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Build)

@@ -70,7 +70,7 @@ internal partial class MainPres : ObservableObject
 
     [ObservableProperty]
     private string extraArgs;
-    private partial void OnExtraArgsChanged(string value)
+    partial void OnExtraArgsChanged(string value)
     {
         if (MainConst.ExtraArgsRegex().IsMatch(value))
         {
