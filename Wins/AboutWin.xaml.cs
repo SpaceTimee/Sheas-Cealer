@@ -14,10 +14,12 @@ public partial class AboutWin : Window
 
     private void AboutButton_Click(object sender, RoutedEventArgs e)
     {
-        if (sender as Button == VersionButton)
+        Button? senderButton = sender as Button;
+
+        if (senderButton == VersionButton)
             MessageBox.Show("密码: 3wnj");
 
-        ProcessStartInfo processStartInfo = new(sender as Button == EmailButton ? "mailto:" : string.Empty + (sender as Button)!.ToolTip) { UseShellExecute = true };
+        ProcessStartInfo processStartInfo = new(senderButton == EmailButton ? "mailto:" : string.Empty + senderButton!.ToolTip) { UseShellExecute = true };
         Process.Start(processStartInfo);
     }
 

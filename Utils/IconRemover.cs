@@ -5,7 +5,7 @@ using System.Windows.Interop;
 
 namespace Sheas_Cealer.Utils;
 
-// 定义IconRemover
+// 定义 IconRemover
 internal static partial class IconRemover
 {
     private const int GWL_EXSTYLE = -20;
