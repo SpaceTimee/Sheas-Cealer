@@ -61,6 +61,15 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Password: 的本地化字符串。
+        /// </summary>
+        public static string _ReleasePagePasswordLabel {
+            get {
+                return ResourceManager.GetString("_ReleasePagePasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Dev. Space Time 的本地化字符串。
         /// </summary>
         public static string DeveloperButtonContent {

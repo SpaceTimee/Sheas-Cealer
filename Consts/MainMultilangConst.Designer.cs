@@ -61,6 +61,60 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Browser 的本地化字符串。
+        /// </summary>
+        public static string _BrowserPathDialogFilterFileType {
+            get {
+                return ResourceManager.GetString("_BrowserPathDialogFilterFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The args cannot be recognized, check if the host contains syntax errors 的本地化字符串。
+        /// </summary>
+        public static string _CealingHostErrorHint {
+            get {
+                return ResourceManager.GetString("_CealingHostErrorHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Local host is exactly the same as upstream 的本地化字符串。
+        /// </summary>
+        public static string _HostUtdHint {
+            get {
+                return ResourceManager.GetString("_HostUtdHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 All processes of the selected browser will be closed before launching, do you want to continue? 的本地化字符串。
+        /// </summary>
+        public static string _KillBrowserProcessesPrompt {
+            get {
+                return ResourceManager.GetString("_KillBrowserProcessesPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Do you need to override local host that are slightly different from upstream? If not it will only open a page with the upstream host for you 的本地化字符串。
+        /// </summary>
+        public static string _OverrideLocalHostPrompt {
+            get {
+                return ResourceManager.GetString("_OverrideLocalHostPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Update successfully 的本地化字符串。
+        /// </summary>
+        public static string _UpdateHostSuccessHint {
+            get {
+                return ResourceManager.GetString("_UpdateHostSuccessHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 About Me 的本地化字符串。
         /// </summary>
         public static string AboutButtonContent {

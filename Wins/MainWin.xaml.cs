@@ -77,7 +77,7 @@ public partial class MainWin : Window
     }
     private void SettingsFunctionButton_Click(object sender, RoutedEventArgs e)
     {
-        OpenFileDialog browserPathDialog = new() { Filter = "浏览器 (*.exe)|*.exe" };
+        OpenFileDialog browserPathDialog = new() { Filter = $"{MainConst._BrowserPathDialogFilterFileType} (*.exe)|*.exe" };
 
         switch (MainPres!.SettingsMode)
         {
@@ -110,11 +110,11 @@ public partial class MainWin : Window
         HoldButtonTimer!.Stop();
 
         if (string.IsNullOrWhiteSpace(CealArgs))
-            throw new Exception("规则无法识别，请检查伪造规则是否含有语法错误");
-        if (MessageBox.Show("启动前将关闭所选浏览器的所有进程，是否继续？", string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+            throw new Exception(MainConst._CealingHostErrorHint);
+        if (MessageBox.Show(MainConst._KillBrowserProcessesPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
             return;
 
-        IWshShortcut uncealedBrowserShortcut = (IWshShortcut)new WshShell().CreateShortcut(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Uncealed-Browser.lnk"));
+        IWshShortcut uncealedBrowserShortcut = (IWshShortcut)new WshShell().CreateShortcut(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Uncealed-Browser.lnk"));
         uncealedBrowserShortcut.TargetPath = MainPres!.BrowserPath;
         uncealedBrowserShortcut.Description = "Created By Sheas Cealer";
         uncealedBrowserShortcut.Save();
@@ -130,7 +130,7 @@ public partial class MainWin : Window
 
     private void EditHostButton_Click(object sender, RoutedEventArgs e)
     {
-        ProcessStartInfo processStartInfo = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json")) { UseShellExecute = true };
+        ProcessStartInfo processStartInfo = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json")) { UseShellExecute = true };
         Process.Start(processStartInfo);
     }
     private async void UpdateHostButton_Click(object sender, RoutedEventArgs e)
@@ -139,18 +139,18 @@ public partial class MainWin : Window
         string upstreamHostString = await Http.GetAsync<string>(upstreamHostUrl, MainClient);
         string localHostString;
 
-        using (StreamReader localHostStreamReader = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json")))
+        using (StreamReader localHostStreamReader = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json")))
             localHostString = localHostStreamReader.ReadToEnd();
 
         if (localHostString.Replace("\r", string.Empty) == upstreamHostString)
-            MessageBox.Show("本地伪造规则和上游一模一样");
+            MessageBox.Show(MainConst._HostUtdHint);
         else
         {
-            MessageBoxResult overrideOptionResult = MessageBox.Show("本地伪造规则和上游略有不同，需要覆盖本地吗? 否则只为你打开上游规则的网页", string.Empty, MessageBoxButton.YesNoCancel);
+            MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideLocalHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
             if (overrideOptionResult == MessageBoxResult.Yes)
             {
-                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json"), upstreamHostString);
-                MessageBox.Show("更新已完成");
+                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json"), upstreamHostString);
+                MessageBox.Show(MainConst._UpdateHostSuccessHint);
             }
             else if (overrideOptionResult == MessageBoxResult.No)
                 Process.Start(new ProcessStartInfo(upstreamHostUrl) { UseShellExecute = true });
@@ -167,7 +167,7 @@ public partial class MainWin : Window
             string hostResolverRules = string.Empty;
             int ruleIndex = 0;
 
-            using FileStream hostStream = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"Cealing-Host.json"), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+            using FileStream hostStream = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json"), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
             using StreamReader hostReader = new(hostStream);
 
             foreach (JToken hostJToken in JArray.Parse(hostReader.ReadToEnd()))

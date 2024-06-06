@@ -186,4 +186,22 @@
   <data name="UpstreamUrlSettingsModeName" xml:space="preserve">
     <value>上游链接</value>
   </data>
+  <data name="_BrowserPathDialogFilterFileType" xml:space="preserve">
+    <value>浏览器</value>
+  </data>
+  <data name="_CealingHostErrorHint" xml:space="preserve">
+    <value>规则无法识别，请检查伪造规则是否含有语法错误</value>
+  </data>
+  <data name="_HostUtdHint" xml:space="preserve">
+    <value>本地伪造规则和上游一模一样</value>
+  </data>
+  <data name="_KillBrowserProcessesPrompt" xml:space="preserve">
+    <value>启动前将关闭所选浏览器的所有进程，是否继续？</value>
+  </data>
+  <data name="_OverrideLocalHostPrompt" xml:space="preserve">
+    <value>本地伪造规则和上游略有不同，需要覆盖本地吗？否则只为你打开上游规则的网页</value>
+  </data>
+  <data name="_UpdateHostSuccessHint" xml:space="preserve">
+    <value>更新已完成</value>
+  </data>
 </root>

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Sheas_Cealer.Consts;
 using Sheas_Cealer.Utils;
 
 namespace Sheas_Cealer.Wins;
@@ -17,7 +18,7 @@ public partial class AboutWin : Window
         Button? senderButton = sender as Button;
 
         if (senderButton == VersionButton)
-            MessageBox.Show("密码: 3wnj");
+            MessageBox.Show($"{AboutConst._ReleasePagePasswordLabel} 3wnj");
 
         ProcessStartInfo processStartInfo = new(senderButton == EmailButton ? "mailto:" : string.Empty + senderButton!.ToolTip) { UseShellExecute = true };
         Process.Start(processStartInfo);

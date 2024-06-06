@@ -186,4 +186,22 @@
   <data name="UpstreamUrlSettingsModeName" xml:space="preserve">
     <value>Upstream URL</value>
   </data>
+  <data name="_BrowserPathDialogFilterFileType" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="_CealingHostErrorHint" xml:space="preserve">
+    <value>The args cannot be recognized, check if the host contains syntax errors</value>
+  </data>
+  <data name="_HostUtdHint" xml:space="preserve">
+    <value>Local host is exactly the same as upstream</value>
+  </data>
+  <data name="_KillBrowserProcessesPrompt" xml:space="preserve">
+    <value>All processes of the selected browser will be closed before launching, do you want to continue?</value>
+  </data>
+  <data name="_OverrideLocalHostPrompt" xml:space="preserve">
+    <value>Do you need to override local host that are slightly different from upstream? If not it will only open a page with the upstream host for you</value>
+  </data>
+  <data name="_UpdateHostSuccessHint" xml:space="preserve">
+    <value>Update successfully</value>
+  </data>
 </root>
