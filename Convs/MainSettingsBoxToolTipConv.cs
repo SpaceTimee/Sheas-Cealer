@@ -10,9 +10,9 @@ internal class MainSettingsBoxToolTipConv : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        MainConst.SettingsMode? mode = value as MainConst.SettingsMode?;
+        MainConst.SettingsMode? settingsMode = value as MainConst.SettingsMode?;
 
-        return mode switch
+        return settingsMode switch
         {
             MainConst.SettingsMode.BrowserPathMode => MainConst.SettingsBoxBrowserPathPlaceHolder,
             MainConst.SettingsMode.UpstreamUrlMode => MainConst.SettingsBoxUpstreamUrlPlaceHolder,

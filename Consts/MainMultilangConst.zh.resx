@@ -159,10 +159,10 @@
   <data name="SettingsModeButtonToolTip" xml:space="preserve">
     <value>点击切换输入框设置模式</value>
   </data>
-  <data name="StartCealButtonContent" xml:space="preserve">
+  <data name="StartButtonContent" xml:space="preserve">
     <value>启动伪造</value>
   </data>
-  <data name="StartCealButtonToolTip" xml:space="preserve">
+  <data name="StartButtonToolTip" xml:space="preserve">
     <value>点击启动伪造注入后的浏览器</value>
   </data>
   <data name="ThemesButtonDarkThemeContent" xml:space="preserve">

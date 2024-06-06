@@ -70,7 +70,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似  的本地化字符串。
+        ///   查找类似 Click to open about window 的本地化字符串。
         /// </summary>
         public static string AboutButtonToolTip {
             get {
@@ -97,7 +97,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似  的本地化字符串。
+        ///   查找类似 Click to edit Cealing Host 的本地化字符串。
         /// </summary>
         public static string EditHostButtonToolTip {
             get {
@@ -160,7 +160,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似  的本地化字符串。
+        ///   查找类似 Click to process the contents of the input box 的本地化字符串。
         /// </summary>
         public static string SettingsFunctionButtonToolTip {
             get {
@@ -178,7 +178,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似  的本地化字符串。
+        ///   查找类似 Click to switch settings mode 的本地化字符串。
         /// </summary>
         public static string SettingsModeButtonToolTip {
             get {
@@ -189,18 +189,18 @@ namespace Sheas_Cealer.Consts {
         /// <summary>
         ///   查找类似 Start Cealing 的本地化字符串。
         /// </summary>
-        public static string StartCealButtonContent {
+        public static string StartButtonContent {
             get {
-                return ResourceManager.GetString("StartCealButtonContent", resourceCulture);
+                return ResourceManager.GetString("StartButtonContent", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似  的本地化字符串。
+        ///   查找类似 Click to launch the injected browser 的本地化字符串。
         /// </summary>
-        public static string StartCealButtonToolTip {
+        public static string StartButtonToolTip {
             get {
-                return ResourceManager.GetString("StartCealButtonToolTip", resourceCulture);
+                return ResourceManager.GetString("StartButtonToolTip", resourceCulture);
             }
         }
         
@@ -232,7 +232,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似  的本地化字符串。
+        ///   查找类似 Click to switch themes 的本地化字符串。
         /// </summary>
         public static string ThemesButtonToolTip {
             get {
@@ -250,7 +250,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似  的本地化字符串。
+        ///   查找类似 Click to update Cealing Host 的本地化字符串。
         /// </summary>
         public static string UpdateHostButtonToolTip {
             get {

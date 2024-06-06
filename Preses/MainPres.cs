@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using MaterialDesignThemes.Wpf;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Props;
-using Sheas_Cealer.Wins;
 using File = System.IO.File;
 
 namespace Sheas_Cealer.Preses;
@@ -13,9 +12,9 @@ internal partial class MainPres : ObservableObject
 {
     internal MainPres(string[] args)
     {
-        int browserPathIndex = Array.FindIndex(args, arg => arg == "-b") + 1,
-        upstreamUrlIndex = Array.FindIndex(args, arg => arg == "-u") + 1,
-        extraArgsIndex = Array.FindIndex(args, arg => arg == "-e") + 1;
+        int browserPathIndex = Array.FindIndex(args, arg => arg.Equals("-b", StringComparison.OrdinalIgnoreCase)) + 1;
+        int upstreamUrlIndex = Array.FindIndex(args, arg => arg.Equals("-u", StringComparison.OrdinalIgnoreCase)) + 1;
+        int extraArgsIndex = Array.FindIndex(args, arg => arg.Equals("-e", StringComparison.OrdinalIgnoreCase)) + 1;
 
         BrowserPath = browserPathIndex == 0 ?
             (!string.IsNullOrWhiteSpace(Settings.Default.BrowserPath) ? Settings.Default.BrowserPath : string.Empty) :
@@ -28,13 +27,10 @@ internal partial class MainPres : ObservableObject
         ExtraArgs = extraArgsIndex == 0 ?
             (!string.IsNullOrWhiteSpace(Settings.Default.ExtraArgs) ? Settings.Default.ExtraArgs : string.Empty) :
             args[extraArgsIndex];
-
-        if (Array.Exists(args, args => args == "-d"))
-            new MainWin([]).StartCealButton_Click(null!, null!);
     }
 
     [ObservableProperty]
-    private MainConst.SettingsMode mode;
+    private MainConst.SettingsMode settingsMode;
 
     [ObservableProperty]
     private bool? isLightTheme = null;
@@ -42,6 +38,7 @@ internal partial class MainPres : ObservableObject
     {
         PaletteHelper paletteHelper = new();
         Theme newTheme = paletteHelper.GetTheme();
+
         newTheme.SetBaseTheme(value.HasValue ? (value.GetValueOrDefault() ? BaseTheme.Light : BaseTheme.Dark) : BaseTheme.Inherit);
         paletteHelper.SetTheme(newTheme);
     }
@@ -50,7 +47,7 @@ internal partial class MainPres : ObservableObject
     private string browserPath;
     partial void OnBrowserPathChanged(string value)
     {
-        if (File.Exists(value) && Path.GetFileName(value).ToLower().EndsWith(".exe"))
+        if (File.Exists(value) && Path.GetFileName(value).ToLowerInvariant().EndsWith(".exe"))
         {
             Settings.Default.BrowserPath = value;
             Settings.Default.Save();

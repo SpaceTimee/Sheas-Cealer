@@ -9,12 +9,12 @@ internal class MainSettingsBoxTextConv : IMultiValueConverter
 {
     public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
-        MainConst.SettingsMode? mode = values[0] as MainConst.SettingsMode?;
+        MainConst.SettingsMode? settingsMode = values[0] as MainConst.SettingsMode?;
         string? browserPath = values[1] as string;
         string? upstreamUrl = values[2] as string;
         string? extraArgs = values[3] as string;
 
-        return mode switch
+        return settingsMode switch
         {
             MainConst.SettingsMode.BrowserPathMode => browserPath!,
             MainConst.SettingsMode.UpstreamUrlMode => upstreamUrl!,

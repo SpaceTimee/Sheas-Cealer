@@ -121,7 +121,7 @@
     <value>About Me</value>
   </data>
   <data name="AboutButtonToolTip" xml:space="preserve">
-    <value></value>
+    <value>Click to open about window</value>
   </data>
   <data name="BrowserPathModeName" xml:space="preserve">
     <value>Browser Path</value>
@@ -130,7 +130,7 @@
     <value>Edit Host</value>
   </data>
   <data name="EditHostButtonToolTip" xml:space="preserve">
-    <value></value>
+    <value>Click to edit Cealing Host</value>
   </data>
   <data name="ExtraArgsModeName" xml:space="preserve">
     <value>Additional Args</value>
@@ -151,19 +151,19 @@
     <value>Clear Args</value>
   </data>
   <data name="SettingsFunctionButtonToolTip" xml:space="preserve">
-    <value></value>
+    <value>Click to process the contents of the input box</value>
   </data>
   <data name="SettingsFunctionButtonUpstreamUrlContent" xml:space="preserve">
     <value>Reset Url</value>
   </data>
   <data name="SettingsModeButtonToolTip" xml:space="preserve">
-    <value></value>
+    <value>Click to switch settings mode</value>
   </data>
-  <data name="StartCealButtonContent" xml:space="preserve">
+  <data name="StartButtonContent" xml:space="preserve">
     <value>Start Cealing</value>
   </data>
-  <data name="StartCealButtonToolTip" xml:space="preserve">
-    <value></value>
+  <data name="StartButtonToolTip" xml:space="preserve">
+    <value>Click to launch the injected browser</value>
   </data>
   <data name="ThemesButtonDarkThemeContent" xml:space="preserve">
     <value>Light Theme</value>
@@ -175,13 +175,13 @@
     <value>Dark Theme</value>
   </data>
   <data name="ThemesButtonToolTip" xml:space="preserve">
-    <value></value>
+    <value>Click to switch themes</value>
   </data>
   <data name="UpdateHostButtonContent" xml:space="preserve">
     <value>Update Host</value>
   </data>
   <data name="UpdateHostButtonToolTip" xml:space="preserve">
-    <value></value>
+    <value>Click to update Cealing Host</value>
   </data>
   <data name="UpstreamUrlModeName" xml:space="preserve">
     <value>Upstream Url</value>

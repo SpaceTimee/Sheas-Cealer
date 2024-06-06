@@ -11,7 +11,9 @@ internal class MainThemesButtonContentConv : IValueConverter
     {
         bool? isLightMode = value as bool?;
 
-        return isLightMode.HasValue ? (isLightMode.GetValueOrDefault() ? MainConst.ThemesButtonLightThemeContent : MainConst.ThemesButtonDarkThemeContent) : MainConst.ThemesButtonInheritThemeContent;
+        return isLightMode.HasValue ?
+            (isLightMode.GetValueOrDefault() ? MainConst.ThemesButtonLightThemeContent : MainConst.ThemesButtonDarkThemeContent) :
+            MainConst.ThemesButtonInheritThemeContent;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();

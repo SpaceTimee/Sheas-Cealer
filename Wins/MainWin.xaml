@@ -25,17 +25,16 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Margin="5" ToolTip="{Binding Source={x:Static consts:MainConst.SettingsModeButtonToolTip}}"
+            <Button Grid.Column="0" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:MainConst.SettingsModeButtonToolTip}}"
                     Click="SettingsModeButton_Click">
                 <Button.Content>
-                    <Binding Path="Mode">
+                    <Binding Path="SettingsMode">
                         <Binding.Converter>
                             <convs:MainSettingsModeButtonContentConv />
                         </Binding.Converter>
                     </Binding>
                 </Button.Content>
             </Button>
-
             <TextBox x:Name="SettingsBox"
                      Grid.Column="1" Margin="5" VerticalContentAlignment="Center" md:HintAssist.IsFloating="True"
                      TextChanged="SettingsBox_TextChanged" PreviewDragOver="MainWin_DragEnter">
@@ -45,31 +44,31 @@
                             <convs:MainSettingsBoxTextConv />
                         </MultiBinding.Converter>
 
-                        <Binding Path="Mode" />
+                        <Binding Path="SettingsMode" />
                         <Binding Path="BrowserPath" />
                         <Binding Path="UpstreamUrl" />
                         <Binding Path="ExtraArgs" />
                     </MultiBinding>
                 </TextBox.Text>
                 <TextBox.ToolTip>
-                    <Binding Path="Mode">
+                    <Binding Path="SettingsMode">
                         <Binding.Converter>
                             <convs:MainSettingsBoxToolTipConv />
                         </Binding.Converter>
                     </Binding>
                 </TextBox.ToolTip>
                 <md:HintAssist.Hint>
-                    <Binding Path="Mode">
+                    <Binding Path="SettingsMode">
                         <Binding.Converter>
                             <convs:MainSettingsBoxHintConv />
                         </Binding.Converter>
                     </Binding>
                 </md:HintAssist.Hint>
             </TextBox>
-            <Button Grid.Column="2" Margin="5" ToolTip="{Binding Source={x:Static consts:MainConst.SettingsFunctionButtonToolTip}}"
+            <Button Grid.Column="2" Margin="5" d:Content="# #" ToolTip="{Binding Source={x:Static consts:MainConst.SettingsFunctionButtonToolTip}}"
                     Click="SettingsFunctionButton_Click">
                 <Button.Content>
-                    <Binding Path="Mode">
+                    <Binding Path="SettingsMode">
                         <Binding.Converter>
                             <convs:MainSettingsFunctionButtonContentConv />
                         </Binding.Converter>
@@ -77,15 +76,13 @@
                 </Button.Content>
             </Button>
         </Grid>
-
         <Button IsDefault="True"
-                Grid.Row="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.StartCealButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.StartCealButtonToolTip}}"
-                Click="StartCealButton_Click" PreviewMouseDown="StartCealButton_PreviewMouseDown">
-
+                Grid.Row="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.StartButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.StartButtonToolTip}}"
+                Click="StartButton_Click" PreviewMouseDown="StartButton_PreviewMouseDown">
             <Button.IsEnabled>
                 <MultiBinding>
                     <MultiBinding.Converter>
-                        <convs:MainStartCealButtonIsEnabledConv />
+                        <convs:MainStartButtonIsEnabledConv />
                     </MultiBinding.Converter>
 
                     <Binding Path="BrowserPath" />
@@ -93,7 +90,6 @@
                 </MultiBinding>
             </Button.IsEnabled>
         </Button>
-
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -102,11 +98,9 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="EditHostButton"
-                    Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditHostButtonToolTip}}"
+            <Button Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditHostButtonToolTip}}"
                     Click="EditHostButton_Click" />
-            <Button x:Name="UpdateHostButton"
-                    Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.UpdateHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.UpdateHostButtonToolTip}}"
+            <Button Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.UpdateHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.UpdateHostButtonToolTip}}"
                     Click="UpdateHostButton_Click">
                 <Button.IsEnabled>
                     <Binding Path="UpstreamUrl">
@@ -116,8 +110,7 @@
                     </Binding>
                 </Button.IsEnabled>
             </Button>
-            <Button x:Name="ThemesButton"
-                    Grid.Column="2" Margin="5" ToolTip="{Binding Source={x:Static consts:MainConst.ThemesButtonToolTip}}"
+            <Button Grid.Column="2" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:MainConst.ThemesButtonToolTip}}"
                     Click="ThemesButton_Click">
                 <Button.Content>
                     <Binding Path="IsLightTheme">
