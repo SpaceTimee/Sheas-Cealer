@@ -65,7 +65,7 @@
                     </Binding>
                 </md:HintAssist.Hint>
             </TextBox>
-            <Button Grid.Column="2" Margin="5" d:Content="# #" ToolTip="{Binding Source={x:Static consts:MainConst.SettingsFunctionButtonToolTip}}"
+            <Button Grid.Column="2" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:MainConst.SettingsFunctionButtonToolTip}}"
                     Click="SettingsFunctionButton_Click">
                 <Button.Content>
                     <Binding Path="SettingsMode">

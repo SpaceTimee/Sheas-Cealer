@@ -70,7 +70,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Click to open about window 的本地化字符串。
+        ///   查找类似 Click to open an about window 的本地化字符串。
         /// </summary>
         public static string AboutButtonToolTip {
             get {
@@ -81,9 +81,9 @@ namespace Sheas_Cealer.Consts {
         /// <summary>
         ///   查找类似 Browser Path 的本地化字符串。
         /// </summary>
-        public static string BrowserPathModeName {
+        public static string BrowserPathSettingsModeName {
             get {
-                return ResourceManager.GetString("BrowserPathModeName", resourceCulture);
+                return ResourceManager.GetString("BrowserPathSettingsModeName", resourceCulture);
             }
         }
         
@@ -97,7 +97,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Click to edit Cealing Host 的本地化字符串。
+        ///   查找类似 Click to edit host 的本地化字符串。
         /// </summary>
         public static string EditHostButtonToolTip {
             get {
@@ -106,38 +106,38 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Additional Args 的本地化字符串。
+        ///   查找类似 Extra Args 的本地化字符串。
         /// </summary>
-        public static string ExtraArgsModeName {
+        public static string ExtraArgsSettingsModeName {
             get {
-                return ResourceManager.GetString("ExtraArgsModeName", resourceCulture);
+                return ResourceManager.GetString("ExtraArgsSettingsModeName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Fill in the path of a Chromium-based browser 的本地化字符串。
+        ///   查找类似 Fill in a Chromium-based browser path 的本地化字符串。
         /// </summary>
-        public static string SettingsBoxBrowserPathPlaceHolder {
+        public static string SettingsBoxBrowserPathToolTip {
             get {
-                return ResourceManager.GetString("SettingsBoxBrowserPathPlaceHolder", resourceCulture);
+                return ResourceManager.GetString("SettingsBoxBrowserPathToolTip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Fill in extra Chromium startup arguments 的本地化字符串。
+        ///   查找类似 Fill in extra Chromium startup args 的本地化字符串。
         /// </summary>
-        public static string SettingsBoxExtraArgsPlaceHolder {
+        public static string SettingsBoxExtraArgsToolTip {
             get {
-                return ResourceManager.GetString("SettingsBoxExtraArgsPlaceHolder", resourceCulture);
+                return ResourceManager.GetString("SettingsBoxExtraArgsToolTip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Fill in the link to an upstream Cealing Host 的本地化字符串。
+        ///   查找类似 Fill in an upstream host URL 的本地化字符串。
         /// </summary>
-        public static string SettingsBoxUpstreamUrlPlaceHolder {
+        public static string SettingsBoxUpstreamUrlToolTip {
             get {
-                return ResourceManager.GetString("SettingsBoxUpstreamUrlPlaceHolder", resourceCulture);
+                return ResourceManager.GetString("SettingsBoxUpstreamUrlToolTip", resourceCulture);
             }
         }
         
@@ -160,7 +160,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Click to process the contents of the input box 的本地化字符串。
+        ///   查找类似 Click to process settings 的本地化字符串。
         /// </summary>
         public static string SettingsFunctionButtonToolTip {
             get {
@@ -169,7 +169,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Reset Url 的本地化字符串。
+        ///   查找类似 Reset URL 的本地化字符串。
         /// </summary>
         public static string SettingsFunctionButtonUpstreamUrlContent {
             get {
@@ -178,7 +178,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Click to switch settings mode 的本地化字符串。
+        ///   查找类似 Click to switch settings 的本地化字符串。
         /// </summary>
         public static string SettingsModeButtonToolTip {
             get {
@@ -196,7 +196,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Click to launch the injected browser 的本地化字符串。
+        ///   查找类似 Click to launch an injected browser 的本地化字符串。
         /// </summary>
         public static string StartButtonToolTip {
             get {
@@ -205,7 +205,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Light Theme 的本地化字符串。
+        ///   查找类似 Auto Theme 的本地化字符串。
         /// </summary>
         public static string ThemesButtonDarkThemeContent {
             get {
@@ -214,7 +214,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Auto Theme 的本地化字符串。
+        ///   查找类似 Dark Theme 的本地化字符串。
         /// </summary>
         public static string ThemesButtonInheritThemeContent {
             get {
@@ -223,7 +223,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Dark Theme 的本地化字符串。
+        ///   查找类似 Light Theme 的本地化字符串。
         /// </summary>
         public static string ThemesButtonLightThemeContent {
             get {
@@ -250,7 +250,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Click to update Cealing Host 的本地化字符串。
+        ///   查找类似 Click to update host 的本地化字符串。
         /// </summary>
         public static string UpdateHostButtonToolTip {
             get {
@@ -259,11 +259,11 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Upstream Url 的本地化字符串。
+        ///   查找类似 Upstream URL 的本地化字符串。
         /// </summary>
-        public static string UpstreamUrlModeName {
+        public static string UpstreamUrlSettingsModeName {
             get {
-                return ResourceManager.GetString("UpstreamUrlModeName", resourceCulture);
+                return ResourceManager.GetString("UpstreamUrlSettingsModeName", resourceCulture);
             }
         }
     }

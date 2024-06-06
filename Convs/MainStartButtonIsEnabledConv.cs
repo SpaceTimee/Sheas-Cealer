@@ -13,8 +13,7 @@ internal class MainStartButtonIsEnabledConv : IMultiValueConverter
         string? browserPath = values[0] as string;
         string? extraArgs = values[1] as string;
 
-        return (File.Exists(browserPath) && Path.GetFileName(browserPath).ToLowerInvariant().EndsWith(".exe")) &&
-            (extraArgs == MainConst.SettingsBoxExtraArgsPlaceHolder || MainConst.ExtraArgsRegex().IsMatch(extraArgs!));
+        return File.Exists(browserPath) && Path.GetFileName(browserPath).ToLowerInvariant().EndsWith(".exe") && MainConst.ExtraArgsRegex().IsMatch(extraArgs!);
     }
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
