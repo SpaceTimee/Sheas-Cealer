@@ -130,16 +130,25 @@ public partial class MainWin : Window
 
     private void EditHostButton_Click(object sender, RoutedEventArgs e)
     {
-        ProcessStartInfo processStartInfo = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json")) { UseShellExecute = true };
+        string cealingHostPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json");
+
+        if (!File.Exists(cealingHostPath))
+            File.Create(cealingHostPath).Dispose();
+
+        ProcessStartInfo processStartInfo = new(cealingHostPath) { UseShellExecute = true };
         Process.Start(processStartInfo);
     }
     private async void UpdateHostButton_Click(object sender, RoutedEventArgs e)
     {
-        string upstreamHostUrl = MainPres!.UpstreamUrl;
+        string upstreamHostUrl = (MainPres!.UpstreamUrl.StartsWith("http://") || MainPres!.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres!.UpstreamUrl;
         string upstreamHostString = await Http.GetAsync<string>(upstreamHostUrl, MainClient);
+        string localHostPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json");
         string localHostString;
 
-        using (StreamReader localHostStreamReader = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json")))
+        if (!File.Exists(localHostPath))
+            File.Create(localHostPath).Dispose();
+
+        using (StreamReader localHostStreamReader = new(localHostPath))
             localHostString = localHostStreamReader.ReadToEnd();
 
         if (localHostString.Replace("\r", string.Empty) == upstreamHostString)

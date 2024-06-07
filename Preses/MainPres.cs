@@ -16,15 +16,15 @@ internal partial class MainPres : ObservableObject
         int upstreamUrlIndex = Array.FindIndex(args, arg => arg.Equals("-u", StringComparison.OrdinalIgnoreCase)) + 1;
         int extraArgsIndex = Array.FindIndex(args, arg => arg.Equals("-e", StringComparison.OrdinalIgnoreCase)) + 1;
 
-        BrowserPath = browserPathIndex == 0 ?
+        BrowserPath = browserPathIndex == 0 || browserPathIndex == args.Length ?
             (!string.IsNullOrWhiteSpace(Settings.Default.BrowserPath) ? Settings.Default.BrowserPath : string.Empty) :
             args[browserPathIndex];
 
-        UpstreamUrl = upstreamUrlIndex == 0 ?
+        UpstreamUrl = upstreamUrlIndex == 0 || upstreamUrlIndex == args.Length ?
             (!string.IsNullOrWhiteSpace(Settings.Default.UpstreamUrl) ? Settings.Default.UpstreamUrl : MainConst.DefaultUpstreamUrl) :
             args[upstreamUrlIndex];
 
-        ExtraArgs = extraArgsIndex == 0 ?
+        ExtraArgs = extraArgsIndex == 0 || extraArgsIndex == args.Length ?
             (!string.IsNullOrWhiteSpace(Settings.Default.ExtraArgs) ? Settings.Default.ExtraArgs : string.Empty) :
             args[extraArgsIndex];
     }

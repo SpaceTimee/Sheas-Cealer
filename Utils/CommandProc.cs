@@ -6,7 +6,7 @@ namespace Sheas_Cealer.Utils;
 
 internal class CommandProc : Proc
 {
-    internal bool ShutDownAppOnProcessExit;
+    private static bool ShutDownAppOnProcessExit;
 
     internal CommandProc(bool shutDownAppOnProcessExit) : base("Cmd.exe") => ShutDownAppOnProcessExit = shutDownAppOnProcessExit;
 
