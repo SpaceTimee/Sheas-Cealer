@@ -12,7 +12,7 @@ internal class MainThemesButtonContentConv : IValueConverter
         bool? isLightMode = value as bool?;
 
         return isLightMode.HasValue ?
-            (isLightMode.GetValueOrDefault() ? MainConst.ThemesButtonLightThemeContent : MainConst.ThemesButtonDarkThemeContent) :
+            isLightMode.GetValueOrDefault() ? MainConst.ThemesButtonLightThemeContent : MainConst.ThemesButtonDarkThemeContent :
             MainConst.ThemesButtonInheritThemeContent;
     }
 

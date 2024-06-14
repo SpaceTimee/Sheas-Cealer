@@ -165,7 +165,7 @@ public partial class MainWin : Window
                 Process.Start(new ProcessStartInfo(upstreamHostUrl) { UseShellExecute = true });
         }
     }
-    private void ThemesButton_Click(object sender, RoutedEventArgs e) => MainPres!.IsLightTheme = MainPres.IsLightTheme.HasValue ? (MainPres.IsLightTheme.Value ? null : true) : false;
+    private void ThemesButton_Click(object sender, RoutedEventArgs e) => MainPres!.IsLightTheme = MainPres.IsLightTheme.HasValue ? MainPres.IsLightTheme.Value ? null : true : false;
     private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWin().ShowDialog();
 
     private void CealingHostWatcher_Changed(object sender, FileSystemEventArgs e)
