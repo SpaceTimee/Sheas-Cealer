@@ -176,7 +176,9 @@ public partial class MainWin : Window
             string hostResolverRules = string.Empty;
             int ruleIndex = 0;
 
-            JsonElement hostArray = JsonDocument.Parse(new FileStream(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json"), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete)).RootElement;
+            using FileStream hostStream = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json"), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+            JsonDocumentOptions hostOptions = new() { AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip };
+            JsonElement hostArray = JsonDocument.Parse(hostStream, hostOptions).RootElement;
 
             foreach (JsonElement hostItem in hostArray.EnumerateArray())
             {
