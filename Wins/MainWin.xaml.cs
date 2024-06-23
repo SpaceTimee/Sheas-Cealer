@@ -3,13 +3,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using IWshRuntimeLibrary;
 using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
 using OnaCore;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Preses;
@@ -176,18 +176,17 @@ public partial class MainWin : Window
             string hostResolverRules = string.Empty;
             int ruleIndex = 0;
 
-            using FileStream hostStream = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json"), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-            using StreamReader hostReader = new(hostStream);
+            JsonElement hostArray = JsonDocument.Parse(new FileStream(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json"), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete)).RootElement;
 
-            foreach (JToken hostJToken in JArray.Parse(hostReader.ReadToEnd()))
+            foreach (JsonElement hostItem in hostArray.EnumerateArray())
             {
-                if (string.IsNullOrWhiteSpace(hostJToken[1]!.ToString()))
-                    hostJToken[1] = $"c{ruleIndex}";
+                string hostSni = string.IsNullOrWhiteSpace(hostItem[1].ToString()) ? $"c{ruleIndex}" : hostItem[1].ToString();
+                string hostIp = string.IsNullOrWhiteSpace(hostItem[2].ToString()) ? "127.0.0.1" : hostItem[2].ToString();
 
-                foreach (JToken hostName in hostJToken[0]!)
-                    hostRules += $"MAP {hostName} {hostJToken[1]},";
+                foreach (JsonElement hostName in hostItem[0].EnumerateArray())
+                    hostRules += $"MAP {hostName} {hostSni},";
 
-                hostResolverRules += $"MAP {hostJToken[1]} {hostJToken[2]},";
+                hostResolverRules += $"MAP {hostSni} {hostIp},";
 
                 ++ruleIndex;
             }
