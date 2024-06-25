@@ -47,7 +47,7 @@
 
         <Button Grid.Row="0" Grid.Column="3" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.PolicyButtonContent}, Mode=OneTime}" ToolTip="{Binding Source={x:Static consts:AboutConst.PolicyButtonUrl}, Mode=OneTime}"
                 Click="AboutButton_Click" />
-        <Button Grid.Row="1" Grid.Column="3" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.TermsButtonContent}, Mode=OneTime}" ToolTip="{Binding Source={x:Static consts:AboutConst.TermsButtonUrl}, Mode=OneTime}"
+        <Button Grid.Row="1" Grid.Column="3" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.AgreementButtonContent}, Mode=OneTime}" ToolTip="{Binding Source={x:Static consts:AboutConst.AgreementButtonUrl}, Mode=OneTime}"
                 Click="AboutButton_Click" />
     </Grid>
 </Window>

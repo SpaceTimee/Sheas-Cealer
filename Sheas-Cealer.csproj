@@ -19,7 +19,7 @@
     <PackageProjectUrl>https://github.com/SpaceTimee/Sheas-Cealer</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SpaceTimee/Sheas-Cealer</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Copyright>Copyright ©  2077</Copyright>
+    <Copyright>Copyright © 2077</Copyright>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion> 

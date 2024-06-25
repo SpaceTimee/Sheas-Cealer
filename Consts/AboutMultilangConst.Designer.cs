@@ -70,6 +70,15 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 EULA 的本地化字符串。
+        /// </summary>
+        public static string AgreementButtonContent {
+            get {
+                return ResourceManager.GetString("AgreementButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Dev. Space Time 的本地化字符串。
         /// </summary>
         public static string DeveloperButtonContent {
@@ -111,15 +120,6 @@ namespace Sheas_Cealer.Consts {
         public static string RepositoryButtonContent {
             get {
                 return ResourceManager.GetString("RepositoryButtonContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 ToS 的本地化字符串。
-        /// </summary>
-        public static string TermsButtonContent {
-            get {
-                return ResourceManager.GetString("TermsButtonContent", resourceCulture);
             }
         }
         

@@ -97,6 +97,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AgreementsButtonContent" xml:space="preserve">
+    <value>使用协议</value>
+  </data>
   <data name="DeveloperButtonContent" xml:space="preserve">
     <value>开发者: Space Time</value>
   </data>
@@ -111,9 +114,6 @@
   </data>
   <data name="RepositoryButtonContent" xml:space="preserve">
     <value>开源地址</value>
-  </data>
-  <data name="TermsButtonContent" xml:space="preserve">
-    <value>使用协议</value>
   </data>
   <data name="VersionButtonLabelContent" xml:space="preserve">
     <value>版本号:</value>
