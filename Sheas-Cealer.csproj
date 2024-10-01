@@ -22,7 +22,8 @@
     <Copyright>Copyright © 2077</Copyright>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion> 
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+	  <WindowsSdkPackageVersion>10.0.22621.41</WindowsSdkPackageVersion>
     <RootNamespace>Sheas_Cealer</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
