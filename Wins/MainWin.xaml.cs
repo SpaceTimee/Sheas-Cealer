@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -23,7 +24,8 @@ public partial class MainWin : Window
     private static MainPres? MainPres;
     private static readonly HttpClient MainClient = new();
     private static DispatcherTimer? HoldButtonTimer;
-    private static readonly FileSystemWatcher CealingHostWatcher = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
+    private static readonly FileSystemWatcher HostWatcher = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-*.json") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
+    private static readonly Dictionary<string, (string hostRulesFragments, string hostResolverRulesFragments)> CealArgsFragments = [];
     private static string CealArgs = string.Empty;
 
     internal MainWin(string[] args)
@@ -32,9 +34,12 @@ public partial class MainWin : Window
 
         DataContext = MainPres = new(args);
 
-        CealingHostWatcher.Changed += CealingHostWatcher_Changed;
-        CealingHostWatcher_Changed(null!, null!);
+        HostWatcher.Changed += HostWatcher_Changed;
+
+        foreach (string hostPath in Directory.GetFiles(HostWatcher.Path, HostWatcher.Filter))
+            HostWatcher_Changed(null!, new(new(), Path.GetDirectoryName(hostPath)!, Path.GetFileName(hostPath)));
     }
+
     protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
     private void MainWin_Loaded(object sender, RoutedEventArgs e) => SettingsBox.Focus();
     private void MainWin_Closing(object sender, CancelEventArgs e) => Application.Current.Shutdown();
@@ -128,25 +133,23 @@ public partial class MainWin : Window
         new CommandProc(sender == null).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, ($"{CealArgs} {MainPres!.ExtraArgs}").Trim());
     }
 
-    private void EditLocalHostButton_Click(object sender, RoutedEventArgs e)
+    private void EditHostButton_Click(object sender, RoutedEventArgs e)
     {
-        string cealingHostPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json");
+        Button? senderButton = sender as Button;
 
-        if (!File.Exists(cealingHostPath))
-            File.Create(cealingHostPath).Dispose();
+        string hostPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, senderButton == EditLocalHostButton ? "Cealing-Host-Local.json" : "Cealing-Host-Upstream.json");
 
-        ProcessStartInfo processStartInfo = new(cealingHostPath) { UseShellExecute = true };
+        if (!File.Exists(hostPath))
+            File.Create(hostPath).Dispose();
+
+        ProcessStartInfo processStartInfo = new(hostPath) { UseShellExecute = true };
         Process.Start(processStartInfo);
-    }
-    private void EditUpstreamHostButton_Click(object sender, RoutedEventArgs e)
-    {
-
     }
     private async void UpdateUpstreamHostButton_Click(object sender, RoutedEventArgs e)
     {
         string upstreamHostUrl = (MainPres!.UpstreamUrl.StartsWith("http://") || MainPres!.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres!.UpstreamUrl;
         string upstreamHostString = await Http.GetAsync<string>(upstreamHostUrl, MainClient);
-        string localHostPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json");
+        string localHostPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-Upstream.json");
         string localHostString;
 
         if (!File.Exists(localHostPath))
@@ -162,7 +165,7 @@ public partial class MainWin : Window
             MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideUpstreamHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
             if (overrideOptionResult == MessageBoxResult.Yes)
             {
-                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json"), upstreamHostString);
+                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-Upstream.json"), upstreamHostString);
                 MessageBox.Show(MainConst._UpdateUpstreamHostSuccessHint);
             }
             else if (overrideOptionResult == MessageBoxResult.No)
@@ -172,32 +175,44 @@ public partial class MainWin : Window
     private void ThemesButton_Click(object sender, RoutedEventArgs e) => MainPres!.IsLightTheme = MainPres.IsLightTheme.HasValue ? MainPres.IsLightTheme.Value ? null : true : false;
     private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWin().ShowDialog();
 
-    private void CealingHostWatcher_Changed(object sender, FileSystemEventArgs e)
+    private void HostWatcher_Changed(object sender, FileSystemEventArgs e)
     {
         try
         {
-            string hostRules = string.Empty;
-            string hostResolverRules = string.Empty;
+            string hostRulesFragments = string.Empty;
+            string hostResolverRulesFragments = string.Empty;
+            string hostName = e.Name!.TrimStart("Cealing-Host-".ToCharArray()).TrimEnd(".json".ToCharArray());
             int ruleIndex = 0;
 
-            using FileStream hostStream = new(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json"), FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+            using FileStream hostStream = new(e.FullPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
             JsonDocumentOptions hostOptions = new() { AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip };
             JsonElement hostArray = JsonDocument.Parse(hostStream, hostOptions).RootElement;
 
             foreach (JsonElement hostItem in hostArray.EnumerateArray())
             {
-                string hostSni = string.IsNullOrWhiteSpace(hostItem[1].ToString()) ? $"c{ruleIndex}" : hostItem[1].ToString();
+                string hostSni = string.IsNullOrWhiteSpace(hostItem[1].ToString()) ? $"{hostName}{ruleIndex}" : hostItem[1].ToString();
                 string hostIp = string.IsNullOrWhiteSpace(hostItem[2].ToString()) ? "127.0.0.1" : hostItem[2].ToString();
 
-                foreach (JsonElement hostName in hostItem[0].EnumerateArray())
-                    hostRules += $"MAP {hostName} {hostSni},";
+                foreach (JsonElement hostDomain in hostItem[0].EnumerateArray())
+                    hostRulesFragments += $"MAP {hostDomain} {hostSni},";
 
-                hostResolverRules += $"MAP {hostSni} {hostIp},";
+                hostResolverRulesFragments += $"MAP {hostSni} {hostIp},";
 
                 ++ruleIndex;
             }
 
-            CealArgs = @$"/c @start .\""Uncealed-Browser.lnk"" --host-rules=""{hostRules[0..^1]}"" --host-resolver-rules=""{hostResolverRules[0..^1]}"" --test-type --ignore-certificate-errors";
+            CealArgsFragments[hostName] = (hostRulesFragments, hostResolverRulesFragments);
+
+            string hostRules = string.Empty;
+            string hostResolverRules = string.Empty;
+
+            foreach ((string hostRulesFragments, string hostResolverRulesFragments) CealArgsFragment in CealArgsFragments.Values)
+            {
+                hostRules += CealArgsFragment.hostRulesFragments;
+                hostResolverRules += CealArgsFragment.hostResolverRulesFragments;
+            }
+
+            CealArgs = @$"--host-rules=""{hostRules.TrimEnd(',')}"" --host-resolver-rules=""{hostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
         }
         catch { CealArgs = string.Empty; }
     }

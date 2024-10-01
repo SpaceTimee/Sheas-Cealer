@@ -99,10 +99,12 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditLocalHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditLocalHostButtonToolTip}}"
-                    Click="EditLocalHostButton_Click" />
-            <Button Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditUpstreamHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditUpstreamHostButtonToolTip}}"
-                    Click="EditUpstreamHostButton_Click" />
+            <Button x:Name="EditLocalHostButton"
+                    Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditLocalHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditLocalHostButtonToolTip}}"
+                    Click="EditHostButton_Click" />
+            <Button x:Name="EditUpstreamHostButton"
+                    Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditUpstreamHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditUpstreamHostButtonToolTip}}"
+                    Click="EditHostButton_Click" />
             <Button Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:MainConst.UpdateUpstreamHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.UpdateUpstreamHostButtonToolTip}}"
                     Click="UpdateUpstreamHostButton_Click">
                 <Button.IsEnabled>
