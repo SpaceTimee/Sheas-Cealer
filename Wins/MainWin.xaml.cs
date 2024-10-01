@@ -110,7 +110,7 @@ public partial class MainWin : Window
         HoldButtonTimer!.Stop();
 
         if (string.IsNullOrWhiteSpace(CealArgs))
-            throw new Exception(MainConst._CealingHostErrorHint);
+            throw new Exception(MainConst._HostErrorHint);
         if (MessageBox.Show(MainConst._KillBrowserProcessesPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
             return;
 

@@ -189,7 +189,7 @@
   <data name="_BrowserPathDialogFilterFileType" xml:space="preserve">
     <value>浏览器</value>
   </data>
-  <data name="_CealingHostErrorHint" xml:space="preserve">
+  <data name="_HostErrorHint" xml:space="preserve">
     <value>规则无法识别，请检查伪造规则是否含有语法错误</value>
   </data>
   <data name="_HostUtdHint" xml:space="preserve">

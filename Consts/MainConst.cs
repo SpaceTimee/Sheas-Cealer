@@ -12,6 +12,6 @@ internal partial class MainConst : MainMultilangConst
     [GeneratedRegex(@"^(https?:\/\/)?[a-zA-Z0-9](-*[a-zA-Z0-9])*(\.[a-zA-Z0-9](-*[a-zA-Z0-9])*)*(:\d{1,5})?(\/[a-zA-Z0-9.\-_\~\!\$\&\'\(\)\*\+\,\;\=\:\@\%]*)*$")]
     internal static partial Regex UpstreamUrlRegex();
 
-    [GeneratedRegex(@"^(--[a-z](-?[a-z])*( --[a-z](-?[a-z])*)*)?$")]
+    [GeneratedRegex(@"^(--[a-z](-?[a-z])*(=("".*"")|.*)?( --[a-z](-?[a-z])*(="".*"")?)*)?$")]
     internal static partial Regex ExtraArgsRegex();
 }

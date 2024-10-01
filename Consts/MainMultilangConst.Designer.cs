@@ -72,9 +72,9 @@ namespace Sheas_Cealer.Consts {
         /// <summary>
         ///   查找类似 The args cannot be recognized, check if the host contains syntax errors 的本地化字符串。
         /// </summary>
-        public static string _CealingHostErrorHint {
+        public static string _HostErrorHint {
             get {
-                return ResourceManager.GetString("_CealingHostErrorHint", resourceCulture);
+                return ResourceManager.GetString("_HostErrorHint", resourceCulture);
             }
         }
         

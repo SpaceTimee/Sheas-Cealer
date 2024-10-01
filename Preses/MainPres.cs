@@ -34,7 +34,7 @@ internal partial class MainPres : ObservableObject
 
     [ObservableProperty]
     private bool? isLightTheme = null;
-    partial void OnIsLightThemeChanged(bool? value)
+    private partial void OnIsLightThemeChanged(bool? value)
     {
         PaletteHelper paletteHelper = new();
         Theme newTheme = paletteHelper.GetTheme();
@@ -45,7 +45,7 @@ internal partial class MainPres : ObservableObject
 
     [ObservableProperty]
     private string browserPath;
-    partial void OnBrowserPathChanged(string value)
+    private partial void OnBrowserPathChanged(string value)
     {
         if (File.Exists(value) && Path.GetFileName(value).ToLowerInvariant().EndsWith(".exe"))
         {
@@ -56,7 +56,7 @@ internal partial class MainPres : ObservableObject
 
     [ObservableProperty]
     private string upstreamUrl;
-    partial void OnUpstreamUrlChanged(string value)
+    private partial void OnUpstreamUrlChanged(string value)
     {
         if (MainConst.UpstreamUrlRegex().IsMatch(value))
         {
@@ -67,7 +67,7 @@ internal partial class MainPres : ObservableObject
 
     [ObservableProperty]
     private string extraArgs;
-    partial void OnExtraArgsChanged(string value)
+    private partial void OnExtraArgsChanged(string value)
     {
         if (MainConst.ExtraArgsRegex().IsMatch(value))
         {
