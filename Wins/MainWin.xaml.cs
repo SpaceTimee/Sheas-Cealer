@@ -111,7 +111,7 @@ public partial class MainWin : Window
 
         if (string.IsNullOrWhiteSpace(CealArgs))
             throw new Exception(MainConst._HostErrorHint);
-        if (MessageBox.Show(MainConst._KillBrowserProcessesPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+        if (MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
             return;
 
         IWshShortcut uncealedBrowserShortcut = (IWshShortcut)new WshShell().CreateShortcut(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Uncealed-Browser.lnk"));
@@ -128,7 +128,7 @@ public partial class MainWin : Window
         new CommandProc(sender == null).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, ($"{CealArgs} {MainPres!.ExtraArgs}").Trim());
     }
 
-    private void EditHostButton_Click(object sender, RoutedEventArgs e)
+    private void EditLocalHostButton_Click(object sender, RoutedEventArgs e)
     {
         string cealingHostPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json");
 
@@ -138,7 +138,11 @@ public partial class MainWin : Window
         ProcessStartInfo processStartInfo = new(cealingHostPath) { UseShellExecute = true };
         Process.Start(processStartInfo);
     }
-    private async void UpdateHostButton_Click(object sender, RoutedEventArgs e)
+    private void EditUpstreamHostButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+    private async void UpdateUpstreamHostButton_Click(object sender, RoutedEventArgs e)
     {
         string upstreamHostUrl = (MainPres!.UpstreamUrl.StartsWith("http://") || MainPres!.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres!.UpstreamUrl;
         string upstreamHostString = await Http.GetAsync<string>(upstreamHostUrl, MainClient);
@@ -152,14 +156,14 @@ public partial class MainWin : Window
             localHostString = localHostStreamReader.ReadToEnd();
 
         if (localHostString.Replace("\r", string.Empty) == upstreamHostString)
-            MessageBox.Show(MainConst._HostUtdHint);
+            MessageBox.Show(MainConst._UpstreamHostUtdHint);
         else
         {
-            MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideLocalHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
+            MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideUpstreamHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
             if (overrideOptionResult == MessageBoxResult.Yes)
             {
                 File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host.json"), upstreamHostString);
-                MessageBox.Show(MainConst._UpdateHostSuccessHint);
+                MessageBox.Show(MainConst._UpdateUpstreamHostSuccessHint);
             }
             else if (overrideOptionResult == MessageBoxResult.No)
                 Process.Start(new ProcessStartInfo(upstreamHostUrl) { UseShellExecute = true });

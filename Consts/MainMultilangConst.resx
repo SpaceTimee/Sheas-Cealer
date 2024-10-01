@@ -126,11 +126,17 @@
   <data name="BrowserPathSettingsModeName" xml:space="preserve">
     <value>Browser Path</value>
   </data>
-  <data name="EditHostButtonContent" xml:space="preserve">
-    <value>Edit Host</value>
+  <data name="EditLocalHostButtonContent" xml:space="preserve">
+    <value>Edit Local Host</value>
   </data>
-  <data name="EditHostButtonToolTip" xml:space="preserve">
-    <value>Click to edit host</value>
+  <data name="EditLocalHostButtonToolTip" xml:space="preserve">
+    <value>Click to edit local host</value>
+  </data>
+  <data name="EditUpstreamHostButtonContent" xml:space="preserve">
+    <value>Edit Upstream Host</value>
+  </data>
+  <data name="EditUpstreamHostButtonToolTip" xml:space="preserve">
+    <value>Click to edit upstream host</value>
   </data>
   <data name="ExtraArgsSettingsModeName" xml:space="preserve">
     <value>Extra Args</value>
@@ -177,11 +183,11 @@
   <data name="ThemesButtonToolTip" xml:space="preserve">
     <value>Click to switch themes</value>
   </data>
-  <data name="UpdateHostButtonContent" xml:space="preserve">
-    <value>Update Host</value>
+  <data name="UpdateUpstreamHostButtonContent" xml:space="preserve">
+    <value>Update Upstream Host</value>
   </data>
-  <data name="UpdateHostButtonToolTip" xml:space="preserve">
-    <value>Click to update host</value>
+  <data name="UpdateUpstreamHostButtonToolTip" xml:space="preserve">
+    <value>Click to update upstream host</value>
   </data>
   <data name="UpstreamUrlSettingsModeName" xml:space="preserve">
     <value>Upstream URL</value>
@@ -190,18 +196,18 @@
     <value>Browser</value>
   </data>
   <data name="_HostErrorHint" xml:space="preserve">
-    <value>The args cannot be recognized, check if the host contains syntax errors</value>
+    <value>The args cannot be recognized, check if the hosts contain syntax errors</value>
   </data>
-  <data name="_HostUtdHint" xml:space="preserve">
-    <value>Local host is exactly the same as upstream</value>
+  <data name="_UpstreamHostUtdHint" xml:space="preserve">
+    <value>Upstream host has been updated to the latest</value>
   </data>
-  <data name="_KillBrowserProcessesPrompt" xml:space="preserve">
+  <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>All processes of the selected browser will be closed before launching, do you want to continue?</value>
   </data>
-  <data name="_OverrideLocalHostPrompt" xml:space="preserve">
-    <value>Do you need to override local host that are slightly different from upstream? If not it will only open a page with the upstream host for you</value>
+  <data name="_OverrideUpstreamHostPrompt" xml:space="preserve">
+    <value>There is an update available. Do you want to update upstream host? If No it will only open the upstream host page for you</value>
   </data>
-  <data name="_UpdateHostSuccessHint" xml:space="preserve">
+  <data name="_UpdateUpstreamHostSuccessHint" xml:space="preserve">
     <value>Update successfully</value>
   </data>
 </root>

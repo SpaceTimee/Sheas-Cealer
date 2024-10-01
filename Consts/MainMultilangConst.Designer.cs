@@ -70,7 +70,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 The args cannot be recognized, check if the host contains syntax errors 的本地化字符串。
+        ///   查找类似 The args cannot be recognized, check if the hosts contain syntax errors 的本地化字符串。
         /// </summary>
         public static string _HostErrorHint {
             get {
@@ -79,38 +79,38 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Local host is exactly the same as upstream 的本地化字符串。
-        /// </summary>
-        public static string _HostUtdHint {
-            get {
-                return ResourceManager.GetString("_HostUtdHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 All processes of the selected browser will be closed before launching, do you want to continue? 的本地化字符串。
         /// </summary>
-        public static string _KillBrowserProcessesPrompt {
+        public static string _KillBrowserProcessPrompt {
             get {
-                return ResourceManager.GetString("_KillBrowserProcessesPrompt", resourceCulture);
+                return ResourceManager.GetString("_KillBrowserProcessPrompt", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Do you need to override local host that are slightly different from upstream? If not it will only open a page with the upstream host for you 的本地化字符串。
+        ///   查找类似 There is an update available. Do you want to update upstream host? If No it will only open the upstream host page for you 的本地化字符串。
         /// </summary>
-        public static string _OverrideLocalHostPrompt {
+        public static string _OverrideUpstreamHostPrompt {
             get {
-                return ResourceManager.GetString("_OverrideLocalHostPrompt", resourceCulture);
+                return ResourceManager.GetString("_OverrideUpstreamHostPrompt", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 Update successfully 的本地化字符串。
         /// </summary>
-        public static string _UpdateHostSuccessHint {
+        public static string _UpdateUpstreamHostSuccessHint {
             get {
-                return ResourceManager.GetString("_UpdateHostSuccessHint", resourceCulture);
+                return ResourceManager.GetString("_UpdateUpstreamHostSuccessHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Upstream host has been updated to the latest 的本地化字符串。
+        /// </summary>
+        public static string _UpstreamHostUtdHint {
+            get {
+                return ResourceManager.GetString("_UpstreamHostUtdHint", resourceCulture);
             }
         }
         
@@ -142,20 +142,38 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Edit Host 的本地化字符串。
+        ///   查找类似 Edit Local Host 的本地化字符串。
         /// </summary>
-        public static string EditHostButtonContent {
+        public static string EditLocalHostButtonContent {
             get {
-                return ResourceManager.GetString("EditHostButtonContent", resourceCulture);
+                return ResourceManager.GetString("EditLocalHostButtonContent", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Click to edit host 的本地化字符串。
+        ///   查找类似 Click to edit local host 的本地化字符串。
         /// </summary>
-        public static string EditHostButtonToolTip {
+        public static string EditLocalHostButtonToolTip {
             get {
-                return ResourceManager.GetString("EditHostButtonToolTip", resourceCulture);
+                return ResourceManager.GetString("EditLocalHostButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Edit Upstream Host 的本地化字符串。
+        /// </summary>
+        public static string EditUpstreamHostButtonContent {
+            get {
+                return ResourceManager.GetString("EditUpstreamHostButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click to edit upstream host 的本地化字符串。
+        /// </summary>
+        public static string EditUpstreamHostButtonToolTip {
+            get {
+                return ResourceManager.GetString("EditUpstreamHostButtonToolTip", resourceCulture);
             }
         }
         
@@ -295,20 +313,20 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Update Host 的本地化字符串。
+        ///   查找类似 Update Upstream Host 的本地化字符串。
         /// </summary>
-        public static string UpdateHostButtonContent {
+        public static string UpdateUpstreamHostButtonContent {
             get {
-                return ResourceManager.GetString("UpdateHostButtonContent", resourceCulture);
+                return ResourceManager.GetString("UpdateUpstreamHostButtonContent", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Click to update host 的本地化字符串。
+        ///   查找类似 Click to update upstream host 的本地化字符串。
         /// </summary>
-        public static string UpdateHostButtonToolTip {
+        public static string UpdateUpstreamHostButtonToolTip {
             get {
-                return ResourceManager.GetString("UpdateHostButtonToolTip", resourceCulture);
+                return ResourceManager.GetString("UpdateUpstreamHostButtonToolTip", resourceCulture);
             }
         }
         

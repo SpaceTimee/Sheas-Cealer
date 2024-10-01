@@ -126,11 +126,17 @@
   <data name="BrowserPathSettingsModeName" xml:space="preserve">
     <value>文件路径</value>
   </data>
-  <data name="EditHostButtonContent" xml:space="preserve">
-    <value>编辑规则</value>
+  <data name="EditLocalHostButtonContent" xml:space="preserve">
+    <value>编辑本地规则</value>
   </data>
-  <data name="EditHostButtonToolTip" xml:space="preserve">
-    <value>点击编辑伪造规则</value>
+  <data name="EditLocalHostButtonToolTip" xml:space="preserve">
+    <value>点击编辑本地规则</value>
+  </data>
+  <data name="EditUpstreamHostButtonContent" xml:space="preserve">
+    <value>编辑上游规则</value>
+  </data>
+  <data name="EditUpstreamHostButtonToolTip" xml:space="preserve">
+    <value>点击编辑上游规则</value>
   </data>
   <data name="ExtraArgsSettingsModeName" xml:space="preserve">
     <value>额外参数</value>
@@ -142,7 +148,7 @@
     <value>填入任意额外的 Chromium 启动参数</value>
   </data>
   <data name="SettingsBoxUpstreamUrlToolTip" xml:space="preserve">
-    <value>填入任意上游伪造规则链接</value>
+    <value>填入任意上游规则链接</value>
   </data>
   <data name="SettingsFunctionButtonBrowserPathContent" xml:space="preserve">
     <value>浏览路径</value>
@@ -177,11 +183,11 @@
   <data name="ThemesButtonToolTip" xml:space="preserve">
     <value>点击切换显示主题</value>
   </data>
-  <data name="UpdateHostButtonContent" xml:space="preserve">
-    <value>更新规则</value>
+  <data name="UpdateUpstreamHostButtonContent" xml:space="preserve">
+    <value>更新上游规则</value>
   </data>
-  <data name="UpdateHostButtonToolTip" xml:space="preserve">
-    <value>点击更新伪造规则</value>
+  <data name="UpdateUpstreamHostButtonToolTip" xml:space="preserve">
+    <value>点击更新上游规则</value>
   </data>
   <data name="UpstreamUrlSettingsModeName" xml:space="preserve">
     <value>上游链接</value>
@@ -190,18 +196,18 @@
     <value>浏览器</value>
   </data>
   <data name="_HostErrorHint" xml:space="preserve">
-    <value>规则无法识别，请检查伪造规则是否含有语法错误</value>
+    <value>规则无法识别，请检查伪造规则中是否含有语法错误</value>
   </data>
-  <data name="_HostUtdHint" xml:space="preserve">
-    <value>本地伪造规则和上游一模一样</value>
+  <data name="_UpstreamHostUtdHint" xml:space="preserve">
+    <value>上游规则已经更到最新了</value>
   </data>
-  <data name="_KillBrowserProcessesPrompt" xml:space="preserve">
+  <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>启动前将关闭所选浏览器的所有进程，是否继续？</value>
   </data>
-  <data name="_OverrideLocalHostPrompt" xml:space="preserve">
-    <value>本地伪造规则和上游略有不同，需要覆盖本地吗？否则只为你打开上游规则的网页</value>
+  <data name="_OverrideUpstreamHostPrompt" xml:space="preserve">
+    <value>上游规则有更新可用，需要更新吗？否则只为你打开上游规则网页</value>
   </data>
-  <data name="_UpdateHostSuccessHint" xml:space="preserve">
+  <data name="_UpdateUpstreamHostSuccessHint" xml:space="preserve">
     <value>更新已完成</value>
   </data>
 </root>
