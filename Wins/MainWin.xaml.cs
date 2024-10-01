@@ -195,7 +195,14 @@ public partial class MainWin : Window
                 string hostIp = string.IsNullOrWhiteSpace(hostItem[2].ToString()) ? "127.0.0.1" : hostItem[2].ToString();
 
                 foreach (JsonElement hostDomain in hostItem[0].EnumerateArray())
-                    hostRulesFragments += $"MAP {hostDomain} {hostSni},";
+                {
+                    if (hostDomain.ToString().StartsWith('^') || hostDomain.ToString().EndsWith('^'))
+                        continue;
+
+                    string[] hostDomainPair = hostDomain.ToString().Split('^', 2);
+
+                    hostRulesFragments += $"MAP {hostDomainPair[0]} {hostSni}," + (hostDomainPair.Length == 2 ? $"EXCLUDE {hostDomainPair[1]}," : string.Empty);
+                }
 
                 hostResolverRulesFragments += $"MAP {hostSni} {hostIp},";
 
