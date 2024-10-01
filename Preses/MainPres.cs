@@ -2,6 +2,7 @@
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Props;
 using File = System.IO.File;
@@ -16,9 +17,12 @@ internal partial class MainPres : ObservableObject
         int upstreamUrlIndex = Array.FindIndex(args, arg => arg.Equals("-u", StringComparison.OrdinalIgnoreCase)) + 1;
         int extraArgsIndex = Array.FindIndex(args, arg => arg.Equals("-e", StringComparison.OrdinalIgnoreCase)) + 1;
 
-        BrowserPath = browserPathIndex == 0 || browserPathIndex == args.Length ?
-            !string.IsNullOrWhiteSpace(Settings.Default.BrowserPath) ? Settings.Default.BrowserPath : string.Empty :
-            args[browserPathIndex];
+        BrowserPath = browserPathIndex != 0 && browserPathIndex != args.Length ?args[browserPathIndex]:
+            !string.IsNullOrWhiteSpace(Settings.Default.BrowserPath) ? Settings.Default.BrowserPath :
+            (Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe", string.Empty, null) ??
+            Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe", string.Empty, null) ??
+            Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\brave.exe", string.Empty, null) ??
+            string.Empty).ToString()!;
 
         UpstreamUrl = upstreamUrlIndex == 0 || upstreamUrlIndex == args.Length ?
             !string.IsNullOrWhiteSpace(Settings.Default.UpstreamUrl) ? Settings.Default.UpstreamUrl : MainConst.DefaultUpstreamUrl :

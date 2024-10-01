@@ -177,11 +177,12 @@ public partial class MainWin : Window
 
     private void HostWatcher_Changed(object sender, FileSystemEventArgs e)
     {
+        string hostName = e.Name!.TrimStart("Cealing-Host-".ToCharArray()).TrimEnd(".json".ToCharArray());
+
         try
         {
             string hostRulesFragments = string.Empty;
             string hostResolverRulesFragments = string.Empty;
-            string hostName = e.Name!.TrimStart("Cealing-Host-".ToCharArray()).TrimEnd(".json".ToCharArray());
             int ruleIndex = 0;
 
             using FileStream hostStream = new(e.FullPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
@@ -202,7 +203,10 @@ public partial class MainWin : Window
             }
 
             CealArgsFragments[hostName] = (hostRulesFragments, hostResolverRulesFragments);
-
+        }
+        catch { CealArgsFragments.Remove(hostName); }
+        finally
+        {
             string hostRules = string.Empty;
             string hostResolverRules = string.Empty;
 
@@ -212,9 +216,8 @@ public partial class MainWin : Window
                 hostResolverRules += CealArgsFragment.hostResolverRulesFragments;
             }
 
-            CealArgs = @$"--host-rules=""{hostRules.TrimEnd(',')}"" --host-resolver-rules=""{hostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
+            CealArgs = @$"/c @start .\""Uncealed-Browser.lnk"" --host-rules=""{hostRules.TrimEnd(',')}"" --host-resolver-rules=""{hostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
         }
-        catch { CealArgs = string.Empty; }
     }
     private void MainWin_KeyDown(object sender, KeyEventArgs e)
     {
