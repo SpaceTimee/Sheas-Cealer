@@ -132,6 +132,18 @@
   <data name="EditLocalHostButtonToolTip" xml:space="preserve">
     <value>Click to edit local host</value>
   </data>
+  <data name="EditMihomoConfButtonContent" xml:space="preserve">
+    <value>Edit Mihomo Conf</value>
+  </data>
+  <data name="EditMihomoConfButtonToolTip" xml:space="preserve">
+    <value>Click to edit mihomo conf</value>
+  </data>
+  <data name="EditNginxConfButtonContent" xml:space="preserve">
+    <value>Edit Nginx Conf</value>
+  </data>
+  <data name="EditNginxConfButtonToolTip" xml:space="preserve">
+    <value>Click to edit nginx conf</value>
+  </data>
   <data name="EditUpstreamHostButtonContent" xml:space="preserve">
     <value>Edit Upstream Host</value>
   </data>
@@ -152,6 +164,12 @@
   </data>
   <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
     <value>Click to launch a local Mihomo</value>
+  </data>
+  <data name="MysteriousButtonContent" xml:space="preserve">
+    <value>Mysterious Button</value>
+  </data>
+  <data name="MysteriousButtonToolTip" xml:space="preserve">
+    <value>Click for SURPRISE</value>
   </data>
   <data name="NginxButtonIsRunningContent" xml:space="preserve">
     <value>Stop Nginx</value>
@@ -219,7 +237,7 @@
   <data name="_BrowserPathDialogFilterFileType" xml:space="preserve">
     <value>Browser</value>
   </data>
-  <data name="_ConfigErrorHint" xml:space="preserve">
+  <data name="_ConfErrorHint" xml:space="preserve">
     <value>The config cannot be recognized, check if the config contain syntax errors</value>
   </data>
   <data name="_HostErrorHint" xml:space="preserve">

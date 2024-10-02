@@ -179,7 +179,7 @@ public partial class MainWin : Window
             configStream.Load(File.OpenText(configPath));
 
             try { configMapNode = (YamlMappingNode)configStream.Documents[0].RootNode; }
-            catch { throw new Exception(MainConst._ConfigErrorHint); }
+            catch { throw new Exception(MainConst._ConfErrorHint); }
 
             if (!configMapNode.Children.TryGetValue("mixed-port", out mihomoPortNode!) && !configMapNode.Children.TryGetValue("port", out mihomoPortNode!))
                 mihomoPortNode = "7890";
@@ -241,6 +241,23 @@ public partial class MainWin : Window
     }
     private void ThemesButton_Click(object sender, RoutedEventArgs e) => MainPres!.IsLightTheme = MainPres.IsLightTheme.HasValue ? MainPres.IsLightTheme.Value ? null : true : false;
     private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWin().ShowDialog();
+
+    private void EditConfButton_Click(object sender, RoutedEventArgs e)
+    {
+        Button? senderButton = sender as Button;
+
+        string confPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, senderButton == EditNginxConfButton ? "nginx.conf" : "config.json");
+
+        if (!File.Exists(confPath))
+            File.Create(confPath).Dispose();
+
+        ProcessStartInfo processStartInfo = new(confPath) { UseShellExecute = true };
+        Process.Start(processStartInfo);
+    }
+    private void MysteriousButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 
     private void ProxyTimer_Tick(object? sender, EventArgs e)
     {

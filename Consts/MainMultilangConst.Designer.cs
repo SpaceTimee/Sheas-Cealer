@@ -72,9 +72,9 @@ namespace Sheas_Cealer.Consts {
         /// <summary>
         ///   查找类似 The config cannot be recognized, check if the config contain syntax errors 的本地化字符串。
         /// </summary>
-        public static string _ConfigErrorHint {
+        public static string _ConfErrorHint {
             get {
-                return ResourceManager.GetString("_ConfigErrorHint", resourceCulture);
+                return ResourceManager.GetString("_ConfErrorHint", resourceCulture);
             }
         }
         
@@ -169,6 +169,42 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Edit Mihomo Conf 的本地化字符串。
+        /// </summary>
+        public static string EditMihomoConfButtonContent {
+            get {
+                return ResourceManager.GetString("EditMihomoConfButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click to edit mihomo conf 的本地化字符串。
+        /// </summary>
+        public static string EditMihomoConfButtonToolTip {
+            get {
+                return ResourceManager.GetString("EditMihomoConfButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Edit Nginx Conf 的本地化字符串。
+        /// </summary>
+        public static string EditNginxConfButtonContent {
+            get {
+                return ResourceManager.GetString("EditNginxConfButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click to edit nginx conf 的本地化字符串。
+        /// </summary>
+        public static string EditNginxConfButtonToolTip {
+            get {
+                return ResourceManager.GetString("EditNginxConfButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Edit Upstream Host 的本地化字符串。
         /// </summary>
         public static string EditUpstreamHostButtonContent {
@@ -228,6 +264,24 @@ namespace Sheas_Cealer.Consts {
         public static string MihomoButtonIsStoppedToolTip {
             get {
                 return ResourceManager.GetString("MihomoButtonIsStoppedToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Mysterious Button 的本地化字符串。
+        /// </summary>
+        public static string MysteriousButtonContent {
+            get {
+                return ResourceManager.GetString("MysteriousButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click for SURPRISE 的本地化字符串。
+        /// </summary>
+        public static string MysteriousButtonToolTip {
+            get {
+                return ResourceManager.GetString("MysteriousButtonToolTip", resourceCulture);
             }
         }
         

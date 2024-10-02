@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace Sheas_Cealer.Convs;
 
-internal class MainProxyButtonVisibilityConv : IValueConverter
+internal class MainAdminControlVisibilityConv : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
