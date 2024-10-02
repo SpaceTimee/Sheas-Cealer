@@ -141,11 +141,29 @@
   <data name="ExtraArgsSettingsModeName" xml:space="preserve">
     <value>额外参数</value>
   </data>
-  <data name="ProxyButtonContent" xml:space="preserve">
-    <value>启动代理</value>
+  <data name="MihomoButtonIsRunningContent" xml:space="preserve">
+    <value>停止 Mihomo</value>
   </data>
-  <data name="ProxyButtonToolTip" xml:space="preserve">
-    <value>点击启动本地代理</value>
+  <data name="MihomoButtonIsRunningToolTip" xml:space="preserve">
+    <value>点击停止本地 Mihomo</value>
+  </data>
+  <data name="MihomoButtonIsStoppedContent" xml:space="preserve">
+    <value>启动 Mihomo</value>
+  </data>
+  <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
+    <value>点击启动本地 Mihomo</value>
+  </data>
+  <data name="NginxButtonIsRunningContent" xml:space="preserve">
+    <value>停止 Nginx</value>
+  </data>
+  <data name="NginxButtonIsRunningToolTip" xml:space="preserve">
+    <value>点击停止 Nginx</value>
+  </data>
+  <data name="NginxButtonIsStoppedContent" xml:space="preserve">
+    <value>启动 Nginx</value>
+  </data>
+  <data name="NginxButtonIsStoppedToolTip" xml:space="preserve">
+    <value>点击启动本地 Nginx</value>
   </data>
   <data name="SettingsBoxBrowserPathToolTip" xml:space="preserve">
     <value>填入任意以 Chromium 为内核的浏览器路径</value>
@@ -200,6 +218,9 @@
   </data>
   <data name="_BrowserPathDialogFilterFileType" xml:space="preserve">
     <value>浏览器</value>
+  </data>
+  <data name="_ConfigErrorHint" xml:space="preserve">
+    <value>配置无法识别，请检查配置文件中是否含有语法错误</value>
   </data>
   <data name="_HostErrorHint" xml:space="preserve">
     <value>规则无法识别，请检查伪造规则中是否含有语法错误</value>

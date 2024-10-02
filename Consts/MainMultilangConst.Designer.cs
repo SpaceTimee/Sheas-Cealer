@@ -70,6 +70,15 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 The config cannot be recognized, check if the config contain syntax errors 的本地化字符串。
+        /// </summary>
+        public static string _ConfigErrorHint {
+            get {
+                return ResourceManager.GetString("_ConfigErrorHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The args cannot be recognized, check if the hosts contain syntax errors 的本地化字符串。
         /// </summary>
         public static string _HostErrorHint {
@@ -187,20 +196,74 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Start Proxy 的本地化字符串。
+        ///   查找类似 Stop Mihomo 的本地化字符串。
         /// </summary>
-        public static string ProxyButtonContent {
+        public static string MihomoButtonIsRunningContent {
             get {
-                return ResourceManager.GetString("ProxyButtonContent", resourceCulture);
+                return ResourceManager.GetString("MihomoButtonIsRunningContent", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Click to launch a local proxy 的本地化字符串。
+        ///   查找类似 Click to stop the local Mihomo 的本地化字符串。
         /// </summary>
-        public static string ProxyButtonToolTip {
+        public static string MihomoButtonIsRunningToolTip {
             get {
-                return ResourceManager.GetString("ProxyButtonToolTip", resourceCulture);
+                return ResourceManager.GetString("MihomoButtonIsRunningToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Start Mihomo 的本地化字符串。
+        /// </summary>
+        public static string MihomoButtonIsStoppedContent {
+            get {
+                return ResourceManager.GetString("MihomoButtonIsStoppedContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click to launch a local Mihomo 的本地化字符串。
+        /// </summary>
+        public static string MihomoButtonIsStoppedToolTip {
+            get {
+                return ResourceManager.GetString("MihomoButtonIsStoppedToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Stop Nginx 的本地化字符串。
+        /// </summary>
+        public static string NginxButtonIsRunningContent {
+            get {
+                return ResourceManager.GetString("NginxButtonIsRunningContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click to stop the local Nginx 的本地化字符串。
+        /// </summary>
+        public static string NginxButtonIsRunningToolTip {
+            get {
+                return ResourceManager.GetString("NginxButtonIsRunningToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Start Nginx 的本地化字符串。
+        /// </summary>
+        public static string NginxButtonIsStoppedContent {
+            get {
+                return ResourceManager.GetString("NginxButtonIsStoppedContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click to launch a local Nginx 的本地化字符串。
+        /// </summary>
+        public static string NginxButtonIsStoppedToolTip {
+            get {
+                return ResourceManager.GetString("NginxButtonIsStoppedToolTip", resourceCulture);
             }
         }
         

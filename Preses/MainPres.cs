@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MaterialDesignThemes.Wpf;
@@ -19,9 +20,9 @@ internal partial class MainPres : ObservableObject
 
         BrowserPath = browserPathIndex != 0 && browserPathIndex != args.Length ? args[browserPathIndex] :
             !string.IsNullOrWhiteSpace(Settings.Default.BrowserPath) ? Settings.Default.BrowserPath :
-            (Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe", string.Empty, null) ??
-            Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe", string.Empty, null) ??
-            Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\brave.exe", string.Empty, null) ??
+            (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe")?.GetValue(string.Empty, null) ??
+            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe")?.GetValue(string.Empty, null) ??
+            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\brave.exe")?.GetValue(string.Empty, null) ??
             string.Empty).ToString()!;
 
         UpstreamUrl = upstreamUrlIndex == 0 || upstreamUrlIndex == args.Length ?
@@ -35,17 +36,6 @@ internal partial class MainPres : ObservableObject
 
     [ObservableProperty]
     private MainConst.SettingsMode settingsMode;
-
-    [ObservableProperty]
-    private bool? isLightTheme = null;
-    partial void OnIsLightThemeChanged(bool? value)
-    {
-        PaletteHelper paletteHelper = new();
-        Theme newTheme = paletteHelper.GetTheme();
-
-        newTheme.SetBaseTheme(value.HasValue ? value.GetValueOrDefault() ? BaseTheme.Light : BaseTheme.Dark : BaseTheme.Inherit);
-        paletteHelper.SetTheme(newTheme);
-    }
 
     [ObservableProperty]
     private string browserPath;
@@ -79,4 +69,27 @@ internal partial class MainPres : ObservableObject
             Settings.Default.Save();
         }
     }
+
+    [ObservableProperty]
+    private bool? isLightTheme = null;
+    partial void OnIsLightThemeChanged(bool? value)
+    {
+        PaletteHelper paletteHelper = new();
+        Theme newTheme = paletteHelper.GetTheme();
+
+        newTheme.SetBaseTheme(value.HasValue ? value.GetValueOrDefault() ? BaseTheme.Light : BaseTheme.Dark : BaseTheme.Inherit);
+        paletteHelper.SetTheme(newTheme);
+    }
+
+    [ObservableProperty]
+    private bool isNginxExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Nginx.exe"));
+
+    [ObservableProperty]
+    private bool isNginxRunning = Process.GetProcessesByName("Cealing-Nginx").Length != 0;
+
+    [ObservableProperty]
+    private bool isMihomoExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Mihomo.exe"));
+
+    [ObservableProperty]
+    private bool isMihomoRunning = Process.GetProcessesByName("Cealing-Mihomo").Length != 0;
 }

@@ -15,6 +15,7 @@ using OnaCore;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Preses;
 using Sheas_Cealer.Utils;
+using YamlDotNet.RepresentationModel;
 using File = System.IO.File;
 
 namespace Sheas_Cealer.Wins;
@@ -24,6 +25,7 @@ public partial class MainWin : Window
     private static MainPres? MainPres;
     private static readonly HttpClient MainClient = new();
     private static DispatcherTimer? HoldButtonTimer;
+    private static readonly DispatcherTimer ProxyTimer = new() { Interval = TimeSpan.FromSeconds(0.1) };
     private static readonly FileSystemWatcher HostWatcher = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-*.json") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static readonly Dictionary<string, (string hostRulesFragments, string hostResolverRulesFragments)> CealArgsFragments = [];
     private static string CealArgs = string.Empty;
@@ -34,8 +36,10 @@ public partial class MainWin : Window
 
         DataContext = MainPres = new(args);
 
-        HostWatcher.Changed += HostWatcher_Changed;
+        ProxyTimer.Tick += ProxyTimer_Tick;
+        ProxyTimer.Start();
 
+        HostWatcher.Changed += HostWatcher_Changed;
         foreach (string hostPath in Directory.GetFiles(HostWatcher.Path, HostWatcher.Filter))
             HostWatcher_Changed(null!, new(new(), Path.GetDirectoryName(hostPath)!, Path.GetFileName(hostPath)));
     }
@@ -132,8 +136,69 @@ public partial class MainWin : Window
 
         new CommandProc(sender == null).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, ($"{CealArgs} {MainPres!.ExtraArgs}").Trim());
     }
-    private void ProxyButton_Click(object sender, RoutedEventArgs e)
+    private void NginxButton_Click(object sender, RoutedEventArgs e)
     {
+        string configPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf");
+        string logsPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "logs");
+        string tempPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "temp");
+
+        if (!MainPres!.IsNginxRunning)
+        {
+            if (!File.Exists(configPath))
+                File.Create(configPath).Dispose();
+            if (!Directory.Exists(logsPath))
+                Directory.CreateDirectory(logsPath);
+            if (!Directory.Exists(tempPath))
+                Directory.CreateDirectory(tempPath);
+
+            new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"-c nginx.conf");
+        }
+        else
+        {
+            foreach (Process mihomoProcess in Process.GetProcessesByName("Cealing-Nginx"))
+            {
+                mihomoProcess.Kill();
+                mihomoProcess.WaitForExit();
+            }
+        }
+    }
+    private void MihomoButton_Click(object sender, RoutedEventArgs e)
+    {
+        RegistryKey proxyKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true)!;
+        string configPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "config.yaml");
+
+        if (!MainPres!.IsMihomoRunning)
+        {
+            YamlStream configStream = [];
+            YamlMappingNode configMapNode;
+            YamlNode mihomoPortNode;
+
+            if (!File.Exists(configPath))
+                File.Create(configPath).Dispose();
+
+            configStream.Load(File.OpenText(configPath));
+
+            try { configMapNode = (YamlMappingNode)configStream.Documents[0].RootNode; }
+            catch { throw new Exception(MainConst._ConfigErrorHint); }
+
+            if (!configMapNode.Children.TryGetValue("mixed-port", out mihomoPortNode!) && !configMapNode.Children.TryGetValue("port", out mihomoPortNode!))
+                mihomoPortNode = "7890";
+
+            proxyKey.SetValue("ProxyEnable", 1);
+            proxyKey.SetValue("ProxyServer", "127.0.0.1:" + mihomoPortNode);
+
+            new MihomoProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "-d .");
+        }
+        else
+        {
+            proxyKey.SetValue("ProxyEnable", 0);
+
+            foreach (Process mihomoProcess in Process.GetProcessesByName("Cealing-Mihomo"))
+            {
+                mihomoProcess.Kill();
+                mihomoProcess.WaitForExit();
+            }
+        }
     }
 
     private void EditHostButton_Click(object sender, RoutedEventArgs e)
@@ -150,34 +215,40 @@ public partial class MainWin : Window
     }
     private async void UpdateUpstreamHostButton_Click(object sender, RoutedEventArgs e)
     {
-        string upstreamHostUrl = (MainPres!.UpstreamUrl.StartsWith("http://") || MainPres!.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres!.UpstreamUrl;
-        string upstreamHostString = await Http.GetAsync<string>(upstreamHostUrl, MainClient);
-        string localHostPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-Upstream.json");
-        string localHostString;
+        string newUpstreamHostUrl = (MainPres!.UpstreamUrl.StartsWith("http://") || MainPres!.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres!.UpstreamUrl;
+        string newUpstreamHostString = await Http.GetAsync<string>(newUpstreamHostUrl, MainClient);
+        string oldUpstreamHostPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-Upstream.json");
+        string oldUpstreamHostString;
 
-        if (!File.Exists(localHostPath))
-            File.Create(localHostPath).Dispose();
+        if (!File.Exists(oldUpstreamHostPath))
+            File.Create(oldUpstreamHostPath).Dispose();
 
-        using (StreamReader localHostStreamReader = new(localHostPath))
-            localHostString = localHostStreamReader.ReadToEnd();
+        oldUpstreamHostString = File.ReadAllText(oldUpstreamHostPath);
 
-        if (localHostString.Replace("\r", string.Empty) == upstreamHostString)
+        if (oldUpstreamHostString.Replace("\r", string.Empty) == newUpstreamHostString)
             MessageBox.Show(MainConst._UpstreamHostUtdHint);
         else
         {
             MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideUpstreamHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
             if (overrideOptionResult == MessageBoxResult.Yes)
             {
-                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-Upstream.json"), upstreamHostString);
+                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-Upstream.json"), newUpstreamHostString);
                 MessageBox.Show(MainConst._UpdateUpstreamHostSuccessHint);
             }
             else if (overrideOptionResult == MessageBoxResult.No)
-                Process.Start(new ProcessStartInfo(upstreamHostUrl) { UseShellExecute = true });
+                Process.Start(new ProcessStartInfo(newUpstreamHostUrl) { UseShellExecute = true });
         }
     }
     private void ThemesButton_Click(object sender, RoutedEventArgs e) => MainPres!.IsLightTheme = MainPres.IsLightTheme.HasValue ? MainPres.IsLightTheme.Value ? null : true : false;
     private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWin().ShowDialog();
 
+    private void ProxyTimer_Tick(object? sender, EventArgs e)
+    {
+        MainPres!.IsNginxExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Nginx.exe"));
+        MainPres.IsNginxRunning = Process.GetProcessesByName("Cealing-Nginx").Length != 0;
+        MainPres.IsMihomoExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Mihomo.exe"));
+        MainPres.IsMihomoRunning = Process.GetProcessesByName("Cealing-Mihomo").Length != 0;
+    }
     private void HostWatcher_Changed(object sender, FileSystemEventArgs e)
     {
         string hostName = e.Name!.TrimStart("Cealing-Host-".ToCharArray()).TrimEnd(".json".ToCharArray());

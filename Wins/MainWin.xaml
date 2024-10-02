@@ -79,7 +79,24 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition>
+                    <ColumnDefinition.Width>
+                        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                            <Binding.Converter>
+                                <convs:MainProxyColumnWidthConv />
+                            </Binding.Converter>
+                        </Binding>
+                    </ColumnDefinition.Width>
+                </ColumnDefinition>
+                <ColumnDefinition>
+                    <ColumnDefinition.Width>
+                        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                            <Binding.Converter>
+                                <convs:MainProxyColumnWidthConv />
+                            </Binding.Converter>
+                        </Binding>
+                    </ColumnDefinition.Width>
+                </ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Button IsDefault="True"
@@ -96,9 +113,68 @@
                     </MultiBinding>
                 </Button.IsEnabled>
             </Button>
-            <Button IsEnabled="{Binding Source={x:Static consts:MainConst.IsAdmin}, Mode=OneTime}"
-                Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.ProxyButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.ProxyButtonToolTip}}"
-                Click="ProxyButton_Click" />
+            <Button Grid.Column="1" Margin="5"
+                Click="NginxButton_Click">
+                <Button.IsEnabled>
+                    <Binding Path="IsNginxExist">
+                        <Binding.Converter>
+                            <convs:MainNginxButtonIsEnabledConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.IsEnabled>
+                <Button.Visibility>
+                    <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                        <Binding.Converter>
+                            <convs:MainProxyButtonVisibilityConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Visibility>
+                <Button.Content>
+                    <Binding Path="IsNginxRunning">
+                        <Binding.Converter>
+                            <convs:MainNginxButtonContentConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Content>
+                <Button.ToolTip>
+                    <Binding Path="IsNginxRunning">
+                        <Binding.Converter>
+                            <convs:MainNginxButtonToolTipConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.ToolTip>
+            </Button>
+            <Button Grid.Column="2" Margin="5"
+                Click="MihomoButton_Click">
+                <Button.IsEnabled>
+                    <Binding Path="IsMihomoExist">
+                        <Binding.Converter>
+                            <convs:MainMihomoButtonIsEnabledConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.IsEnabled>
+                <Button.Visibility>
+                    <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                        <Binding.Converter>
+                            <convs:MainProxyButtonVisibilityConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Visibility>
+                <Button.Content>
+                    <Binding Path="IsMihomoRunning">
+                        <Binding.Converter>
+                            <convs:MainMihomoButtonContentConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Content>
+                <Button.ToolTip>
+                    <Binding Path="IsMihomoRunning">
+                        <Binding.Converter>
+                            <convs:MainMihomoButtonToolTipConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.ToolTip>
+            </Button>
         </Grid>
 
         <Grid Grid.Row="2">

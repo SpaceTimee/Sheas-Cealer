@@ -141,11 +141,29 @@
   <data name="ExtraArgsSettingsModeName" xml:space="preserve">
     <value>Extra Args</value>
   </data>
-  <data name="ProxyButtonContent" xml:space="preserve">
-    <value>Start Proxy</value>
+  <data name="MihomoButtonIsRunningContent" xml:space="preserve">
+    <value>Stop Mihomo</value>
   </data>
-  <data name="ProxyButtonToolTip" xml:space="preserve">
-    <value>Click to launch a local proxy</value>
+  <data name="MihomoButtonIsRunningToolTip" xml:space="preserve">
+    <value>Click to stop the local Mihomo</value>
+  </data>
+  <data name="MihomoButtonIsStoppedContent" xml:space="preserve">
+    <value>Start Mihomo</value>
+  </data>
+  <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
+    <value>Click to launch a local Mihomo</value>
+  </data>
+  <data name="NginxButtonIsRunningContent" xml:space="preserve">
+    <value>Stop Nginx</value>
+  </data>
+  <data name="NginxButtonIsRunningToolTip" xml:space="preserve">
+    <value>Click to stop the local Nginx</value>
+  </data>
+  <data name="NginxButtonIsStoppedContent" xml:space="preserve">
+    <value>Start Nginx</value>
+  </data>
+  <data name="NginxButtonIsStoppedToolTip" xml:space="preserve">
+    <value>Click to launch a local Nginx</value>
   </data>
   <data name="SettingsBoxBrowserPathToolTip" xml:space="preserve">
     <value>Fill in a Chromium-based browser path</value>
@@ -200,6 +218,9 @@
   </data>
   <data name="_BrowserPathDialogFilterFileType" xml:space="preserve">
     <value>Browser</value>
+  </data>
+  <data name="_ConfigErrorHint" xml:space="preserve">
+    <value>The config cannot be recognized, check if the config contain syntax errors</value>
   </data>
   <data name="_HostErrorHint" xml:space="preserve">
     <value>The args cannot be recognized, check if the hosts contain syntax errors</value>
