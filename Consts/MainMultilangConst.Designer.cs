@@ -187,6 +187,24 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Start Proxy 的本地化字符串。
+        /// </summary>
+        public static string ProxyButtonContent {
+            get {
+                return ResourceManager.GetString("ProxyButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click to launch a local proxy 的本地化字符串。
+        /// </summary>
+        public static string ProxyButtonToolTip {
+            get {
+                return ResourceManager.GetString("ProxyButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Fill in a Chromium-based browser path 的本地化字符串。
         /// </summary>
         public static string SettingsBoxBrowserPathToolTip {

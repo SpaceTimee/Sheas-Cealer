@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Security.Principal;
+using System.Text.RegularExpressions;
 
 namespace Sheas_Cealer.Consts;
 
@@ -6,6 +7,8 @@ internal partial class MainConst : MainMultilangConst
 {
     internal enum SettingsMode
     { BrowserPathMode, UpstreamUrlMode, ExtraArgsMode };
+
+    public static bool IsAdmin => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 
     internal static string DefaultUpstreamUrl => "https://gitlab.com/SpaceTimee/Cealing-Host/raw/main/Cealing-Host.json";
 

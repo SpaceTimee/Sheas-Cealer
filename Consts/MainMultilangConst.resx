@@ -141,6 +141,12 @@
   <data name="ExtraArgsSettingsModeName" xml:space="preserve">
     <value>Extra Args</value>
   </data>
+  <data name="ProxyButtonContent" xml:space="preserve">
+    <value>Start Proxy</value>
+  </data>
+  <data name="ProxyButtonToolTip" xml:space="preserve">
+    <value>Click to launch a local proxy</value>
+  </data>
   <data name="SettingsBoxBrowserPathToolTip" xml:space="preserve">
     <value>Fill in a Chromium-based browser path</value>
   </data>
@@ -198,9 +204,6 @@
   <data name="_HostErrorHint" xml:space="preserve">
     <value>The args cannot be recognized, check if the hosts contain syntax errors</value>
   </data>
-  <data name="_UpstreamHostUtdHint" xml:space="preserve">
-    <value>Upstream host has been updated to the latest</value>
-  </data>
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>All processes of the selected browser will be closed before launching, do you want to continue?</value>
   </data>
@@ -209,5 +212,8 @@
   </data>
   <data name="_UpdateUpstreamHostSuccessHint" xml:space="preserve">
     <value>Update successfully</value>
+  </data>
+  <data name="_UpstreamHostUtdHint" xml:space="preserve">
+    <value>Upstream host has been updated to the latest</value>
   </data>
 </root>

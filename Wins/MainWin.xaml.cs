@@ -132,6 +132,9 @@ public partial class MainWin : Window
 
         new CommandProc(sender == null).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, ($"{CealArgs} {MainPres!.ExtraArgs}").Trim());
     }
+    private void ProxyButton_Click(object sender, RoutedEventArgs e)
+    {
+    }
 
     private void EditHostButton_Click(object sender, RoutedEventArgs e)
     {

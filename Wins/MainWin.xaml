@@ -76,20 +76,31 @@
                 </Button.Content>
             </Button>
         </Grid>
-        <Button IsDefault="True"
-                Grid.Row="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.StartButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.StartButtonToolTip}}"
-                Click="StartButton_Click" PreviewMouseDown="StartButton_PreviewMouseDown">
-            <Button.IsEnabled>
-                <MultiBinding>
-                    <MultiBinding.Converter>
-                        <convs:MainStartButtonIsEnabledConv />
-                    </MultiBinding.Converter>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-                    <Binding Path="BrowserPath" />
-                    <Binding Path="ExtraArgs" />
-                </MultiBinding>
-            </Button.IsEnabled>
-        </Button>
+            <Button IsDefault="True"
+                Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:MainConst.StartButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.StartButtonToolTip}}"
+                Click="StartButton_Click" PreviewMouseDown="StartButton_PreviewMouseDown">
+                <Button.IsEnabled>
+                    <MultiBinding>
+                        <MultiBinding.Converter>
+                            <convs:MainStartButtonIsEnabledConv />
+                        </MultiBinding.Converter>
+
+                        <Binding Path="BrowserPath" />
+                        <Binding Path="ExtraArgs" />
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
+            <Button IsEnabled="{Binding Source={x:Static consts:MainConst.IsAdmin}, Mode=OneTime}"
+                Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.ProxyButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.ProxyButtonToolTip}}"
+                Click="ProxyButton_Click" />
+        </Grid>
+
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.3*" />
@@ -102,8 +113,7 @@
             <Button x:Name="EditLocalHostButton"
                     Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditLocalHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditLocalHostButtonToolTip}}"
                     Click="EditHostButton_Click" />
-            <Button x:Name="EditUpstreamHostButton"
-                    Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditUpstreamHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditUpstreamHostButtonToolTip}}"
+            <Button Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditUpstreamHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditUpstreamHostButtonToolTip}}"
                     Click="EditHostButton_Click" />
             <Button Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:MainConst.UpdateUpstreamHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.UpdateUpstreamHostButtonToolTip}}"
                     Click="UpdateUpstreamHostButton_Click">

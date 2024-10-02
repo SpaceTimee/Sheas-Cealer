@@ -141,6 +141,12 @@
   <data name="ExtraArgsSettingsModeName" xml:space="preserve">
     <value>额外参数</value>
   </data>
+  <data name="ProxyButtonContent" xml:space="preserve">
+    <value>启动代理</value>
+  </data>
+  <data name="ProxyButtonToolTip" xml:space="preserve">
+    <value>点击启动本地代理</value>
+  </data>
   <data name="SettingsBoxBrowserPathToolTip" xml:space="preserve">
     <value>填入任意以 Chromium 为内核的浏览器路径</value>
   </data>
@@ -198,9 +204,6 @@
   <data name="_HostErrorHint" xml:space="preserve">
     <value>规则无法识别，请检查伪造规则中是否含有语法错误</value>
   </data>
-  <data name="_UpstreamHostUtdHint" xml:space="preserve">
-    <value>上游规则已经更到最新了</value>
-  </data>
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>启动前将关闭所选浏览器的所有进程，是否继续？</value>
   </data>
@@ -209,5 +212,8 @@
   </data>
   <data name="_UpdateUpstreamHostSuccessHint" xml:space="preserve">
     <value>更新已完成</value>
+  </data>
+  <data name="_UpstreamHostUtdHint" xml:space="preserve">
+    <value>上游规则已经更到最新了</value>
   </data>
 </root>
