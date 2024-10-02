@@ -113,7 +113,7 @@
                     </MultiBinding>
                 </Button.IsEnabled>
             </Button>
-            <Button Grid.Column="1" Margin="5"
+            <Button Grid.Column="1" Margin="5" d:Content="# # # #"
                 Click="NginxButton_Click">
                 <Button.IsEnabled>
                     <Binding Path="IsNginxExist">
@@ -144,7 +144,7 @@
                     </Binding>
                 </Button.ToolTip>
             </Button>
-            <Button Grid.Column="2" Margin="5"
+            <Button Grid.Column="2" Margin="5" d:Content="# # # #"
                 Click="MihomoButton_Click">
                 <Button.IsEnabled>
                     <Binding Path="IsMihomoExist">
