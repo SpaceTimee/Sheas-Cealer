@@ -156,6 +156,9 @@ public partial class MainWin : Window
             if (!Directory.Exists(tempPath))
                 Directory.CreateDirectory(tempPath);
 
+            if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                return;
+
             new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"-c nginx.conf");
         }
         else
@@ -188,6 +191,9 @@ public partial class MainWin : Window
 
             if (!configMapNode.Children.TryGetValue("mixed-port", out mihomoPortNode!) && !configMapNode.Children.TryGetValue("port", out mihomoPortNode!))
                 mihomoPortNode = "7890";
+
+            if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                return;
 
             proxyKey.SetValue("ProxyEnable", 1);
             proxyKey.SetValue("ProxyServer", "127.0.0.1:" + mihomoPortNode);

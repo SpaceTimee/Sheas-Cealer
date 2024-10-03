@@ -160,6 +160,15 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Please remember to come back and stop the proxy manually after use. Do you want to continue? 的本地化字符串。
+        /// </summary>
+        public static string _LaunchProxyPrompt {
+            get {
+                return ResourceManager.GetString("_LaunchProxyPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 There is an update available. Do you want to update upstream host? If No it will only open the upstream host page for you 的本地化字符串。
         /// </summary>
         public static string _OverrideUpstreamHostPrompt {

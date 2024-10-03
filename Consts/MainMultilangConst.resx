@@ -273,6 +273,9 @@
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>All processes of the selected browser will be closed before launching. Do you want to continue?</value>
   </data>
+  <data name="_LaunchProxyPrompt" xml:space="preserve">
+    <value>Please remember to come back and stop the proxy manually after use. Do you want to continue?</value>
+  </data>
   <data name="_OverrideUpstreamHostPrompt" xml:space="preserve">
     <value>There is an update available. Do you want to update upstream host? If No it will only open the upstream host page for you</value>
   </data>

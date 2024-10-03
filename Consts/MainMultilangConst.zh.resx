@@ -273,6 +273,9 @@
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>启动前将关闭所选浏览器的所有进程，是否继续？</value>
   </data>
+  <data name="_LaunchProxyPrompt" xml:space="preserve">
+    <value>使用完请务必记得回来手动关闭代理，是否继续?</value>
+  </data>
   <data name="_OverrideUpstreamHostPrompt" xml:space="preserve">
     <value>上游规则有更新可用，需要更新吗？否则只为你打开上游规则网页</value>
   </data>
