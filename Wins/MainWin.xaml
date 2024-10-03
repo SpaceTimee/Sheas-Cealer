@@ -115,7 +115,7 @@
                 </Button.IsEnabled>
             </Button>
             <Button Grid.Column="1" Margin="5" d:Content="# # # #"
-                Click="NginxButton_Click">
+                Click="NginxButton_Click" PreviewMouseDown="NginxButton_PreviewMouseDown">
                 <Button.IsEnabled>
                     <Binding Path="IsNginxExist">
                         <Binding.Converter>
@@ -146,7 +146,7 @@
                 </Button.ToolTip>
             </Button>
             <Button Grid.Column="2" Margin="5" d:Content="# # # #"
-                Click="MihomoButton_Click">
+                Click="MihomoButton_Click" PreviewMouseDown="MihomoButton_PreviewMouseDown">
                 <Button.IsEnabled>
                     <Binding Path="IsMihomoExist">
                         <Binding.Converter>

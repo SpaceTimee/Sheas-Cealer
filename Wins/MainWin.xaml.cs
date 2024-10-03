@@ -143,6 +143,19 @@ public partial class MainWin : Window
     }
     private void NginxButton_Click(object sender, RoutedEventArgs e)
     {
+        if (HoldButtonTimer == null || HoldButtonTimer.IsEnabled)
+            NginxButtonHoldTimer_Tick(null, null!);
+    }
+    private void NginxButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        HoldButtonTimer = new() { Interval = TimeSpan.FromSeconds(1) };
+        HoldButtonTimer.Tick += NginxButtonHoldTimer_Tick;
+        HoldButtonTimer.Start();
+    }
+    private void NginxButtonHoldTimer_Tick(object? sender, EventArgs e)
+    {
+        HoldButtonTimer?.Stop();
+
         string configPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf");
         string logsPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "logs");
         string tempPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "temp");
@@ -160,6 +173,9 @@ public partial class MainWin : Window
                 return;
 
             new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"-c nginx.conf");
+
+            if (sender == null)
+                Application.Current.Dispatcher.InvokeShutdown();
         }
         else
         {
@@ -172,6 +188,19 @@ public partial class MainWin : Window
     }
     private void MihomoButton_Click(object sender, RoutedEventArgs e)
     {
+        if (HoldButtonTimer == null || HoldButtonTimer.IsEnabled)
+            MihomoButtonHoldTimer_Tick(null, null!);
+    }
+    private void MihomoButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        HoldButtonTimer = new() { Interval = TimeSpan.FromSeconds(1) };
+        HoldButtonTimer.Tick += MihomoButtonHoldTimer_Tick;
+        HoldButtonTimer.Start();
+    }
+    private void MihomoButtonHoldTimer_Tick(object? sender, EventArgs e)
+    {
+        HoldButtonTimer?.Stop();
+
         RegistryKey proxyKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true)!;
         string configPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "config.yaml");
 
@@ -199,6 +228,9 @@ public partial class MainWin : Window
             proxyKey.SetValue("ProxyServer", "127.0.0.1:" + mihomoPortNode);
 
             new MihomoProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "-d .");
+
+            if (sender == null)
+                Application.Current.Dispatcher.InvokeShutdown();
         }
         else
         {
