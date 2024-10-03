@@ -165,11 +165,11 @@
   <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
     <value>Click to launch a local Mihomo</value>
   </data>
-  <data name="MysteriousButtonContent" xml:space="preserve">
-    <value>Mysterious Button</value>
+  <data name="NoClickButtonContent" xml:space="preserve">
+    <value>No Clicking</value>
   </data>
-  <data name="MysteriousButtonToolTip" xml:space="preserve">
-    <value>Click for SURPRISE</value>
+  <data name="NoClickButtonToolTip" xml:space="preserve">
+    <value>Donot click the button</value>
   </data>
   <data name="NginxButtonIsRunningContent" xml:space="preserve">
     <value>Stop Nginx</value>

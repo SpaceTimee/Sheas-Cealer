@@ -165,11 +165,11 @@
   <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
     <value>点击启动本地 Mihomo</value>
   </data>
-  <data name="MysteriousButtonContent" xml:space="preserve">
-    <value>神秘按钮</value>
+  <data name="NoClickButtonContent" xml:space="preserve">
+    <value>不要点击</value>
   </data>
-  <data name="MysteriousButtonToolTip" xml:space="preserve">
-    <value>点击有惊喜</value>
+  <data name="NoClickButtonToolTip" xml:space="preserve">
+    <value>不要点击这个按钮</value>
   </data>
   <data name="NginxButtonIsRunningContent" xml:space="preserve">
     <value>停止 Nginx</value>

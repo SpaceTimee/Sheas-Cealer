@@ -268,24 +268,6 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Mysterious Button 的本地化字符串。
-        /// </summary>
-        public static string MysteriousButtonContent {
-            get {
-                return ResourceManager.GetString("MysteriousButtonContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Click for SURPRISE 的本地化字符串。
-        /// </summary>
-        public static string MysteriousButtonToolTip {
-            get {
-                return ResourceManager.GetString("MysteriousButtonToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Stop Nginx 的本地化字符串。
         /// </summary>
         public static string NginxButtonIsRunningContent {
@@ -318,6 +300,24 @@ namespace Sheas_Cealer.Consts {
         public static string NginxButtonIsStoppedToolTip {
             get {
                 return ResourceManager.GetString("NginxButtonIsStoppedToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No Clicking 的本地化字符串。
+        /// </summary>
+        public static string NoClickButtonContent {
+            get {
+                return ResourceManager.GetString("NoClickButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Donot click the button 的本地化字符串。
+        /// </summary>
+        public static string NoClickButtonToolTip {
+            get {
+                return ResourceManager.GetString("NoClickButtonToolTip", resourceCulture);
             }
         }
         

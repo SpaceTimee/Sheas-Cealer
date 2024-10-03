@@ -254,7 +254,7 @@ public partial class MainWin : Window
         ProcessStartInfo processStartInfo = new(confPath) { UseShellExecute = true };
         Process.Start(processStartInfo);
     }
-    private void MysteriousButton_Click(object sender, RoutedEventArgs e)
+    private void NoClickButton_Click(object sender, RoutedEventArgs e)
     {
 
     }

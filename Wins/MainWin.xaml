@@ -234,8 +234,8 @@
                     Click="EditConfButton_Click" />
             <Button Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonToolTip}}"
                     Click="EditConfButton_Click" />
-            <Button Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:MainConst.MysteriousButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.MysteriousButtonToolTip}}"
-                    Click="MysteriousButton_Click" />
+            <Button Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:MainConst.NoClickButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.NoClickButtonToolTip}}"
+                    Click="NoClickButton_Click" />
         </Grid>
     </Grid>
 </Window>
