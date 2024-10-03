@@ -79,7 +79,7 @@
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
                 <ColumnDefinition>
                     <ColumnDefinition.Width>
                         <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
