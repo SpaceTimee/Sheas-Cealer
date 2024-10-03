@@ -234,8 +234,24 @@
                     Click="EditConfButton_Click" />
             <Button Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonToolTip}}"
                     Click="EditConfButton_Click" />
-            <Button Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:MainConst.NoClickButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.NoClickButtonToolTip}}"
-                    Click="NoClickButton_Click" />
+            <Button Focusable="False"
+                    Grid.Column="2" Margin="5" d:Content="# # # #"
+                    Click="NoClickButton_Click" Cursor="Hand">
+                <Button.Content>
+                    <Binding Path="IsFlashing">
+                        <Binding.Converter>
+                            <convs:MainNoClickButtonContentConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Content>
+                <Button.ToolTip>
+                    <Binding Path="IsFlashing">
+                        <Binding.Converter>
+                            <convs:MainNoClickButtonToolTipConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.ToolTip>
+            </Button>
         </Grid>
     </Grid>
 </Window>

@@ -165,12 +165,6 @@
   <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
     <value>Click to launch a local Mihomo</value>
   </data>
-  <data name="NoClickButtonContent" xml:space="preserve">
-    <value>No Clicking</value>
-  </data>
-  <data name="NoClickButtonToolTip" xml:space="preserve">
-    <value>Donot click the button</value>
-  </data>
   <data name="NginxButtonIsRunningContent" xml:space="preserve">
     <value>Stop Nginx</value>
   </data>
@@ -182,6 +176,18 @@
   </data>
   <data name="NginxButtonIsStoppedToolTip" xml:space="preserve">
     <value>Click to launch a local Nginx</value>
+  </data>
+  <data name="NoClickButtonIsFlashingContent" xml:space="preserve">
+    <value>Click Now</value>
+  </data>
+  <data name="NoClickButtonIsFlashingToolTip" xml:space="preserve">
+    <value>Click the button now</value>
+  </data>
+  <data name="NoClickButtonIsStoppedContent" xml:space="preserve">
+    <value>No Clicking</value>
+  </data>
+  <data name="NoClickButtonIsStoppedToolTip" xml:space="preserve">
+    <value>Donot click the button</value>
   </data>
   <data name="SettingsBoxBrowserPathToolTip" xml:space="preserve">
     <value>Fill in a Chromium-based browser path</value>
@@ -238,13 +244,34 @@
     <value>Browser</value>
   </data>
   <data name="_ConfErrorHint" xml:space="preserve">
-    <value>The config cannot be recognized, check if the config contain syntax errors</value>
+    <value>The config cannot be recognized. Check if the config contain syntax errors</value>
+  </data>
+  <data name="_GameClickOnceMsg" xml:space="preserve">
+    <value>I know you would do it, but nothing will actually happen. Whee.</value>
+  </data>
+  <data name="_GameClickThreeMsg" xml:space="preserve">
+    <value>Ugh, what are you doing. Please stop, I don't want to hurt anyone. Stop please, this is your last chance. Ugh, I can't control it anymore.</value>
+  </data>
+  <data name="_GameClickTwiceMsg" xml:space="preserve">
+    <value>No no no, don't click me. Sorry, I shouldn't have lied to you, I am a cursed button, and continuing to click me will bring disaster to the entire Sheas Cealer. Please believe me, this is not a game, and there are no new features here. Listen to me and use the normal functions, okay?</value>
+  </data>
+  <data name="_GameEndingMsg" xml:space="preserve">
+    <value>You defeated the evil button and saved Sheas Cealer, you are hero</value>
+  </data>
+  <data name="_GameGradeMsg" xml:space="preserve">
+    <value>Button Remaining HP.</value>
+  </data>
+  <data name="_GameReviewEndingMsg" xml:space="preserve">
+    <value>It's dead, and you're the hero of Sheas Cealer</value>
+  </data>
+  <data name="_GameStartMsg" xml:space="preserve">
+    <value>No, please kill me, I...can't control myself...</value>
   </data>
   <data name="_HostErrorHint" xml:space="preserve">
-    <value>The args cannot be recognized, check if the hosts contain syntax errors</value>
+    <value>The args cannot be recognized. Check if the hosts contain syntax errors</value>
   </data>
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
-    <value>All processes of the selected browser will be closed before launching, do you want to continue?</value>
+    <value>All processes of the selected browser will be closed before launching. Do you want to continue?</value>
   </data>
   <data name="_OverrideUpstreamHostPrompt" xml:space="preserve">
     <value>There is an update available. Do you want to update upstream host? If No it will only open the upstream host page for you</value>

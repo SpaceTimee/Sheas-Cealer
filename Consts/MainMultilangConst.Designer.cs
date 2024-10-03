@@ -70,7 +70,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 The config cannot be recognized, check if the config contain syntax errors 的本地化字符串。
+        ///   查找类似 The config cannot be recognized. Check if the config contain syntax errors 的本地化字符串。
         /// </summary>
         public static string _ConfErrorHint {
             get {
@@ -79,7 +79,70 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 The args cannot be recognized, check if the hosts contain syntax errors 的本地化字符串。
+        ///   查找类似 I know you would do it, but nothing will actually happen. Whee. 的本地化字符串。
+        /// </summary>
+        public static string _GameClickOnceMsg {
+            get {
+                return ResourceManager.GetString("_GameClickOnceMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ugh, what are you doing. Please stop, I don&apos;t want to hurt anyone. Stop please, this is your last chance. Ugh, I can&apos;t control it anymore. 的本地化字符串。
+        /// </summary>
+        public static string _GameClickThreeMsg {
+            get {
+                return ResourceManager.GetString("_GameClickThreeMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No no no, don&apos;t click me. Sorry, I shouldn&apos;t have lied to you, I am a cursed button, and continuing to click me will bring disaster to the entire Sheas Cealer. Please believe me, this is not a game, and there are no new features here. Listen to me and use the normal functions, okay? 的本地化字符串。
+        /// </summary>
+        public static string _GameClickTwiceMsg {
+            get {
+                return ResourceManager.GetString("_GameClickTwiceMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 You defeated the evil button and saved Sheas Cealer, you are hero 的本地化字符串。
+        /// </summary>
+        public static string _GameEndingMsg {
+            get {
+                return ResourceManager.GetString("_GameEndingMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Button Remaining HP. 的本地化字符串。
+        /// </summary>
+        public static string _GameGradeMsg {
+            get {
+                return ResourceManager.GetString("_GameGradeMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 It&apos;s dead, and you&apos;re the hero of Sheas Cealer 的本地化字符串。
+        /// </summary>
+        public static string _GameReviewEndingMsg {
+            get {
+                return ResourceManager.GetString("_GameReviewEndingMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No, please kill me, I...can&apos;t control myself... 的本地化字符串。
+        /// </summary>
+        public static string _GameStartMsg {
+            get {
+                return ResourceManager.GetString("_GameStartMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The args cannot be recognized. Check if the hosts contain syntax errors 的本地化字符串。
         /// </summary>
         public static string _HostErrorHint {
             get {
@@ -88,7 +151,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 All processes of the selected browser will be closed before launching, do you want to continue? 的本地化字符串。
+        ///   查找类似 All processes of the selected browser will be closed before launching. Do you want to continue? 的本地化字符串。
         /// </summary>
         public static string _KillBrowserProcessPrompt {
             get {
@@ -304,20 +367,38 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Click Now 的本地化字符串。
+        /// </summary>
+        public static string NoClickButtonIsFlashingContent {
+            get {
+                return ResourceManager.GetString("NoClickButtonIsFlashingContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click the button now 的本地化字符串。
+        /// </summary>
+        public static string NoClickButtonIsFlashingToolTip {
+            get {
+                return ResourceManager.GetString("NoClickButtonIsFlashingToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 No Clicking 的本地化字符串。
         /// </summary>
-        public static string NoClickButtonContent {
+        public static string NoClickButtonIsStoppedContent {
             get {
-                return ResourceManager.GetString("NoClickButtonContent", resourceCulture);
+                return ResourceManager.GetString("NoClickButtonIsStoppedContent", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 Donot click the button 的本地化字符串。
         /// </summary>
-        public static string NoClickButtonToolTip {
+        public static string NoClickButtonIsStoppedToolTip {
             get {
-                return ResourceManager.GetString("NoClickButtonToolTip", resourceCulture);
+                return ResourceManager.GetString("NoClickButtonIsStoppedToolTip", resourceCulture);
             }
         }
         

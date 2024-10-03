@@ -5,11 +5,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using IWshRuntimeLibrary;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using OnaCore;
 using Sheas_Cealer.Consts;
@@ -29,6 +32,8 @@ public partial class MainWin : Window
     private static readonly FileSystemWatcher HostWatcher = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-*.json") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static readonly Dictionary<string, (string hostRulesFragments, string hostResolverRulesFragments)> CealArgsFragments = [];
     private static string CealArgs = string.Empty;
+    private static int GameClickTime = 0;
+    private static int GameFlashInterval = 1000;
 
     internal MainWin(string[] args)
     {
@@ -105,7 +110,7 @@ public partial class MainWin : Window
 
     private void StartButton_Click(object sender, RoutedEventArgs e)
     {
-        if (HoldButtonTimer!.IsEnabled)
+        if (HoldButtonTimer == null || HoldButtonTimer.IsEnabled)
             StartButtonHoldTimer_Tick(null, null!);
     }
     private void StartButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -116,7 +121,7 @@ public partial class MainWin : Window
     }
     private void StartButtonHoldTimer_Tick(object? sender, EventArgs e)
     {
-        HoldButtonTimer!.Stop();
+        HoldButtonTimer?.Stop();
 
         if (string.IsNullOrWhiteSpace(CealArgs))
             throw new Exception(MainConst._HostErrorHint);
@@ -254,9 +259,64 @@ public partial class MainWin : Window
         ProcessStartInfo processStartInfo = new(confPath) { UseShellExecute = true };
         Process.Start(processStartInfo);
     }
-    private void NoClickButton_Click(object sender, RoutedEventArgs e)
+    private async void NoClickButton_Click(object sender, RoutedEventArgs e)
     {
+        if (GameFlashInterval <= 10)
+        {
+            MessageBox.Show(MainConst._GameReviewEndingMsg);
+            return;
+        }
 
+        ++GameClickTime;
+
+        switch (GameClickTime)
+        {
+            case 1:
+                MessageBox.Show(MainConst._GameClickOnceMsg);
+                return;
+            case 2:
+                MessageBox.Show(MainConst._GameClickTwiceMsg);
+                return;
+            case 3:
+                MessageBox.Show(MainConst._GameClickThreeMsg);
+                return;
+        }
+
+        if (!MainPres!.IsFlashing)
+        {
+            MessageBox.Show(MainConst._GameStartMsg);
+            MainPres.IsFlashing = true;
+
+            Random random = new();
+
+            while (GameFlashInterval > 10)
+            {
+                Left = random.Next(0, (int)((int)SystemParameters.PrimaryScreenWidth - ActualWidth));
+                Top = random.Next(0, (int)(SystemParameters.PrimaryScreenHeight - ActualHeight));
+
+                PaletteHelper paletteHelper = new();
+                Theme newTheme = paletteHelper.GetTheme();
+
+                newTheme.SetPrimaryColor(Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256)));
+                newTheme.SetBaseTheme(random.Next(2) == 0 ? BaseTheme.Light : BaseTheme.Dark);
+                paletteHelper.SetTheme(newTheme);
+
+                await Task.Delay(GameFlashInterval);
+            }
+
+            MainPres.IsFlashing = false;
+            MessageBox.Show(MainConst._GameEndingMsg);
+        }
+        else
+        {
+            if (GameFlashInterval > 100)
+                GameFlashInterval -= 150;
+            else if (GameFlashInterval > 10)
+                GameFlashInterval -= 30;
+
+            if (GameFlashInterval > 10)
+                MessageBox.Show($"{MainConst._GameGradeMsg} {GameFlashInterval}");
+        }
     }
 
     private void ProxyTimer_Tick(object? sender, EventArgs e)

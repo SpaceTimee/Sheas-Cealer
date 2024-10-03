@@ -92,4 +92,7 @@ internal partial class MainPres : ObservableObject
 
     [ObservableProperty]
     private bool isMihomoRunning = Process.GetProcessesByName("Cealing-Mihomo").Length != 0;
+
+    [ObservableProperty]
+    private bool isFlashing = false;
 }
