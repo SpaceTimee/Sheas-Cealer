@@ -291,7 +291,7 @@ public partial class MainWin : Window
 
             while (GameFlashInterval > 10)
             {
-                Left = random.Next(0, (int)((int)SystemParameters.PrimaryScreenWidth - ActualWidth));
+                Left = random.Next(0, (int)(SystemParameters.PrimaryScreenWidth - ActualWidth));
                 Top = random.Next(0, (int)(SystemParameters.PrimaryScreenHeight - ActualHeight));
 
                 PaletteHelper paletteHelper = new();
@@ -301,6 +301,9 @@ public partial class MainWin : Window
                 newTheme.SetBaseTheme(random.Next(2) == 0 ? BaseTheme.Light : BaseTheme.Dark);
                 paletteHelper.SetTheme(newTheme);
 
+                if (GameFlashInterval > 100)
+                    GameFlashInterval += random.Next(1, 4);
+
                 await Task.Delay(GameFlashInterval);
             }
 
@@ -309,10 +312,18 @@ public partial class MainWin : Window
         }
         else
         {
-            if (GameFlashInterval > 100)
-                GameFlashInterval -= 150;
-            else if (GameFlashInterval > 10)
-                GameFlashInterval -= 30;
+            switch (GameFlashInterval)
+            {
+                case > 250:
+                    GameFlashInterval -= 150;
+                    break;
+                case > 100:
+                    GameFlashInterval = 100;
+                    break;
+                case > 10:
+                    GameFlashInterval -= 30;
+                    break;
+            }
 
             if (GameFlashInterval > 10)
                 MessageBox.Show($"{MainConst._GameGradeMsg} {GameFlashInterval}");
