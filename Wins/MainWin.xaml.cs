@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -179,8 +181,50 @@ public partial class MainWin : Window
             if (!Directory.Exists(tempPath))
                 Directory.CreateDirectory(tempPath);
 
-            ConfWatcher.EnableRaisingEvents = false;
-            NginxConfs!.Save("nginx.conf");
+            // 生成 RSA 密钥
+            using (RSA rsa = RSA.Create(2048))
+            {
+                // 创建自签名证书请求
+                var request = new CertificateRequest("CN=CealingCert", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
+                // 设置证书的有效期
+                DateTimeOffset notBefore = DateTimeOffset.UtcNow;
+                DateTimeOffset notAfter = notBefore.AddYears(5);
+                request.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
+
+                // 设置替代名称
+                var sanBuilder = new SubjectAlternativeNameBuilder();
+                foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
+                    foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) in hostRules)
+                        foreach ((string hostIncludeDomain, string hostExcludeDomain) in hostDomainPairs)
+                        {
+                            sanBuilder.AddDnsName(hostIncludeDomain); // 添加 DNS 名称
+                        }
+                request.CertificateExtensions.Add(sanBuilder.Build());
+
+                // 生成证书
+                var certificate = request.CreateSelfSigned(notBefore, notAfter);
+
+                // 将证书保存为 pfx 文件
+                //var filePath = "MySelfSignedCert.pfx";
+                //var password = "your-password"; // 设置密码
+                //var export = certificate.Export(X509ContentType.Pfx, password);
+                //File.WriteAllBytes(filePath, export);
+
+                var certBytes = certificate.Export(X509ContentType.Cert);
+                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "cert.pem"), $"-----BEGIN CERTIFICATE-----\n{Convert.ToBase64String(certBytes, Base64FormattingOptions.InsertLineBreaks)}\n-----END CERTIFICATE-----\n");
+
+                var privateKeyBytes = rsa.ExportPkcs8PrivateKey();
+                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "key.pem"), $"-----BEGIN PRIVATE KEY-----\n{Convert.ToBase64String(privateKeyBytes, Base64FormattingOptions.InsertLineBreaks)}\n-----END PRIVATE KEY-----\n");
+
+                // 打开证书存储区
+                X509Store store = new(StoreName.Root, StoreLocation.CurrentUser);
+                store.Open(OpenFlags.ReadWrite);
+
+                // 将证书添加到存储区
+                store.Add(certificate);
+                store.Close();
+            }
 
             string hostsAppendContent = "# Cealing Nginx Start\n";
 
@@ -190,7 +234,8 @@ public partial class MainWin : Window
                     {
                         string hostIncludeDomainWithoutWildcard = hostIncludeDomain.Replace("*", string.Empty);
 
-                        if (hostIncludeDomainWithoutWildcard.StartsWith('^') || hostIncludeDomainWithoutWildcard.EndsWith('^'))
+                        if (hostIncludeDomainWithoutWildcard.StartsWith('^') || hostIncludeDomainWithoutWildcard.EndsWith('^') ||
+                            hostIncludeDomainWithoutWildcard.StartsWith('.') || hostIncludeDomainWithoutWildcard.EndsWith('.'))
                             continue;
 
                         hostsAppendContent += $"127.0.0.1 {hostIncludeDomainWithoutWildcard.Split('^', 2)[0]}\n";
@@ -202,6 +247,9 @@ public partial class MainWin : Window
             hostsAppendContent += "# Cealing Nginx End";
 
             File.AppendAllText(hostsPath, hostsAppendContent);
+
+            ConfWatcher.EnableRaisingEvents = false;
+            NginxConfs!.Save("nginx.conf");
 
             new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"-c nginx.conf");
 
@@ -488,10 +536,13 @@ public partial class MainWin : Window
             foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
                 foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) in hostRules)
                 {
+                    string serverName = "~";
+
                     foreach ((string hostIncludeDomain, string hostExcludeDomain) in hostDomainPairs)
-                        NginxConfs = NginxConfs.AddOrUpdate($"http:server[{ruleIndex}]:server_name", $"~^{hostIncludeDomain.Replace("*", ".*")}" + (!string.IsNullOrWhiteSpace(hostExcludeDomain) ? $"^({hostExcludeDomain.Replace("*", ".*")})$" : '$'));
+                        serverName += "^" + (!string.IsNullOrWhiteSpace(hostExcludeDomain) ? $"(?!{hostExcludeDomain.Replace("*", ".*")})" : string.Empty) + hostIncludeDomain.Replace("*", ".*") + "$|";
 
                     NginxConfs = NginxConfs
+                        .AddOrUpdate($"http:server[{ruleIndex}]:server_name", serverName.TrimEnd('|'))
                         .AddOrUpdate($"http:server[{ruleIndex}]:listen", "443 ssl")
                         .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate", "cert.pem")
                         .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate_key", "key.pem")
