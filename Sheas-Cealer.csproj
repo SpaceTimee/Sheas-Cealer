@@ -76,6 +76,7 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
+    <PackageReference Include="NginxConfigParser" Version="0.1.4" />
     <PackageReference Include="YamlDotNet" Version="16.1.3" />
   </ItemGroup>
 

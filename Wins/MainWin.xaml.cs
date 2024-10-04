@@ -14,12 +14,14 @@ using System.Windows.Threading;
 using IWshRuntimeLibrary;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
+using NginxConfigParser;
 using OnaCore;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Preses;
 using Sheas_Cealer.Utils;
 using YamlDotNet.RepresentationModel;
 using File = System.IO.File;
+using Key = System.Windows.Input.Key;
 
 namespace Sheas_Cealer.Wins;
 
@@ -30,8 +32,11 @@ public partial class MainWin : Window
     private static DispatcherTimer? HoldButtonTimer;
     private static readonly DispatcherTimer ProxyTimer = new() { Interval = TimeSpan.FromSeconds(0.1) };
     private static readonly FileSystemWatcher HostWatcher = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-*.json") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
-    private static readonly Dictionary<string, (string hostRulesFragments, string hostResolverRulesFragments)> CealArgsFragments = [];
+    private static readonly FileSystemWatcher ConfWatcher = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
+    private static readonly Dictionary<string, List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)>> HostRulesDict = [];
     private static string CealArgs = string.Empty;
+    private static NginxConfig? NginxConfs;
+    private static string? ExtraConfs;
     private static int GameClickTime = 0;
     private static int GameFlashInterval = 1000;
 
@@ -45,6 +50,7 @@ public partial class MainWin : Window
         ProxyTimer.Start();
 
         HostWatcher.Changed += HostWatcher_Changed;
+        ConfWatcher.Changed += ConfWatcher_Changed;
         foreach (string hostPath in Directory.GetFiles(HostWatcher.Path, HostWatcher.Filter))
             HostWatcher_Changed(null!, new(new(), Path.GetDirectoryName(hostPath)!, Path.GetFileName(hostPath)));
     }
@@ -152,7 +158,7 @@ public partial class MainWin : Window
         HoldButtonTimer.Tick += NginxButtonHoldTimer_Tick;
         HoldButtonTimer.Start();
     }
-    private void NginxButtonHoldTimer_Tick(object? sender, EventArgs e)
+    private async void NginxButtonHoldTimer_Tick(object? sender, EventArgs e)
     {
         HoldButtonTimer?.Stop();
 
@@ -172,17 +178,25 @@ public partial class MainWin : Window
             if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;
 
+            ConfWatcher.EnableRaisingEvents = false;
+            NginxConfs!.Save("nginx.conf");
+
             new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"-c nginx.conf");
+
+            await Task.Delay(2000);
+
+            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf"), ExtraConfs);
+            ConfWatcher.EnableRaisingEvents = true;
 
             if (sender == null)
                 Application.Current.Dispatcher.InvokeShutdown();
         }
         else
         {
-            foreach (Process mihomoProcess in Process.GetProcessesByName("Cealing-Nginx"))
+            foreach (Process nginxProcess in Process.GetProcessesByName("Cealing-Nginx"))
             {
-                mihomoProcess.Kill();
-                mihomoProcess.WaitForExit();
+                nginxProcess.Kill();
+                nginxProcess.WaitForExit();
             }
         }
     }
@@ -381,49 +395,81 @@ public partial class MainWin : Window
 
         try
         {
+            HostRulesDict[hostName] = [];
             string hostRulesFragments = string.Empty;
             string hostResolverRulesFragments = string.Empty;
-            int ruleIndex = 0;
 
             using FileStream hostStream = new(e.FullPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
             JsonDocumentOptions hostOptions = new() { AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip };
             JsonElement hostArray = JsonDocument.Parse(hostStream, hostOptions).RootElement;
 
-            foreach (JsonElement hostItem in hostArray.EnumerateArray())
+            foreach (JsonElement hostRule in hostArray.EnumerateArray())
             {
-                string hostSni = string.IsNullOrWhiteSpace(hostItem[1].ToString()) ? $"{hostName}{ruleIndex}" : hostItem[1].ToString();
-                string hostIp = string.IsNullOrWhiteSpace(hostItem[2].ToString()) ? "127.0.0.1" : hostItem[2].ToString();
+                List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs = [];
+                string hostSni = string.IsNullOrWhiteSpace(hostRule[1].ToString()) ? $"{hostName}{HostRulesDict[hostName].Count}" : hostRule[1].ToString();
+                string hostIp = string.IsNullOrWhiteSpace(hostRule[2].ToString()) ? "127.0.0.1" : hostRule[2].ToString();
 
-                foreach (JsonElement hostDomain in hostItem[0].EnumerateArray())
+                foreach (JsonElement hostDomain in hostRule[0].EnumerateArray())
                 {
                     if (hostDomain.ToString().StartsWith('^') || hostDomain.ToString().EndsWith('^'))
                         continue;
 
                     string[] hostDomainPair = hostDomain.ToString().Split('^', 2);
 
-                    hostRulesFragments += $"MAP {hostDomainPair[0]} {hostSni}," + (hostDomainPair.Length == 2 ? $"EXCLUDE {hostDomainPair[1]}," : string.Empty);
+                    hostDomainPairs.Add((hostDomainPair[0], hostDomainPair.Length == 2 ? hostDomainPair[1] : string.Empty));
                 }
 
-                hostResolverRulesFragments += $"MAP {hostSni} {hostIp},";
-
-                ++ruleIndex;
+                HostRulesDict[hostName].Add((hostDomainPairs, hostSni, hostIp));
             }
-
-            CealArgsFragments[hostName] = (hostRulesFragments, hostResolverRulesFragments);
         }
-        catch { CealArgsFragments.Remove(hostName); }
+        catch { HostRulesDict.Remove(hostName); }
         finally
         {
-            string hostRules = string.Empty;
-            string hostResolverRules = string.Empty;
+            string cealHostRules = string.Empty;
+            string cealHostResolverRules = string.Empty;
 
-            foreach ((string hostRulesFragments, string hostResolverRulesFragments) CealArgsFragment in CealArgsFragments.Values)
-            {
-                hostRules += CealArgsFragment.hostRulesFragments;
-                hostResolverRules += CealArgsFragment.hostResolverRulesFragments;
-            }
+            foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
+                foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) hostRule in hostRules)
+                {
+                    foreach ((string hostIncludeDomain, string hostExcludeDomain) hostDomainPair in hostRule.hostDomainPairs)
+                        cealHostRules += $"MAP {hostDomainPair.hostIncludeDomain} {hostRule.hostSni}," + (!string.IsNullOrWhiteSpace(hostDomainPair.hostExcludeDomain) ? $"EXCLUDE {hostDomainPair.hostExcludeDomain}," : string.Empty);
 
-            CealArgs = @$"/c @start .\""Uncealed-Browser.lnk"" --host-rules=""{hostRules.TrimEnd(',')}"" --host-resolver-rules=""{hostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
+                    cealHostResolverRules += $"MAP {hostRule.hostSni} {hostRule.hostIp},";
+                }
+
+            CealArgs = @$"/c @start .\""Uncealed-Browser.lnk"" --host-rules=""{cealHostRules.TrimEnd(',')}"" --host-resolver-rules=""{cealHostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
+
+            ConfWatcher_Changed(null!, new(new(), ConfWatcher.Path, ConfWatcher.Filter));
+        }
+    }
+    private void ConfWatcher_Changed(object sender, FileSystemEventArgs e)
+    {
+        if (MainConst.IsAdmin && MainPres!.IsNginxExist)
+        {
+            ExtraConfs = File.ReadAllText(e.FullPath);
+            int ruleIndex = 1;
+
+            NginxConfs = NginxConfig.Load(ExtraConfs)
+                .AddOrUpdate("worker_processes", "auto")
+                .AddOrUpdate("events:worker_connections", "10000")
+                .AddOrUpdate("http:proxy_set_header", "Host $http_host")
+                .AddOrUpdate("http:server:return", "https://$host$request_uri");
+
+            foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
+                foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) hostRule in hostRules)
+                {
+                    foreach ((string hostIncludeDomain, string hostExcludeDomain) hostDomainPair in hostRule.hostDomainPairs)
+                        NginxConfs = NginxConfs.AddOrUpdate($"http:server[{ruleIndex}]:server_name", $"~^{hostDomainPair.hostIncludeDomain.Replace("*", ".*")}" + (!string.IsNullOrWhiteSpace(hostDomainPair.hostExcludeDomain) ? $"^({hostDomainPair.hostExcludeDomain.Replace("*", ".*")})$" : '$'));
+
+                    NginxConfs = NginxConfs
+                        .AddOrUpdate($"http:server[{ruleIndex}]:listen", "443 ssl")
+                        .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate", "cert.pem")
+                        .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate_key", "key.pem")
+                        .AddOrUpdate($"http:server[{ruleIndex}]:location", "/", true)
+                        .AddOrUpdate($"http:server[{ruleIndex}]:location:proxy_pass", $"https://{hostRule.hostIp}");
+
+                    ++ruleIndex;
+                }
         }
     }
     private void MainWin_KeyDown(object sender, KeyEventArgs e)
