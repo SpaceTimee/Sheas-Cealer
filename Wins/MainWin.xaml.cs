@@ -194,6 +194,9 @@ public partial class MainWin : Window
                             continue;
 
                         hostsAppendContent += $"127.0.0.1 {hostIncludeDomainWithoutWildcard.Split('^', 2)[0]}\n";
+
+                        if (hostIncludeDomain.StartsWith('*'))
+                            hostsAppendContent += $"127.0.0.1 www.{hostIncludeDomainWithoutWildcard.Split('^', 2)[0]}\n";
                     }
 
             hostsAppendContent += "# Cealing Nginx End";
@@ -202,7 +205,7 @@ public partial class MainWin : Window
 
             new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"-c nginx.conf");
 
-            await Task.Delay(2000);
+            await Task.Delay(2500);
 
             File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf"), ExtraConfs);
             ConfWatcher.EnableRaisingEvents = true;
