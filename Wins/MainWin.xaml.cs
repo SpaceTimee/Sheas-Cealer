@@ -161,21 +161,21 @@ public partial class MainWin : Window
     {
         HoldButtonTimer?.Stop();
 
-        string configPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf");
-        string logsPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "logs");
-        string tempPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "temp");
-
         if (!MainPres!.IsNginxRunning)
         {
+            if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                return;
+
+            string configPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf");
+            string logsPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "logs");
+            string tempPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "temp");
+
             if (!File.Exists(configPath))
                 File.Create(configPath).Dispose();
             if (!Directory.Exists(logsPath))
                 Directory.CreateDirectory(logsPath);
             if (!Directory.Exists(tempPath))
                 Directory.CreateDirectory(tempPath);
-
-            if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
-                return;
 
             ConfWatcher.EnableRaisingEvents = false;
             NginxConfs!.Save("nginx.conf");
@@ -215,16 +215,20 @@ public partial class MainWin : Window
         HoldButtonTimer?.Stop();
 
         RegistryKey proxyKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true)!;
-        string configPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "config.yaml");
 
         if (!MainPres!.IsMihomoRunning)
         {
-            YamlStream configStream = [];
-            YamlMappingNode configMapNode;
-            YamlNode mihomoPortNode;
+            if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                return;
+
+            string configPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "config.yaml");
 
             if (!File.Exists(configPath))
                 File.Create(configPath).Dispose();
+
+            YamlStream configStream = [];
+            YamlMappingNode configMapNode;
+            YamlNode mihomoPortNode;
 
             configStream.Load(File.OpenText(configPath));
 
@@ -233,9 +237,6 @@ public partial class MainWin : Window
 
             if (!configMapNode.Children.TryGetValue("mixed-port", out mihomoPortNode!) && !configMapNode.Children.TryGetValue("port", out mihomoPortNode!))
                 mihomoPortNode = "7890";
-
-            if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
-                return;
 
             proxyKey.SetValue("ProxyEnable", 1);
             proxyKey.SetValue("ProxyServer", "127.0.0.1:" + mihomoPortNode);
@@ -450,7 +451,7 @@ public partial class MainWin : Window
 
             NginxConfs = NginxConfig.Load(ExtraConfs)
                 .AddOrUpdate("worker_processes", "auto")
-                .AddOrUpdate("events:worker_connections", "10000")
+                .AddOrUpdate("events:worker_connections", "65536")
                 .AddOrUpdate("http:proxy_set_header", "Host $http_host")
                 .AddOrUpdate("http:server:return", "https://$host$request_uri");
 
