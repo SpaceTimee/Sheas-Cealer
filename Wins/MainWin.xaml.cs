@@ -161,6 +161,8 @@ public partial class MainWin : Window
     {
         HoldButtonTimer?.Stop();
 
+        string hostsPath = Path.Combine(Registry.LocalMachine.OpenSubKey(@"\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DataBasePath")?.GetValue("DataBasePath", null)?.ToString() ?? @"C:\Windows\System32\drivers\etc", "hosts");
+
         if (!MainPres!.IsNginxRunning)
         {
             if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
@@ -180,6 +182,24 @@ public partial class MainWin : Window
             ConfWatcher.EnableRaisingEvents = false;
             NginxConfs!.Save("nginx.conf");
 
+            string hostsAppendContent = "# Cealing Nginx Start\n";
+
+            foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
+                foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) in hostRules)
+                    foreach ((string hostIncludeDomain, string hostExcludeDomain) in hostDomainPairs)
+                    {
+                        string hostIncludeDomainWithoutWildcard = hostIncludeDomain.Replace("*", string.Empty);
+
+                        if (hostIncludeDomainWithoutWildcard.StartsWith('^') || hostIncludeDomainWithoutWildcard.EndsWith('^'))
+                            continue;
+
+                        hostsAppendContent += $"127.0.0.1 {hostIncludeDomainWithoutWildcard.Split('^', 2)[0]}\n";
+                    }
+
+            hostsAppendContent += "# Cealing Nginx End";
+
+            File.AppendAllText(hostsPath, hostsAppendContent);
+
             new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"-c nginx.conf");
 
             await Task.Delay(2000);
@@ -192,6 +212,13 @@ public partial class MainWin : Window
         }
         else
         {
+            string hostsContent = File.ReadAllText(hostsPath);
+            int cealingNginxStartIndex = hostsContent.IndexOf("# Cealing Nginx Start\n");
+            int cealingNginxEndIndex = hostsContent.LastIndexOf("# Cealing Nginx End");
+
+            if (cealingNginxStartIndex != -1 && cealingNginxEndIndex != -1)
+                File.WriteAllText(hostsPath, hostsContent.Remove(cealingNginxStartIndex, cealingNginxEndIndex - cealingNginxStartIndex + "# Cealing Nginx End".Length));
+
             foreach (Process nginxProcess in Process.GetProcessesByName("Cealing-Nginx"))
             {
                 nginxProcess.Kill();
