@@ -72,9 +72,9 @@ namespace Sheas_Cealer.Consts {
         /// <summary>
         ///   查找类似 The config cannot be recognized. Check if the config contain syntax errors 的本地化字符串。
         /// </summary>
-        public static string _ConfErrorHint {
+        public static string _ConfErrorMsg {
             get {
-                return ResourceManager.GetString("_ConfErrorHint", resourceCulture);
+                return ResourceManager.GetString("_ConfErrorMsg", resourceCulture);
             }
         }
         
@@ -144,9 +144,9 @@ namespace Sheas_Cealer.Consts {
         /// <summary>
         ///   查找类似 The args cannot be recognized. Check if the hosts contain syntax errors 的本地化字符串。
         /// </summary>
-        public static string _HostErrorHint {
+        public static string _HostErrorMsg {
             get {
-                return ResourceManager.GetString("_HostErrorHint", resourceCulture);
+                return ResourceManager.GetString("_HostErrorMsg", resourceCulture);
             }
         }
         
@@ -180,18 +180,18 @@ namespace Sheas_Cealer.Consts {
         /// <summary>
         ///   查找类似 Update successfully 的本地化字符串。
         /// </summary>
-        public static string _UpdateUpstreamHostSuccessHint {
+        public static string _UpdateUpstreamHostSuccessMsg {
             get {
-                return ResourceManager.GetString("_UpdateUpstreamHostSuccessHint", resourceCulture);
+                return ResourceManager.GetString("_UpdateUpstreamHostSuccessMsg", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 Upstream host has been updated to the latest 的本地化字符串。
         /// </summary>
-        public static string _UpstreamHostUtdHint {
+        public static string _UpstreamHostUtdMsg {
             get {
-                return ResourceManager.GetString("_UpstreamHostUtdHint", resourceCulture);
+                return ResourceManager.GetString("_UpstreamHostUtdMsg", resourceCulture);
             }
         }
         

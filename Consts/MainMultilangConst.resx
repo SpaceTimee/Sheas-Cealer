@@ -243,7 +243,7 @@
   <data name="_BrowserPathDialogFilterFileType" xml:space="preserve">
     <value>Browser</value>
   </data>
-  <data name="_ConfErrorHint" xml:space="preserve">
+  <data name="_ConfErrorMsg" xml:space="preserve">
     <value>The config cannot be recognized. Check if the config contain syntax errors</value>
   </data>
   <data name="_GameClickOnceMsg" xml:space="preserve">
@@ -267,7 +267,7 @@
   <data name="_GameStartMsg" xml:space="preserve">
     <value>No, please kill me, I...can't control myself...</value>
   </data>
-  <data name="_HostErrorHint" xml:space="preserve">
+  <data name="_HostErrorMsg" xml:space="preserve">
     <value>The args cannot be recognized. Check if the hosts contain syntax errors</value>
   </data>
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
@@ -279,10 +279,10 @@
   <data name="_OverrideUpstreamHostPrompt" xml:space="preserve">
     <value>There is an update available. Do you want to update upstream host? If No it will only open the upstream host page for you</value>
   </data>
-  <data name="_UpdateUpstreamHostSuccessHint" xml:space="preserve">
+  <data name="_UpdateUpstreamHostSuccessMsg" xml:space="preserve">
     <value>Update successfully</value>
   </data>
-  <data name="_UpstreamHostUtdHint" xml:space="preserve">
+  <data name="_UpstreamHostUtdMsg" xml:space="preserve">
     <value>Upstream host has been updated to the latest</value>
   </data>
 </root>

@@ -129,7 +129,7 @@ public partial class MainWin : Window
         HoldButtonTimer?.Stop();
 
         if (string.IsNullOrWhiteSpace(CealArgs))
-            throw new Exception(MainConst._HostErrorHint);
+            throw new Exception(MainConst._HostErrorMsg);
         if (MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
             return;
 
@@ -229,7 +229,7 @@ public partial class MainWin : Window
             configStream.Load(File.OpenText(configPath));
 
             try { configMapNode = (YamlMappingNode)configStream.Documents[0].RootNode; }
-            catch { throw new Exception(MainConst._ConfErrorHint); }
+            catch { throw new Exception(MainConst._ConfErrorMsg); }
 
             if (!configMapNode.Children.TryGetValue("mixed-port", out mihomoPortNode!) && !configMapNode.Children.TryGetValue("port", out mihomoPortNode!))
                 mihomoPortNode = "7890";
@@ -282,14 +282,14 @@ public partial class MainWin : Window
         oldUpstreamHostString = File.ReadAllText(oldUpstreamHostPath);
 
         if (oldUpstreamHostString.Replace("\r", string.Empty) == newUpstreamHostString)
-            MessageBox.Show(MainConst._UpstreamHostUtdHint);
+            MessageBox.Show(MainConst._UpstreamHostUtdMsg);
         else
         {
             MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideUpstreamHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
             if (overrideOptionResult == MessageBoxResult.Yes)
             {
                 File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-Upstream.json"), newUpstreamHostString);
-                MessageBox.Show(MainConst._UpdateUpstreamHostSuccessHint);
+                MessageBox.Show(MainConst._UpdateUpstreamHostSuccessMsg);
             }
             else if (overrideOptionResult == MessageBoxResult.No)
                 Process.Start(new ProcessStartInfo(newUpstreamHostUrl) { UseShellExecute = true });
