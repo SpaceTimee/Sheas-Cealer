@@ -21,7 +21,6 @@ using Sheas_Cealer.Preses;
 using Sheas_Cealer.Utils;
 using YamlDotNet.RepresentationModel;
 using File = System.IO.File;
-using Key = System.Windows.Input.Key;
 
 namespace Sheas_Cealer.Wins;
 
@@ -429,12 +428,12 @@ public partial class MainWin : Window
             string cealHostResolverRules = string.Empty;
 
             foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
-                foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) hostRule in hostRules)
+                foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) in hostRules)
                 {
-                    foreach ((string hostIncludeDomain, string hostExcludeDomain) hostDomainPair in hostRule.hostDomainPairs)
-                        cealHostRules += $"MAP {hostDomainPair.hostIncludeDomain} {hostRule.hostSni}," + (!string.IsNullOrWhiteSpace(hostDomainPair.hostExcludeDomain) ? $"EXCLUDE {hostDomainPair.hostExcludeDomain}," : string.Empty);
+                    foreach ((string hostIncludeDomain, string hostExcludeDomain) in hostDomainPairs)
+                        cealHostRules += $"MAP {hostIncludeDomain} {hostSni}," + (!string.IsNullOrWhiteSpace(hostExcludeDomain) ? $"EXCLUDE {hostExcludeDomain}," : string.Empty);
 
-                    cealHostResolverRules += $"MAP {hostRule.hostSni} {hostRule.hostIp},";
+                    cealHostResolverRules += $"MAP {hostSni} {hostIp},";
                 }
 
             CealArgs = @$"/c @start .\""Uncealed-Browser.lnk"" --host-rules=""{cealHostRules.TrimEnd(',')}"" --host-resolver-rules=""{cealHostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
@@ -456,17 +455,17 @@ public partial class MainWin : Window
                 .AddOrUpdate("http:server:return", "https://$host$request_uri");
 
             foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
-                foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) hostRule in hostRules)
+                foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) in hostRules)
                 {
-                    foreach ((string hostIncludeDomain, string hostExcludeDomain) hostDomainPair in hostRule.hostDomainPairs)
-                        NginxConfs = NginxConfs.AddOrUpdate($"http:server[{ruleIndex}]:server_name", $"~^{hostDomainPair.hostIncludeDomain.Replace("*", ".*")}" + (!string.IsNullOrWhiteSpace(hostDomainPair.hostExcludeDomain) ? $"^({hostDomainPair.hostExcludeDomain.Replace("*", ".*")})$" : '$'));
+                    foreach ((string hostIncludeDomain, string hostExcludeDomain) in hostDomainPairs)
+                        NginxConfs = NginxConfs.AddOrUpdate($"http:server[{ruleIndex}]:server_name", $"~^{hostIncludeDomain.Replace("*", ".*")}" + (!string.IsNullOrWhiteSpace(hostExcludeDomain) ? $"^({hostExcludeDomain.Replace("*", ".*")})$" : '$'));
 
                     NginxConfs = NginxConfs
                         .AddOrUpdate($"http:server[{ruleIndex}]:listen", "443 ssl")
                         .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate", "cert.pem")
                         .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate_key", "key.pem")
                         .AddOrUpdate($"http:server[{ruleIndex}]:location", "/", true)
-                        .AddOrUpdate($"http:server[{ruleIndex}]:location:proxy_pass", $"https://{hostRule.hostIp}");
+                        .AddOrUpdate($"http:server[{ruleIndex}]:location:proxy_pass", $"https://{hostIp}");
 
                     ++ruleIndex;
                 }

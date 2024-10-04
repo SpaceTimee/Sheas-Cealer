@@ -33,6 +33,7 @@
     <ErrorReport>none</ErrorReport>
     <NoWin32Manifest>true</NoWin32Manifest>
     <AppDesignerFolder>Props</AppDesignerFolder>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
