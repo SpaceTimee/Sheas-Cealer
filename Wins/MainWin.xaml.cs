@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
@@ -21,6 +22,7 @@ using OnaCore;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Preses;
 using Sheas_Cealer.Utils;
+using Windows.Security.Cryptography.Certificates;
 using YamlDotNet.RepresentationModel;
 using File = System.IO.File;
 
@@ -29,7 +31,7 @@ namespace Sheas_Cealer.Wins;
 public partial class MainWin : Window
 {
     private static MainPres? MainPres;
-    private static readonly HttpClient MainClient = new();
+    private static readonly HttpClient MainClient = new(new HttpClientHandler() { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator });
     private static DispatcherTimer? HoldButtonTimer;
     private static readonly DispatcherTimer ProxyTimer = new() { Interval = TimeSpan.FromSeconds(0.1) };
     private static readonly FileSystemWatcher HostWatcher = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-*.json") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
@@ -181,90 +183,49 @@ public partial class MainWin : Window
             if (!Directory.Exists(tempPath))
                 Directory.CreateDirectory(tempPath);
 
-            // 生成 RSA 密钥
-            using (RSA rsa = RSA.Create(2048))
-            {
-                // 创建自签名证书请求
-                var request = new CertificateRequest("CN=CealingCert", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            ECDsa certKey = ECDsa.Create();
 
-                // 设置证书的有效期
-                DateTimeOffset notBefore = DateTimeOffset.UtcNow;
-                DateTimeOffset notAfter = notBefore.AddYears(5);
-                request.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
+            CertificateRequest rootCertRequest = new("CN=Cealing Cert Root", certKey, HashAlgorithmName.SHA256);
+            rootCertRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
 
-                // 生成证书
-                var certificate = request.CreateSelfSigned(notBefore, notAfter);
+            X509Certificate2 rootCert = rootCertRequest.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(100));
 
-                // 将证书保存为 pfx 文件
-                //var filePath = "MySelfSignedCert.pfx";
-                //var password = "your-password"; // 设置密码
-                //var export = certificate.Export(X509ContentType.Pfx, password);
-                //File.WriteAllBytes(filePath, export);
+            CertificateRequest childCertRequest = new("CN=Cealing Cert Child", certKey, HashAlgorithmName.SHA256);
 
-                using (RSA rsa2 = RSA.Create(2048))
-                {
-                    // 创建子证书请求
-                    var request2 = new CertificateRequest(
-                        "CN=ChildCertificate",
-                        rsa2,
-                        HashAlgorithmName.SHA256,
-                        RSASignaturePadding.Pkcs1
-                    );
+            SubjectAlternativeNameBuilder childCertSanBuilder = new();
+            foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
+                foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, _, _) in hostRules)
+                    foreach ((string hostIncludeDomain, _) in hostDomainPairs)
+                    {
+                        if (hostIncludeDomain.StartsWith("*."))
+                        {
+                            childCertSanBuilder.AddDnsName("*" + hostIncludeDomain.Replace("*", string.Empty));
+                            continue;
+                        }
+                        else if (hostIncludeDomain.StartsWith('*'))
+                            childCertSanBuilder.AddDnsName("*." + hostIncludeDomain.Replace("*", string.Empty));
 
-                    // 添加扩展：基本约束 (非 CA)
-                    request2.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, true));
+                        childCertSanBuilder.AddDnsName(hostIncludeDomain.Replace("*", string.Empty));
+                    }
 
-                    // 添加扩展：密钥用法 (数字签名、密钥加密)
-                    request2.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyEncipherment, false));
+            childCertRequest.CertificateExtensions.Add(childCertSanBuilder.Build());
 
-                    //// 添加扩展：扩展密钥用法 (服务器身份验证)
-                    //request2.CertificateExtensions.Add(new X509EnhancedKeyUsageExtension(
-                    //    new OidCollection { new Oid("1.3.6.1.5.5.7.3.1") }, // OID for Server Authentication
-                    //    false));
+            X509Certificate2 childCert = childCertRequest.Create(rootCert, rootCert.NotBefore, rootCert.NotAfter, Guid.NewGuid().ToByteArray());
 
-                    // 设置替代名称
-                    var sanBuilder = new SubjectAlternativeNameBuilder();
-                    foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
-                        foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) in hostRules)
-                            foreach ((string hostIncludeDomain, string hostExcludeDomain) in hostDomainPairs)
-                            {
-                                if (hostIncludeDomain.StartsWith("*."))
-                                {
-                                    sanBuilder.AddDnsName("*" + hostIncludeDomain.Replace("*", string.Empty)); // 添加 DNS 名称
-                                    continue;
-                                }
-                                else if (hostIncludeDomain.StartsWith('*'))
-                                    sanBuilder.AddDnsName("*." + hostIncludeDomain.Replace("*", string.Empty)); // 添加 DNS 名称
+            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "cert.pem"), childCert.ExportCertificatePem());
+            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "key.pem"), certKey.ExportPkcs8PrivateKeyPem());
 
-                                sanBuilder.AddDnsName(hostIncludeDomain.Replace("*", string.Empty)); // 添加 DNS 名称
-                            }
+            using X509Store certStore = new(StoreName.Root, StoreLocation.CurrentUser, OpenFlags.ReadWrite);
+            bool isCertExist = false;
+            
+            foreach (X509Certificate2 cert in certStore.Certificates)
+                if (cert.Subject == "CN=Cealing Cert Root")
+                    isCertExist = true;
 
-                    request2.CertificateExtensions.Add(sanBuilder.Build());
+            if (!isCertExist)
+                certStore.Add(rootCert);
 
-                    // 设置子证书的有效期为 5 年
-                    DateTimeOffset notBefore2 = DateTimeOffset.UtcNow;
-                    DateTimeOffset notAfter2 = notBefore2.AddYears(5);
-
-                    // 使用根证书签发子证书
-                    var childCert = request2.Create(certificate, notBefore2, notAfter2, Guid.NewGuid().ToByteArray());
-
-                    var certBytes = childCert.Export(X509ContentType.Cert);
-                    File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "cert.pem"), $"-----BEGIN CERTIFICATE-----\n{Convert.ToBase64String(certBytes, Base64FormattingOptions.InsertLineBreaks)}\n-----END CERTIFICATE-----\n");
-
-                    var privateKeyBytes = rsa2.ExportPkcs8PrivateKey();
-                    File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "key.pem"), $"-----BEGIN PRIVATE KEY-----\n{Convert.ToBase64String(privateKeyBytes, Base64FormattingOptions.InsertLineBreaks)}\n-----END PRIVATE KEY-----\n");
-                }
-
-                // 打开证书存储区
-                X509Store store = new(StoreName.Root, StoreLocation.CurrentUser);
-                store.Open(OpenFlags.ReadWrite);
-
-                // 将证书添加到存储区
-                if (!store.Certificates.Contains(certificate))
-                    store.Add(certificate);
-
-                store.Close();
-            }
+            certStore.Close();
 
             string hostsAppendContent = "# Cealing Nginx Start\n";
 
@@ -293,7 +254,17 @@ public partial class MainWin : Window
 
             new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"-c nginx.conf");
 
-            await Task.Delay(3000);
+            while (true)
+                try
+                {
+                    await Http.GetAsync<HttpResponseMessage>("https://localhost", MainClient);
+                    break;
+                }
+                catch (HttpRequestException ex) when (ex.InnerException is SocketException innerEx)
+                {
+                    if (innerEx.SocketErrorCode != SocketError.ConnectionRefused)
+                        break;
+                }
 
             File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf"), ExtraConfs);
             ConfWatcher.EnableRaisingEvents = true;
@@ -580,7 +551,7 @@ public partial class MainWin : Window
                     string serverName = "~";
 
                     foreach ((string hostIncludeDomain, string hostExcludeDomain) in hostDomainPairs)
-                        serverName += "^" + (!string.IsNullOrWhiteSpace(hostExcludeDomain) ? $"(?!{hostExcludeDomain.Replace("*", ".*").Replace(".", "\\.")})" : string.Empty) + hostIncludeDomain.Replace("*", ".*").Replace(".", "\\.") + "$|";
+                        serverName += "^" + (!string.IsNullOrWhiteSpace(hostExcludeDomain) ? $"(?!{hostExcludeDomain.Replace(".", "\\.").Replace("*", ".*")})" : string.Empty) + hostIncludeDomain.Replace(".", "\\.").Replace("*", ".*") + "$|";
 
                     NginxConfs = NginxConfs
                         .AddOrUpdate($"http:server[{ruleIndex}]:server_name", serverName.TrimEnd('|'))
