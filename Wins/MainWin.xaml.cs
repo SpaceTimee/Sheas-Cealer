@@ -22,7 +22,6 @@ using OnaCore;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Preses;
 using Sheas_Cealer.Utils;
-using Windows.Security.Cryptography.Certificates;
 using YamlDotNet.RepresentationModel;
 using File = System.IO.File;
 
@@ -183,14 +182,14 @@ public partial class MainWin : Window
             if (!Directory.Exists(tempPath))
                 Directory.CreateDirectory(tempPath);
 
-            ECDsa certKey = ECDsa.Create();
+            RSA certKey = RSA.Create(2048);
 
-            CertificateRequest rootCertRequest = new("CN=Cealing Cert Root", certKey, HashAlgorithmName.SHA256);
-            rootCertRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
+            CertificateRequest rootCertRequest = new("CN=Cealing Cert Root", certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            rootCertRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, false));
 
             X509Certificate2 rootCert = rootCertRequest.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(100));
 
-            CertificateRequest childCertRequest = new("CN=Cealing Cert Child", certKey, HashAlgorithmName.SHA256);
+            CertificateRequest childCertRequest = new("CN=Cealing Cert Child", certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
             SubjectAlternativeNameBuilder childCertSanBuilder = new();
             foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
@@ -217,7 +216,7 @@ public partial class MainWin : Window
 
             using X509Store certStore = new(StoreName.Root, StoreLocation.CurrentUser, OpenFlags.ReadWrite);
             bool isCertExist = false;
-            
+
             foreach (X509Certificate2 cert in certStore.Certificates)
                 if (cert.Subject == "CN=Cealing Cert Root")
                     isCertExist = true;
