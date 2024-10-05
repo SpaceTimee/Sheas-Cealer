@@ -215,15 +215,12 @@ public partial class MainWin : Window
             File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "key.pem"), certKey.ExportPkcs8PrivateKeyPem());
 
             using X509Store certStore = new(StoreName.Root, StoreLocation.CurrentUser, OpenFlags.ReadWrite);
-            bool isCertExist = false;
 
             foreach (X509Certificate2 cert in certStore.Certificates)
                 if (cert.Subject == "CN=Cealing Cert Root")
-                    isCertExist = true;
+                    certStore.Remove(cert);
 
-            if (!isCertExist)
-                certStore.Add(rootCert);
-
+            certStore.Add(rootCert);
             certStore.Close();
 
             string hostsAppendContent = "# Cealing Nginx Start\n";
@@ -542,6 +539,7 @@ public partial class MainWin : Window
                 .AddOrUpdate("worker_processes", "auto")
                 .AddOrUpdate("events:worker_connections", "65536")
                 .AddOrUpdate("http:proxy_set_header", "Host $http_host")
+                .AddOrUpdate("http:proxy_ssl_server_name", "on")
                 .AddOrUpdate("http:server:return", "https://$host$request_uri");
 
             foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
@@ -557,6 +555,7 @@ public partial class MainWin : Window
                         .AddOrUpdate($"http:server[{ruleIndex}]:listen", "443 ssl")
                         .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate", "cert.pem")
                         .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate_key", "key.pem")
+                        .AddOrUpdate($"http:server[{ruleIndex}]:proxy_ssl_name", hostSni)
                         .AddOrUpdate($"http:server[{ruleIndex}]:location", "/", true)
                         .AddOrUpdate($"http:server[{ruleIndex}]:location:proxy_pass", $"https://{hostIp}");
 
