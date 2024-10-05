@@ -126,6 +126,12 @@
   <data name="BrowserPathSettingsModeName" xml:space="preserve">
     <value>Browser Path</value>
   </data>
+  <data name="EditHostsConfButtonContent" xml:space="preserve">
+    <value>Edit Hosts Conf</value>
+  </data>
+  <data name="EditHostsConfButtonToolTip" xml:space="preserve">
+    <value>Click to edit hosts conf</value>
+  </data>
   <data name="EditLocalHostButtonContent" xml:space="preserve">
     <value>Edit Local Host</value>
   </data>

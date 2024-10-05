@@ -223,6 +223,24 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Edit Hosts Conf 的本地化字符串。
+        /// </summary>
+        public static string EditHostsConfButtonContent {
+            get {
+                return ResourceManager.GetString("EditHostsConfButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click to edit hosts conf 的本地化字符串。
+        /// </summary>
+        public static string EditHostsConfButtonToolTip {
+            get {
+                return ResourceManager.GetString("EditHostsConfButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Edit Local Host 的本地化字符串。
         /// </summary>
         public static string EditLocalHostButtonContent {

@@ -421,7 +421,8 @@ public partial class MainWin : Window
     {
         Button? senderButton = sender as Button;
 
-        string confPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, senderButton == EditNginxConfButton ? "nginx.conf" : "config.yaml");
+        string confPath = senderButton == EditHostsConfButton ? Path.Combine(Registry.LocalMachine.OpenSubKey(@"\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DataBasePath")?.GetValue("DataBasePath", null)?.ToString() ?? @"C:\Windows\System32\drivers\etc", "hosts") :
+            Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, senderButton == EditNginxConfButton ? "nginx.conf" : "config.yaml");
 
         if (!File.Exists(confPath))
             File.Create(confPath).Dispose();

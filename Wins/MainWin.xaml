@@ -114,15 +114,9 @@
                     </MultiBinding>
                 </Button.IsEnabled>
             </Button>
-            <Button Grid.Column="1" Margin="5" d:Content="# # # #"
+            <Button IsEnabled="{Binding IsNginxExist}"
+                Grid.Column="1" Margin="5" d:Content="# # # #"
                 Click="NginxButton_Click" PreviewMouseDown="NginxButton_PreviewMouseDown">
-                <Button.IsEnabled>
-                    <Binding Path="IsNginxExist">
-                        <Binding.Converter>
-                            <convs:MainNginxButtonIsEnabledConv />
-                        </Binding.Converter>
-                    </Binding>
-                </Button.IsEnabled>
                 <Button.Visibility>
                     <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
                         <Binding.Converter>
@@ -145,15 +139,9 @@
                     </Binding>
                 </Button.ToolTip>
             </Button>
-            <Button Grid.Column="2" Margin="5" d:Content="# # # #"
+            <Button IsEnabled="{Binding IsMihomoExist}"
+                Grid.Column="2" Margin="5" d:Content="# # # #"
                 Click="MihomoButton_Click" PreviewMouseDown="MihomoButton_PreviewMouseDown">
-                <Button.IsEnabled>
-                    <Binding Path="IsMihomoExist">
-                        <Binding.Converter>
-                            <convs:MainMihomoButtonIsEnabledConv />
-                        </Binding.Converter>
-                    </Binding>
-                </Button.IsEnabled>
                 <Button.Visibility>
                     <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
                         <Binding.Converter>
@@ -217,9 +205,10 @@
         </Grid>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.6*" />
+                <ColumnDefinition Width="1.7*" />
+                <ColumnDefinition Width="1.6*" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="1.5*" />
             </Grid.ColumnDefinitions>
             <Grid.Visibility>
                 <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
@@ -230,12 +219,17 @@
             </Grid.Visibility>
 
             <Button x:Name="EditNginxConfButton"
+                    IsEnabled="{Binding IsNginxExist}"
                     Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditNginxConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditNginxConfButtonToolTip}}"
                     Click="EditConfButton_Click" />
-            <Button Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonToolTip}}"
+            <Button IsEnabled="{Binding IsMihomoExist}"
+                    Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonToolTip}}"
+                    Click="EditConfButton_Click" />
+            <Button x:Name="EditHostsConfButton"
+                    Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditHostsConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditHostsConfButtonToolTip}}"
                     Click="EditConfButton_Click" />
             <Button Focusable="False"
-                    Grid.Column="2" Margin="5" d:Content="# # # #"
+                    Grid.Column="3" Margin="5" d:Content="# # # #"
                     Click="NoClickButton_Click" Cursor="Hand">
                 <Button.Content>
                     <Binding Path="IsFlashing">

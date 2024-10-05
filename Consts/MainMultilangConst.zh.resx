@@ -126,6 +126,12 @@
   <data name="BrowserPathSettingsModeName" xml:space="preserve">
     <value>文件路径</value>
   </data>
+  <data name="EditHostsConfButtonContent" xml:space="preserve">
+    <value>编辑 Hosts 配置</value>
+  </data>
+  <data name="EditHostsConfButtonToolTip" xml:space="preserve">
+    <value>点击编辑 Hosts 配置</value>
+  </data>
   <data name="EditLocalHostButtonContent" xml:space="preserve">
     <value>编辑本地规则</value>
   </data>
@@ -265,7 +271,7 @@
     <value>它死了，你是 Sheas Cealer 的英雄</value>
   </data>
   <data name="_GameStartMsg" xml:space="preserve">
-    <value>不，求你杀了我，我...控制不住自己了...</value>
+    <value>不，求你杀了我，我...控制不住了...</value>
   </data>
   <data name="_HostErrorMsg" xml:space="preserve">
     <value>规则无法识别，请检查伪造规则中是否含有语法错误</value>
