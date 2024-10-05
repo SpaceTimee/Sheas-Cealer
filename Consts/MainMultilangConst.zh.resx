@@ -154,25 +154,25 @@
     <value>额外参数</value>
   </data>
   <data name="MihomoButtonIsRunningContent" xml:space="preserve">
-    <value>停止 Mihomo</value>
+    <value>停止全局净化</value>
   </data>
   <data name="MihomoButtonIsRunningToolTip" xml:space="preserve">
     <value>点击停止本地 Mihomo</value>
   </data>
   <data name="MihomoButtonIsStoppedContent" xml:space="preserve">
-    <value>启动 Mihomo</value>
+    <value>启动全局净化</value>
   </data>
   <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
     <value>点击启动本地 Mihomo</value>
   </data>
   <data name="NginxButtonIsRunningContent" xml:space="preserve">
-    <value>停止 Nginx</value>
+    <value>停止全局伪造</value>
   </data>
   <data name="NginxButtonIsRunningToolTip" xml:space="preserve">
     <value>点击停止 Nginx</value>
   </data>
   <data name="NginxButtonIsStoppedContent" xml:space="preserve">
-    <value>启动 Nginx</value>
+    <value>启动全局伪造</value>
   </data>
   <data name="NginxButtonIsStoppedToolTip" xml:space="preserve">
     <value>点击启动本地 Nginx</value>

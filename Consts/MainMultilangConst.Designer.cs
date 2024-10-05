@@ -304,7 +304,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Stop Mihomo 的本地化字符串。
+        ///   查找类似 Stop Global Purging 的本地化字符串。
         /// </summary>
         public static string MihomoButtonIsRunningContent {
             get {
@@ -322,7 +322,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Start Mihomo 的本地化字符串。
+        ///   查找类似 Start Global Purging 的本地化字符串。
         /// </summary>
         public static string MihomoButtonIsStoppedContent {
             get {
@@ -340,7 +340,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Stop Nginx 的本地化字符串。
+        ///   查找类似 Stop Global Cealing 的本地化字符串。
         /// </summary>
         public static string NginxButtonIsRunningContent {
             get {
@@ -358,7 +358,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Start Nginx 的本地化字符串。
+        ///   查找类似 Start Global Cealing 的本地化字符串。
         /// </summary>
         public static string NginxButtonIsStoppedContent {
             get {

@@ -154,25 +154,25 @@
     <value>Extra Args</value>
   </data>
   <data name="MihomoButtonIsRunningContent" xml:space="preserve">
-    <value>Stop Mihomo</value>
+    <value>Stop Global Purging</value>
   </data>
   <data name="MihomoButtonIsRunningToolTip" xml:space="preserve">
     <value>Click to stop the local Mihomo</value>
   </data>
   <data name="MihomoButtonIsStoppedContent" xml:space="preserve">
-    <value>Start Mihomo</value>
+    <value>Start Global Purging</value>
   </data>
   <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
     <value>Click to launch a local Mihomo</value>
   </data>
   <data name="NginxButtonIsRunningContent" xml:space="preserve">
-    <value>Stop Nginx</value>
+    <value>Stop Global Cealing</value>
   </data>
   <data name="NginxButtonIsRunningToolTip" xml:space="preserve">
     <value>Click to stop the local Nginx</value>
   </data>
   <data name="NginxButtonIsStoppedContent" xml:space="preserve">
-    <value>Start Nginx</value>
+    <value>Start Global Cealing</value>
   </data>
   <data name="NginxButtonIsStoppedToolTip" xml:space="preserve">
     <value>Click to launch a local Nginx</value>
