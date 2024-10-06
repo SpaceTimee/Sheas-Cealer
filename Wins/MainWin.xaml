@@ -228,9 +228,18 @@
             <Button Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditUpstreamHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditUpstreamHostButtonToolTip}}"
                     Click="EditHostButton_Click" />
             <Button x:Name="EditNginxConfButton"
-                    IsEnabled="{Binding IsNginxExist}"
                     Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditNginxConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditNginxConfButtonToolTip}}"
                     Click="EditConfButton_Click">
+                <Button.IsEnabled>
+                    <MultiBinding>
+                        <MultiBinding.Converter>
+                            <convs:MainProxyButtonIsEnabledConv />
+                        </MultiBinding.Converter>
+
+                        <Binding Path="IsNginxExist" />
+                        <Binding Path="IsNginxIniting" />
+                    </MultiBinding>
+                </Button.IsEnabled>
                 <Button.Visibility>
                     <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
                         <Binding.Converter>
@@ -239,9 +248,18 @@
                     </Binding>
                 </Button.Visibility>
             </Button>
-            <Button IsEnabled="{Binding IsMihomoExist}"
-                    Grid.Column="3" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonToolTip}}"
+            <Button Grid.Column="3" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonToolTip}}"
                     Click="EditConfButton_Click">
+                <Button.IsEnabled>
+                    <MultiBinding>
+                        <MultiBinding.Converter>
+                            <convs:MainProxyButtonIsEnabledConv />
+                        </MultiBinding.Converter>
+
+                        <Binding Path="IsMihomoExist" />
+                        <Binding Path="IsMihomoIniting" />
+                    </MultiBinding>
+                </Button.IsEnabled>
                 <Button.Visibility>
                     <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
                         <Binding.Converter>

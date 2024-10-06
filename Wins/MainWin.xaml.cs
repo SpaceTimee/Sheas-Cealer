@@ -362,6 +362,18 @@ public partial class MainWin : Window
         ProcessStartInfo processStartInfo = new(hostPath) { UseShellExecute = true };
         Process.Start(processStartInfo);
     }
+    private void EditConfButton_Click(object sender, RoutedEventArgs e)
+    {
+        Button? senderButton = sender as Button;
+        string confPath = senderButton == EditHostsConfButton ? MainConst.HostsConfPath :
+            senderButton == EditNginxConfButton ? MainConst.NginxConfPath : MainConst.MihomoConfPath;
+
+        if (!File.Exists(confPath))
+            File.Create(confPath).Dispose();
+
+        ProcessStartInfo processStartInfo = new(confPath) { UseShellExecute = true };
+        Process.Start(processStartInfo);
+    }
     private async void UpdateUpstreamHostButton_Click(object sender, RoutedEventArgs e)
     {
         string newUpstreamHostUrl = (MainPres!.UpstreamUrl.StartsWith("http://") || MainPres!.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres!.UpstreamUrl;
@@ -388,21 +400,8 @@ public partial class MainWin : Window
                 Process.Start(new ProcessStartInfo(newUpstreamHostUrl) { UseShellExecute = true });
         }
     }
+
     private void ThemesButton_Click(object sender, RoutedEventArgs e) => MainPres!.IsLightTheme = MainPres.IsLightTheme.HasValue ? MainPres.IsLightTheme.Value ? null : true : false;
-    private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWin().ShowDialog();
-
-    private void EditConfButton_Click(object sender, RoutedEventArgs e)
-    {
-        Button? senderButton = sender as Button;
-        string confPath = senderButton == EditHostsConfButton ? MainConst.HostsConfPath :
-            senderButton == EditNginxConfButton ? MainConst.NginxConfPath : MainConst.MihomoConfPath;
-
-        if (!File.Exists(confPath))
-            File.Create(confPath).Dispose();
-
-        ProcessStartInfo processStartInfo = new(confPath) { UseShellExecute = true };
-        Process.Start(processStartInfo);
-    }
     private async void NoClickButton_Click(object sender, RoutedEventArgs e)
     {
         if (GameFlashInterval <= 10)
@@ -473,6 +472,7 @@ public partial class MainWin : Window
                 MessageBox.Show($"{MainConst._GameGradeMsg} {GameFlashInterval}");
         }
     }
+    private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWin().ShowDialog();
 
     private void ProxyTimer_Tick(object? sender, EventArgs e)
     {
