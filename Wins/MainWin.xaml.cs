@@ -35,11 +35,14 @@ public partial class MainWin : Window
     private static DispatcherTimer? HoldButtonTimer;
     private static readonly DispatcherTimer ProxyTimer = new() { Interval = TimeSpan.FromSeconds(0.1) };
     private static readonly FileSystemWatcher HostWatcher = new(Path.GetDirectoryName(MainConst.CealingHostPath)!, Path.GetFileName(MainConst.CealingHostPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
-    private static readonly FileSystemWatcher ConfWatcher = new(Path.GetDirectoryName(MainConst.NginxConfPath)!, Path.GetFileName(MainConst.NginxConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
+    private static readonly FileSystemWatcher NginxConfWatcher = new(Path.GetDirectoryName(MainConst.NginxConfPath)!, Path.GetFileName(MainConst.NginxConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
+    private static readonly FileSystemWatcher MihomoConfWatcher = new(Path.GetDirectoryName(MainConst.MihomoConfPath)!, Path.GetFileName(MainConst.MihomoConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static readonly Dictionary<string, List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)>> HostRulesDict = [];
     private static string CealArgs = string.Empty;
     private static NginxConfig? NginxConfs;
-    private static string? ExtraConfs;
+    private static string? ExtraNginxConfs;
+    private static string? MihomoConfs;
+    private static string? ExtraMihomoConfs;
     private static int GameClickTime = 0;
     private static int GameFlashInterval = 1000;
 
@@ -50,16 +53,26 @@ public partial class MainWin : Window
         DataContext = MainPres = new(args);
 
         ProxyTimer.Tick += ProxyTimer_Tick;
-        ProxyTimer.Start();
-
         HostWatcher.Changed += HostWatcher_Changed;
-        ConfWatcher.Changed += ConfWatcher_Changed;
-        foreach (string hostPath in Directory.GetFiles(HostWatcher.Path, HostWatcher.Filter))
-            HostWatcher_Changed(null!, new(new(), Path.GetDirectoryName(hostPath)!, Path.GetFileName(hostPath)));
+        NginxConfWatcher.Changed += NginxConfWatcher_Changed;
+        MihomoConfWatcher.Changed += MihomoConfWatcher_Changed;
     }
 
     protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
-    private void MainWin_Loaded(object sender, RoutedEventArgs e) => SettingsBox.Focus();
+    private async void MainWin_Loaded(object sender, RoutedEventArgs e)
+    {
+        SettingsBox.Focus();
+
+        await Task.Run(() =>
+        {
+            ProxyTimer.Start();
+
+            foreach (string hostPath in Directory.GetFiles(HostWatcher.Path, HostWatcher.Filter))
+                HostWatcher_Changed(null!, new(new(), Path.GetDirectoryName(hostPath)!, Path.GetFileName(hostPath)));
+
+            MihomoConfWatcher_Changed(null!, new(new(), MihomoConfWatcher.Path, MihomoConfWatcher.Filter));
+        });
+    }
     private void MainWin_Closing(object sender, CancelEventArgs e) => Application.Current.Shutdown();
 
     private void MainWin_DragEnter(object sender, DragEventArgs e)
@@ -236,10 +249,13 @@ public partial class MainWin : Window
             File.AppendAllText(MainConst.HostsConfPath, hostsAppendContent);
 
             MainPres.IsNginxIniting = true;
-            ConfWatcher.EnableRaisingEvents = false;
+            NginxConfWatcher.EnableRaisingEvents = false;
             NginxConfs!.Save(MainConst.NginxConfPath);
 
-            new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @$"-c ""{MainConst.NginxConfPath}""");
+            await Task.Run(() =>
+            {
+                new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @$"-c ""{MainConst.NginxConfPath}""");
+            });
 
             while (true)
             {
@@ -258,8 +274,8 @@ public partial class MainWin : Window
                     break;
             }
 
-            File.WriteAllText(MainConst.NginxConfPath, ExtraConfs);
-            ConfWatcher.EnableRaisingEvents = true;
+            File.WriteAllText(MainConst.NginxConfPath, ExtraNginxConfs);
+            NginxConfWatcher.EnableRaisingEvents = true;
             MainPres.IsNginxIniting = false;
 
             if (sender == null)
@@ -294,30 +310,14 @@ public partial class MainWin : Window
             if (!File.Exists(MainConst.MihomoConfPath))
                 File.Create(MainConst.MihomoConfPath).Dispose();
 
-            string extraConfs = File.ReadAllText(MainConst.MihomoConfPath);
-            Dictionary<string, object> mihomoConfs = new DeserializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Deserialize<Dictionary<string, object>>(extraConfs) ?? [];
-
-            mihomoConfs["mixed-port"] = 7880;
-            mihomoConfs["dns"] = new
-            {
-                enable = true,
-                listen = ":53",
-                enhancedMode = "redir-host",
-                nameserver = new[] { "https://doh.apad.pro/dns-query" }
-            };
-            mihomoConfs["tun"] = new
-            {
-                enable = true,
-                stack = "system",
-                autoRoute = true,
-                autoDetectInterface = true,
-                dnsHijack = new[] { "any:53", "tcp://any:53" }
-            };
-
             MainPres.IsMihomoIniting = true;
-            File.WriteAllText(MainConst.MihomoConfPath, new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfs));
+            MihomoConfWatcher.EnableRaisingEvents = false;
+            File.WriteAllText(MainConst.MihomoConfPath, MihomoConfs);
 
-            new MihomoProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @$"-d ""{Path.GetDirectoryName(MainConst.MihomoConfPath)}""");
+            await Task.Run(() =>
+            {
+                new MihomoProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @$"-d ""{Path.GetDirectoryName(MainConst.MihomoConfPath)}""");
+            });
 
             while (true)
             {
@@ -336,7 +336,8 @@ public partial class MainWin : Window
                     break;
             }
 
-            File.WriteAllText(MainConst.MihomoConfPath, extraConfs);
+            File.WriteAllText(MainConst.MihomoConfPath, ExtraMihomoConfs);
+            MihomoConfWatcher.EnableRaisingEvents = true;
             MainPres.IsMihomoIniting = false;
 
             if (sender == null)
@@ -531,17 +532,24 @@ public partial class MainWin : Window
 
             CealArgs = @$"/c @start .\""Uncealed-Browser.lnk"" --host-rules=""{cealHostRules.TrimEnd(',')}"" --host-resolver-rules=""{cealHostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
 
-            ConfWatcher_Changed(null!, new(new(), ConfWatcher.Path, ConfWatcher.Filter));
+            NginxConfWatcher_Changed(null!, new(new(), NginxConfWatcher.Path, NginxConfWatcher.Filter));
         }
     }
-    private void ConfWatcher_Changed(object sender, FileSystemEventArgs e)
+    private void NginxConfWatcher_Changed(object sender, FileSystemEventArgs e)
     {
         if (MainConst.IsAdmin && MainPres!.IsNginxExist)
         {
-            ExtraConfs = File.ReadAllText(e.FullPath);
+            if (!File.Exists(MainConst.NginxConfPath))
+                File.Create(MainConst.NginxConfPath).Dispose();
+            if (!Directory.Exists(MainConst.NginxLogsPath))
+                Directory.CreateDirectory(MainConst.NginxLogsPath);
+            if (!Directory.Exists(MainConst.NginxTempPath))
+                Directory.CreateDirectory(MainConst.NginxTempPath);
+
+            ExtraNginxConfs = File.ReadAllText(e.FullPath);
             int ruleIndex = 1;
 
-            NginxConfs = NginxConfig.Load(ExtraConfs)
+            NginxConfs = NginxConfig.Load(ExtraNginxConfs)
                 .AddOrUpdate("worker_processes", "auto")
                 .AddOrUpdate("events:worker_connections", "65536")
                 .AddOrUpdate("http:proxy_set_header", "Host $http_host")
@@ -567,6 +575,41 @@ public partial class MainWin : Window
 
                     ++ruleIndex;
                 }
+        }
+    }
+    private void MihomoConfWatcher_Changed(object sender, FileSystemEventArgs e)
+    {
+        if (MainConst.IsAdmin && MainPres!.IsMihomoExist)
+        {
+            if (!File.Exists(MainConst.MihomoConfPath))
+                File.Create(MainConst.MihomoConfPath).Dispose();
+
+            ExtraMihomoConfs = File.ReadAllText(e.FullPath);
+
+            Dictionary<string, object> mihomoConfs = new DeserializerBuilder()
+                .WithNamingConvention(HyphenatedNamingConvention.Instance)
+                .IgnoreUnmatchedProperties()
+                .Build()
+                .Deserialize<Dictionary<string, object>>(ExtraMihomoConfs) ?? [];
+
+            mihomoConfs["mixed-port"] = 7880;
+            mihomoConfs["dns"] = new
+            {
+                enable = true,
+                listen = ":53",
+                enhancedMode = "redir-host",
+                nameserver = new[] { "https://doh.apad.pro/dns-query" }
+            };
+            mihomoConfs["tun"] = new
+            {
+                enable = true,
+                stack = "system",
+                autoRoute = true,
+                autoDetectInterface = true,
+                dnsHijack = new[] { "any:53", "tcp://any:53" }
+            };
+
+            MihomoConfs = new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfs);
         }
     }
     private void MainWin_KeyDown(object sender, KeyEventArgs e)
