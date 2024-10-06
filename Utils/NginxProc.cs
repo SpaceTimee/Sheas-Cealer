@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Microsoft.Win32;
+using Sheas_Cealer.Consts;
 using SheasCore;
 
 namespace Sheas_Cealer.Utils;
@@ -11,12 +11,11 @@ internal class NginxProc : Proc
 
     public override void Process_Exited(object sender, EventArgs e)
     {
-        string hostsPath = Path.Combine(Registry.LocalMachine.OpenSubKey(@"\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DataBasePath")?.GetValue("DataBasePath", null)?.ToString() ?? @"C:\Windows\System32\drivers\etc", "hosts");
-        string hostsContent = File.ReadAllText(hostsPath);
-        int cealingNginxStartIndex = hostsContent.IndexOf("# Cealing Nginx Start\n");
-        int cealingNginxEndIndex = hostsContent.LastIndexOf("# Cealing Nginx End");
+        string hostsContent = File.ReadAllText(MainConst.HostsConfPath);
+        int cealingNginxStartIndex = hostsContent.IndexOf(MainConst.HostsConfStartMarker);
+        int cealingNginxEndIndex = hostsContent.LastIndexOf(MainConst.HostsConfEndMarker);
 
         if (cealingNginxStartIndex != -1 && cealingNginxEndIndex != -1)
-            File.WriteAllText(hostsPath, hostsContent.Remove(cealingNginxStartIndex, cealingNginxEndIndex - cealingNginxStartIndex + "# Cealing Nginx End".Length));
+            File.WriteAllText(MainConst.HostsConfPath, hostsContent.Remove(cealingNginxStartIndex, cealingNginxEndIndex - cealingNginxStartIndex + "# Cealing Nginx End".Length));
     }
 }

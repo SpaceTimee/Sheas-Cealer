@@ -35,7 +35,7 @@ public partial class MainWin : Window
     private static DispatcherTimer? HoldButtonTimer;
     private static readonly DispatcherTimer ProxyTimer = new() { Interval = TimeSpan.FromSeconds(0.1) };
     private static readonly FileSystemWatcher HostWatcher = new(Path.GetDirectoryName(MainConst.CealingHostPath)!, Path.GetFileName(MainConst.CealingHostPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
-    private static readonly FileSystemWatcher ConfWatcher = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
+    private static readonly FileSystemWatcher ConfWatcher = new(Path.GetDirectoryName(MainConst.NginxConfPath)!, Path.GetFileName(MainConst.NginxConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static readonly Dictionary<string, List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)>> HostRulesDict = [];
     private static string CealArgs = string.Empty;
     private static NginxConfig? NginxConfs;
@@ -165,23 +165,17 @@ public partial class MainWin : Window
     {
         HoldButtonTimer?.Stop();
 
-        string hostsPath = Path.Combine(Registry.LocalMachine.OpenSubKey(@"\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DataBasePath")?.GetValue("DataBasePath", null)?.ToString() ?? @"C:\Windows\System32\drivers\etc", "hosts");
-
         if (!MainPres!.IsNginxRunning)
         {
             if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;
 
-            string configPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf");
-            string logsPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "logs");
-            string tempPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "temp");
-
-            if (!File.Exists(configPath))
-                File.Create(configPath).Dispose();
-            if (!Directory.Exists(logsPath))
-                Directory.CreateDirectory(logsPath);
-            if (!Directory.Exists(tempPath))
-                Directory.CreateDirectory(tempPath);
+            if (!File.Exists(MainConst.NginxConfPath))
+                File.Create(MainConst.NginxConfPath).Dispose();
+            if (!Directory.Exists(MainConst.NginxLogsPath))
+                Directory.CreateDirectory(MainConst.NginxLogsPath);
+            if (!Directory.Exists(MainConst.NginxTempPath))
+                Directory.CreateDirectory(MainConst.NginxTempPath);
 
             RSA certKey = RSA.Create(2048);
 
@@ -212,8 +206,8 @@ public partial class MainWin : Window
 
             X509Certificate2 childCert = childCertRequest.Create(rootCert, rootCert.NotBefore, rootCert.NotAfter, Guid.NewGuid().ToByteArray());
 
-            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "cert.pem"), childCert.ExportCertificatePem());
-            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "key.pem"), certKey.ExportPkcs8PrivateKeyPem());
+            File.WriteAllText(MainConst.NginxCertPath, childCert.ExportCertificatePem());
+            File.WriteAllText(MainConst.NginxKeyPath, certKey.ExportPkcs8PrivateKeyPem());
 
             using X509Store certStore = new(StoreName.Root, StoreLocation.CurrentUser, OpenFlags.ReadWrite);
 
@@ -224,7 +218,7 @@ public partial class MainWin : Window
             certStore.Add(rootCert);
             certStore.Close();
 
-            string hostsAppendContent = "# Cealing Nginx Start\n";
+            string hostsAppendContent = MainConst.HostsConfStartMarker;
 
             foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
                 foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) in hostRules)
@@ -242,14 +236,14 @@ public partial class MainWin : Window
                             hostsAppendContent += $"127.0.0.1 www.{hostIncludeDomainWithoutWildcard.Split('^', 2)[0]}\n";
                     }
 
-            hostsAppendContent += "# Cealing Nginx End";
+            hostsAppendContent += MainConst.HostsConfEndMarker;
 
-            File.AppendAllText(hostsPath, hostsAppendContent);
+            File.AppendAllText(MainConst.HostsConfPath, hostsAppendContent);
 
             ConfWatcher.EnableRaisingEvents = false;
-            NginxConfs!.Save("nginx.conf");
+            NginxConfs!.Save(MainConst.NginxConfPath);
 
-            new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @"-c nginx.conf");
+            new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @$"-c ""{MainConst.NginxConfPath}""");
 
             while (true)
                 try
@@ -263,7 +257,7 @@ public partial class MainWin : Window
                         break;
                 }
 
-            File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf"), ExtraConfs);
+            File.WriteAllText(MainConst.NginxConfPath, ExtraConfs);
             ConfWatcher.EnableRaisingEvents = true;
 
             if (sender == null)
@@ -271,12 +265,12 @@ public partial class MainWin : Window
         }
         else
         {
-            string hostsContent = File.ReadAllText(hostsPath);
-            int cealingNginxStartIndex = hostsContent.IndexOf("# Cealing Nginx Start\n");
-            int cealingNginxEndIndex = hostsContent.LastIndexOf("# Cealing Nginx End");
+            string hostsContent = File.ReadAllText(MainConst.HostsConfPath);
+            int cealingNginxStartIndex = hostsContent.IndexOf(MainConst.HostsConfStartMarker);
+            int cealingNginxEndIndex = hostsContent.LastIndexOf(MainConst.HostsConfEndMarker);
 
             if (cealingNginxStartIndex != -1 && cealingNginxEndIndex != -1)
-                File.WriteAllText(hostsPath, hostsContent.Remove(cealingNginxStartIndex, cealingNginxEndIndex - cealingNginxStartIndex + "# Cealing Nginx End".Length));
+                File.WriteAllText(MainConst.HostsConfPath, hostsContent.Remove(cealingNginxStartIndex, cealingNginxEndIndex - cealingNginxStartIndex + "# Cealing Nginx End".Length));
 
             foreach (Process nginxProcess in Process.GetProcessesByName("Cealing-Nginx"))
             {
@@ -307,12 +301,10 @@ public partial class MainWin : Window
             if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;
 
-            string confPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "config.yaml");
+            if (!File.Exists(MainConst.MihomoConfPath))
+                File.Create(MainConst.MihomoConfPath).Dispose();
 
-            if (!File.Exists(confPath))
-                File.Create(confPath).Dispose();
-
-            string extraConfs = File.ReadAllText(confPath);
+            string extraConfs = File.ReadAllText(MainConst.MihomoConfPath);
 
             Dictionary<string, object> mihomoConfs = new DeserializerBuilder()
                 .WithNamingConvention(HyphenatedNamingConvention.Instance)
@@ -338,12 +330,12 @@ public partial class MainWin : Window
             };
             mihomoConfs["rules"] = new[] { "MATCH,DIRECT" };
 
-            File.WriteAllText(confPath, new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfs));
+            File.WriteAllText(MainConst.MihomoConfPath, new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfs));
 
             proxyKey.SetValue("ProxyEnable", 1);
             proxyKey.SetValue("ProxyServer", "127.0.0.1:7880");
 
-            new MihomoProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "-d .");
+            new MihomoProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @$"-d ""{Path.GetDirectoryName(MainConst.MihomoConfPath)}""");
 
             while (true)
                 try
@@ -357,7 +349,7 @@ public partial class MainWin : Window
                         break;
                 }
 
-            File.WriteAllText(confPath, extraConfs);
+            File.WriteAllText(MainConst.MihomoConfPath, extraConfs);
 
             if (sender == null)
                 Application.Current.Dispatcher.InvokeShutdown();
@@ -418,9 +410,8 @@ public partial class MainWin : Window
     private void EditConfButton_Click(object sender, RoutedEventArgs e)
     {
         Button? senderButton = sender as Button;
-
-        string confPath = senderButton == EditHostsConfButton ? Path.Combine(Registry.LocalMachine.OpenSubKey(@"\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DataBasePath")?.GetValue("DataBasePath", null)?.ToString() ?? @"C:\Windows\System32\drivers\etc", "hosts") :
-            Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, senderButton == EditNginxConfButton ? "nginx.conf" : "config.yaml");
+        string confPath = senderButton == EditHostsConfButton ? MainConst.HostsConfPath :
+            senderButton == EditNginxConfButton ? MainConst.NginxConfPath : MainConst.MihomoConfPath;
 
         if (!File.Exists(confPath))
             File.Create(confPath).Dispose();
@@ -584,8 +575,8 @@ public partial class MainWin : Window
                     NginxConfs = NginxConfs
                         .AddOrUpdate($"http:server[{ruleIndex}]:server_name", serverName.TrimEnd('|'))
                         .AddOrUpdate($"http:server[{ruleIndex}]:listen", "443 ssl")
-                        .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate", "cert.pem")
-                        .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate_key", "key.pem")
+                        .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate", Path.GetFileName(MainConst.NginxCertPath))
+                        .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate_key", Path.GetFileName(MainConst.NginxKeyPath))
                         .AddOrUpdate($"http:server[{ruleIndex}]:proxy_ssl_name", hostSni)
                         .AddOrUpdate($"http:server[{ruleIndex}]:location", "/", true)
                         .AddOrUpdate($"http:server[{ruleIndex}]:location:proxy_pass", $"https://{hostIp}");
