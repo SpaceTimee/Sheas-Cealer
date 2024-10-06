@@ -159,6 +159,9 @@
   <data name="ExtraArgsSettingsModeName" xml:space="preserve">
     <value>Extra Args</value>
   </data>
+  <data name="MihomoButtonIsInitingContent" xml:space="preserve">
+    <value>Global Purging is Initing</value>
+  </data>
   <data name="MihomoButtonIsRunningContent" xml:space="preserve">
     <value>Stop Global Purging</value>
   </data>
@@ -170,6 +173,9 @@
   </data>
   <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
     <value>Click to launch a local Mihomo</value>
+  </data>
+  <data name="NginxButtonIsInitingContent" xml:space="preserve">
+    <value>Global Cealing is Initing</value>
   </data>
   <data name="NginxButtonIsRunningContent" xml:space="preserve">
     <value>Stop Global Cealing</value>

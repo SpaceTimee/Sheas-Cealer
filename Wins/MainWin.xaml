@@ -18,7 +18,7 @@
             </Binding.Converter>
         </Binding>
     </Window.Width>
-    
+
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -123,8 +123,7 @@
                     </MultiBinding>
                 </Button.IsEnabled>
             </Button>
-            <Button IsEnabled="{Binding IsNginxExist}"
-                Grid.Column="1" Margin="5" d:Content="# # # #"
+            <Button Grid.Column="1" Margin="5" d:Content="# # # #"
                 Click="NginxButton_Click" PreviewMouseDown="NginxButton_PreviewMouseDown">
                 <Button.Visibility>
                     <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
@@ -133,12 +132,25 @@
                         </Binding.Converter>
                     </Binding>
                 </Button.Visibility>
+                <Button.IsEnabled>
+                    <MultiBinding>
+                        <MultiBinding.Converter>
+                            <convs:MainProxyButtonIsEnabledConv />
+                        </MultiBinding.Converter>
+
+                        <Binding Path="IsNginxExist" />
+                        <Binding Path="IsNginxIniting" />
+                    </MultiBinding>
+                </Button.IsEnabled>
                 <Button.Content>
-                    <Binding Path="IsNginxRunning">
-                        <Binding.Converter>
+                    <MultiBinding>
+                        <MultiBinding.Converter>
                             <convs:MainNginxButtonContentConv />
-                        </Binding.Converter>
-                    </Binding>
+                        </MultiBinding.Converter>
+
+                        <Binding Path="IsNginxRunning" />
+                        <Binding Path="IsNginxIniting" />
+                    </MultiBinding>
                 </Button.Content>
                 <Button.ToolTip>
                     <Binding Path="IsNginxRunning">
@@ -148,8 +160,7 @@
                     </Binding>
                 </Button.ToolTip>
             </Button>
-            <Button IsEnabled="{Binding IsMihomoExist}"
-                Grid.Column="2" Margin="5" d:Content="# # # #"
+            <Button Grid.Column="2" Margin="5" d:Content="# # # #"
                 Click="MihomoButton_Click" PreviewMouseDown="MihomoButton_PreviewMouseDown">
                 <Button.Visibility>
                     <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
@@ -158,12 +169,25 @@
                         </Binding.Converter>
                     </Binding>
                 </Button.Visibility>
+                <Button.IsEnabled>
+                    <MultiBinding>
+                        <MultiBinding.Converter>
+                            <convs:MainProxyButtonIsEnabledConv />
+                        </MultiBinding.Converter>
+
+                        <Binding Path="IsMihomoExist" />
+                        <Binding Path="IsMihomoIniting" />
+                    </MultiBinding>
+                </Button.IsEnabled>
                 <Button.Content>
-                    <Binding Path="IsMihomoRunning">
-                        <Binding.Converter>
+                    <MultiBinding>
+                        <MultiBinding.Converter>
                             <convs:MainMihomoButtonContentConv />
-                        </Binding.Converter>
-                    </Binding>
+                        </MultiBinding.Converter>
+
+                        <Binding Path="IsMihomoRunning" />
+                        <Binding Path="IsMihomoIniting" />
+                    </MultiBinding>
                 </Button.Content>
                 <Button.ToolTip>
                     <Binding Path="IsMihomoRunning">

@@ -322,6 +322,15 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Global Purging is Initing 的本地化字符串。
+        /// </summary>
+        public static string MihomoButtonIsInitingContent {
+            get {
+                return ResourceManager.GetString("MihomoButtonIsInitingContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Stop Global Purging 的本地化字符串。
         /// </summary>
         public static string MihomoButtonIsRunningContent {
@@ -354,6 +363,15 @@ namespace Sheas_Cealer.Consts {
         public static string MihomoButtonIsStoppedToolTip {
             get {
                 return ResourceManager.GetString("MihomoButtonIsStoppedToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Global Cealing is Initing 的本地化字符串。
+        /// </summary>
+        public static string NginxButtonIsInitingContent {
+            get {
+                return ResourceManager.GetString("NginxButtonIsInitingContent", resourceCulture);
             }
         }
         

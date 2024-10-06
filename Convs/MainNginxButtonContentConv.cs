@@ -5,14 +5,16 @@ using Sheas_Cealer.Consts;
 
 namespace Sheas_Cealer.Convs;
 
-internal class MainNginxButtonContentConv : IValueConverter
+internal class MainNginxButtonContentConv : IMultiValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        bool isNginxRunning = (bool)value;
+        bool isNginxRunning = (bool)values[0];
+        bool isNginxIniting = (bool)values[1];
 
-        return isNginxRunning ? MainConst.NginxButtonIsRunningContent : MainConst.NginxButtonIsStoppedContent;
+        return isNginxIniting ? MainConst.NginxButtonIsInitingContent :
+            isNginxRunning ? MainConst.NginxButtonIsRunningContent : MainConst.NginxButtonIsStoppedContent;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

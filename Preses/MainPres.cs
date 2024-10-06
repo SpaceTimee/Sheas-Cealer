@@ -85,10 +85,16 @@ internal partial class MainPres : ObservableObject
     private bool isNginxExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Nginx.exe"));
 
     [ObservableProperty]
+    private bool isNginxIniting = false;
+
+    [ObservableProperty]
     private bool isNginxRunning = Process.GetProcessesByName("Cealing-Nginx").Length != 0;
 
     [ObservableProperty]
     private bool isMihomoExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Mihomo.exe"));
+
+    [ObservableProperty]
+    private bool isMihomoIniting = false;
 
     [ObservableProperty]
     private bool isMihomoRunning = Process.GetProcessesByName("Cealing-Mihomo").Length != 0;

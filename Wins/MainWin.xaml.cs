@@ -169,7 +169,6 @@ public partial class MainWin : Window
         {
             if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;
-
             if (!File.Exists(MainConst.NginxConfPath))
                 File.Create(MainConst.NginxConfPath).Dispose();
             if (!Directory.Exists(MainConst.NginxLogsPath))
@@ -180,13 +179,18 @@ public partial class MainWin : Window
             RSA certKey = RSA.Create(2048);
 
             CertificateRequest rootCertRequest = new("CN=Cealing Cert Root", certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
             rootCertRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, false));
 
             X509Certificate2 rootCert = rootCertRequest.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(100));
+            using X509Store certStore = new(StoreName.Root, StoreLocation.CurrentUser, OpenFlags.ReadWrite);
+
+            certStore.Add(rootCert);
+            certStore.Close();
 
             CertificateRequest childCertRequest = new("CN=Cealing Cert Child", certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-
             SubjectAlternativeNameBuilder childCertSanBuilder = new();
+
             foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
                 foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, _, _) in hostRules)
                     foreach ((string hostIncludeDomain, _) in hostDomainPairs)
@@ -208,15 +212,6 @@ public partial class MainWin : Window
 
             File.WriteAllText(MainConst.NginxCertPath, childCert.ExportCertificatePem());
             File.WriteAllText(MainConst.NginxKeyPath, certKey.ExportPkcs8PrivateKeyPem());
-
-            using X509Store certStore = new(StoreName.Root, StoreLocation.CurrentUser, OpenFlags.ReadWrite);
-
-            foreach (X509Certificate2 cert in certStore.Certificates)
-                if (cert.Subject == "CN=Cealing Cert Root")
-                    certStore.Remove(cert);
-
-            certStore.Add(rootCert);
-            certStore.Close();
 
             string hostsAppendContent = MainConst.HostsConfStartMarker;
 
@@ -240,12 +235,14 @@ public partial class MainWin : Window
 
             File.AppendAllText(MainConst.HostsConfPath, hostsAppendContent);
 
+            MainPres.IsNginxIniting = true;
             ConfWatcher.EnableRaisingEvents = false;
             NginxConfs!.Save(MainConst.NginxConfPath);
 
             new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @$"-c ""{MainConst.NginxConfPath}""");
 
             while (true)
+            {
                 try
                 {
                     await Http.GetAsync<HttpResponseMessage>("https://localhost", MainClient);
@@ -257,27 +254,23 @@ public partial class MainWin : Window
                         break;
                 }
 
+                if (!MainPres.IsNginxRunning)
+                    break;
+            }
+
             File.WriteAllText(MainConst.NginxConfPath, ExtraConfs);
             ConfWatcher.EnableRaisingEvents = true;
+            MainPres.IsNginxIniting = false;
 
             if (sender == null)
                 Application.Current.Dispatcher.InvokeShutdown();
         }
         else
-        {
-            string hostsContent = File.ReadAllText(MainConst.HostsConfPath);
-            int cealingNginxStartIndex = hostsContent.IndexOf(MainConst.HostsConfStartMarker);
-            int cealingNginxEndIndex = hostsContent.LastIndexOf(MainConst.HostsConfEndMarker);
-
-            if (cealingNginxStartIndex != -1 && cealingNginxEndIndex != -1)
-                File.WriteAllText(MainConst.HostsConfPath, hostsContent.Remove(cealingNginxStartIndex, cealingNginxEndIndex - cealingNginxStartIndex + "# Cealing Nginx End".Length));
-
             foreach (Process nginxProcess in Process.GetProcessesByName("Cealing-Nginx"))
             {
                 nginxProcess.Kill();
                 nginxProcess.WaitForExit();
             }
-        }
     }
     private void MihomoButton_Click(object sender, RoutedEventArgs e)
     {
@@ -294,25 +287,17 @@ public partial class MainWin : Window
     {
         HoldButtonTimer?.Stop();
 
-        RegistryKey proxyKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true)!;
-
         if (!MainPres!.IsMihomoRunning)
         {
             if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;
-
             if (!File.Exists(MainConst.MihomoConfPath))
                 File.Create(MainConst.MihomoConfPath).Dispose();
 
             string extraConfs = File.ReadAllText(MainConst.MihomoConfPath);
-
-            Dictionary<string, object> mihomoConfs = new DeserializerBuilder()
-                .WithNamingConvention(HyphenatedNamingConvention.Instance)
-                .Build().Deserialize<Dictionary<string, object>>(extraConfs) ?? []; ;
+            Dictionary<string, object> mihomoConfs = new DeserializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Deserialize<Dictionary<string, object>>(extraConfs) ?? [];
 
             mihomoConfs["mixed-port"] = 7880;
-            mihomoConfs["ipv6"] = true;
-            mihomoConfs["log-level"] = "silent";
             mihomoConfs["dns"] = new
             {
                 enable = true,
@@ -328,16 +313,14 @@ public partial class MainWin : Window
                 autoDetectInterface = true,
                 dnsHijack = new[] { "any:53", "tcp://any:53" }
             };
-            mihomoConfs["rules"] = new[] { "MATCH,DIRECT" };
 
+            MainPres.IsMihomoIniting = true;
             File.WriteAllText(MainConst.MihomoConfPath, new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfs));
-
-            proxyKey.SetValue("ProxyEnable", 1);
-            proxyKey.SetValue("ProxyServer", "127.0.0.1:7880");
 
             new MihomoProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @$"-d ""{Path.GetDirectoryName(MainConst.MihomoConfPath)}""");
 
             while (true)
+            {
                 try
                 {
                     await Http.GetAsync<HttpResponseMessage>("http://localhost:7880", MainClient);
@@ -349,21 +332,22 @@ public partial class MainWin : Window
                         break;
                 }
 
+                if (!MainPres.IsMihomoRunning)
+                    break;
+            }
+
             File.WriteAllText(MainConst.MihomoConfPath, extraConfs);
+            MainPres.IsMihomoIniting = false;
 
             if (sender == null)
                 Application.Current.Dispatcher.InvokeShutdown();
         }
         else
-        {
-            proxyKey.SetValue("ProxyEnable", 0);
-
             foreach (Process mihomoProcess in Process.GetProcessesByName("Cealing-Mihomo"))
             {
                 mihomoProcess.Kill();
                 mihomoProcess.WaitForExit();
             }
-        }
     }
 
     private void EditHostButton_Click(object sender, RoutedEventArgs e)

@@ -159,6 +159,9 @@
   <data name="ExtraArgsSettingsModeName" xml:space="preserve">
     <value>额外参数</value>
   </data>
+  <data name="MihomoButtonIsInitingContent" xml:space="preserve">
+    <value>全局净化启动中</value>
+  </data>
   <data name="MihomoButtonIsRunningContent" xml:space="preserve">
     <value>停止全局净化</value>
   </data>
@@ -170,6 +173,9 @@
   </data>
   <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
     <value>点击启动本地 Mihomo</value>
+  </data>
+  <data name="NginxButtonIsInitingContent" xml:space="preserve">
+    <value>全局伪造启动中</value>
   </data>
   <data name="NginxButtonIsRunningContent" xml:space="preserve">
     <value>停止全局伪造</value>
