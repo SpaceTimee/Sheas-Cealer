@@ -20,9 +20,9 @@ internal partial class MainPres : ObservableObject
 
         BrowserPath = browserPathIndex != 0 && browserPathIndex != args.Length ? args[browserPathIndex] :
             !string.IsNullOrWhiteSpace(Settings.Default.BrowserPath) ? Settings.Default.BrowserPath :
-            (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe")?.GetValue(string.Empty, null) ??
-            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe")?.GetValue(string.Empty, null) ??
-            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\brave.exe")?.GetValue(string.Empty, null) ??
+            (Registry.LocalMachine.OpenSubKey(MainConst.EdgeBrowserRegistryPath)?.GetValue(string.Empty, null) ??
+            Registry.LocalMachine.OpenSubKey(MainConst.ChromeBrowserRegistryPath)?.GetValue(string.Empty, null) ??
+            Registry.LocalMachine.OpenSubKey(MainConst.BraveBrowserRegistryPath)?.GetValue(string.Empty, null) ??
             string.Empty).ToString()!;
 
         UpstreamUrl = upstreamUrlIndex == 0 || upstreamUrlIndex == args.Length ?
@@ -82,22 +82,22 @@ internal partial class MainPres : ObservableObject
     }
 
     [ObservableProperty]
-    private bool isNginxExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Nginx.exe"));
+    private bool isNginxExist = File.Exists(MainConst.NginxPath);
 
     [ObservableProperty]
     private bool isNginxIniting = false;
 
     [ObservableProperty]
-    private bool isNginxRunning = Process.GetProcessesByName("Cealing-Nginx").Length != 0;
+    private bool isNginxRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.NginxPath)).Length != 0;
 
     [ObservableProperty]
-    private bool isMihomoExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Mihomo.exe"));
+    private bool isMihomoExist = File.Exists(MainConst.MihomoPath);
 
     [ObservableProperty]
     private bool isMihomoIniting = false;
 
     [ObservableProperty]
-    private bool isMihomoRunning = Process.GetProcessesByName("Cealing-Mihomo").Length != 0;
+    private bool isMihomoRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)).Length != 0;
 
     [ObservableProperty]
     private bool isFlashing = false;

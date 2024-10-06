@@ -34,7 +34,7 @@ public partial class MainWin : Window
     private static readonly HttpClient MainClient = new(new HttpClientHandler() { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator });
     private static DispatcherTimer? HoldButtonTimer;
     private static readonly DispatcherTimer ProxyTimer = new() { Interval = TimeSpan.FromSeconds(0.1) };
-    private static readonly FileSystemWatcher HostWatcher = new(Path.GetDirectoryName(MainConst.CealingHostPath)!, Path.GetFileName(MainConst.CealingHostPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
+    private static readonly FileSystemWatcher CealingHostWatcher = new(Path.GetDirectoryName(MainConst.CealingHostPath)!, Path.GetFileName(MainConst.CealingHostPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static readonly FileSystemWatcher NginxConfWatcher = new(Path.GetDirectoryName(MainConst.NginxConfPath)!, Path.GetFileName(MainConst.NginxConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static readonly FileSystemWatcher MihomoConfWatcher = new(Path.GetDirectoryName(MainConst.MihomoConfPath)!, Path.GetFileName(MainConst.MihomoConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static readonly Dictionary<string, List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)>> HostRulesDict = [];
@@ -53,7 +53,7 @@ public partial class MainWin : Window
         DataContext = MainPres = new(args);
 
         ProxyTimer.Tick += ProxyTimer_Tick;
-        HostWatcher.Changed += HostWatcher_Changed;
+        CealingHostWatcher.Changed += CealingHostWatcher_Changed;
         NginxConfWatcher.Changed += NginxConfWatcher_Changed;
         MihomoConfWatcher.Changed += MihomoConfWatcher_Changed;
     }
@@ -67,10 +67,10 @@ public partial class MainWin : Window
         {
             ProxyTimer.Start();
 
-            foreach (string hostPath in Directory.GetFiles(HostWatcher.Path, HostWatcher.Filter))
-                HostWatcher_Changed(null!, new(new(), Path.GetDirectoryName(hostPath)!, Path.GetFileName(hostPath)));
+            foreach (string hostPath in Directory.GetFiles(CealingHostWatcher.Path, CealingHostWatcher.Filter))
+                CealingHostWatcher_Changed(null!, new(new(), Path.GetDirectoryName(hostPath)!, Path.GetFileName(hostPath)));
 
-            MihomoConfWatcher_Changed(null!, new(new(), MihomoConfWatcher.Path, MihomoConfWatcher.Filter));
+            MihomoConfWatcher_Changed(null!, null!);
         });
     }
     private void MainWin_Closing(object sender, CancelEventArgs e) => Application.Current.Shutdown();
@@ -150,9 +150,9 @@ public partial class MainWin : Window
         if (MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
             return;
 
-        IWshShortcut uncealedBrowserShortcut = (IWshShortcut)new WshShell().CreateShortcut(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Uncealed-Browser.lnk"));
+        IWshShortcut uncealedBrowserShortcut = (IWshShortcut)new WshShell().CreateShortcut(MainConst.UncealedBrowserPath);
         uncealedBrowserShortcut.TargetPath = MainPres!.BrowserPath;
-        uncealedBrowserShortcut.Description = "Created By Sheas Cealer";
+        uncealedBrowserShortcut.Description = MainConst.UncealedBrowserDescription;
         uncealedBrowserShortcut.Save();
 
         foreach (Process browserProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainPres.BrowserPath)))
@@ -194,7 +194,7 @@ public partial class MainWin : Window
 
             RSA certKey = RSA.Create(2048);
 
-            CertificateRequest rootCertRequest = new("CN=Cealing Cert Root", certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            CertificateRequest rootCertRequest = new(MainConst.NginxRootCertSubjectName, certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
             rootCertRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, false));
             X509Certificate2 rootCert = rootCertRequest.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(100));
             using X509Store certStore = new(StoreName.Root, StoreLocation.CurrentUser, OpenFlags.ReadWrite);
@@ -202,7 +202,7 @@ public partial class MainWin : Window
             certStore.Add(rootCert);
             certStore.Close();
 
-            CertificateRequest childCertRequest = new("CN=Cealing Cert Child", certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            CertificateRequest childCertRequest = new(MainConst.NginxChildCertSubjectName, certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
             SubjectAlternativeNameBuilder childCertSanBuilder = new();
 
             string hostsConfAppendContent = MainConst.HostsConfStartMarker;
@@ -278,7 +278,7 @@ public partial class MainWin : Window
                 Application.Current.Dispatcher.InvokeShutdown();
         }
         else
-            foreach (Process nginxProcess in Process.GetProcessesByName("Cealing-Nginx"))
+            foreach (Process nginxProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.NginxPath)))
             {
                 nginxProcess.Kill();
                 nginxProcess.WaitForExit();
@@ -351,7 +351,7 @@ public partial class MainWin : Window
     {
         Button? senderButton = sender as Button;
 
-        string hostPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, senderButton == EditLocalHostButton ? "Cealing-Host-Local.json" : "Cealing-Host-Upstream.json");
+        string hostPath = senderButton == EditLocalHostButton ? MainConst.LocalHostPath : MainConst.UpstreamHostPath;
 
         if (!File.Exists(hostPath))
             File.Create(hostPath).Dispose();
@@ -373,28 +373,27 @@ public partial class MainWin : Window
     }
     private async void UpdateUpstreamHostButton_Click(object sender, RoutedEventArgs e)
     {
-        string newUpstreamHostUrl = (MainPres!.UpstreamUrl.StartsWith("http://") || MainPres!.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres!.UpstreamUrl;
-        string newUpstreamHostString = await Http.GetAsync<string>(newUpstreamHostUrl, MainClient);
-        string oldUpstreamHostPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-Upstream.json");
-        string oldUpstreamHostString;
+        string upstreamUpstreamHostUrl = (MainPres!.UpstreamUrl.StartsWith("http://") || MainPres!.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres!.UpstreamUrl;
+        string upstreamUpstreamHostString = await Http.GetAsync<string>(upstreamUpstreamHostUrl, MainClient);
+        string localUpstreamHostString;
 
-        if (!File.Exists(oldUpstreamHostPath))
-            File.Create(oldUpstreamHostPath).Dispose();
+        if (!File.Exists(MainConst.UpstreamHostPath))
+            File.Create(MainConst.UpstreamHostPath).Dispose();
 
-        oldUpstreamHostString = File.ReadAllText(oldUpstreamHostPath);
+        localUpstreamHostString = File.ReadAllText(MainConst.UpstreamHostPath);
 
-        if (oldUpstreamHostString.Replace("\r", string.Empty) == newUpstreamHostString)
+        if (localUpstreamHostString.Replace("\r", string.Empty) == upstreamUpstreamHostString)
             MessageBox.Show(MainConst._UpstreamHostUtdMsg);
         else
         {
             MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideUpstreamHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
             if (overrideOptionResult == MessageBoxResult.Yes)
             {
-                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-Upstream.json"), newUpstreamHostString);
+                File.WriteAllText(MainConst.UpstreamHostPath, upstreamUpstreamHostString);
                 MessageBox.Show(MainConst._UpdateUpstreamHostSuccessMsg);
             }
             else if (overrideOptionResult == MessageBoxResult.No)
-                Process.Start(new ProcessStartInfo(newUpstreamHostUrl) { UseShellExecute = true });
+                Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true });
         }
     }
 
@@ -473,12 +472,12 @@ public partial class MainWin : Window
 
     private void ProxyTimer_Tick(object? sender, EventArgs e)
     {
-        MainPres!.IsNginxExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Nginx.exe"));
-        MainPres.IsNginxRunning = Process.GetProcessesByName("Cealing-Nginx").Length != 0;
-        MainPres.IsMihomoExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Mihomo.exe"));
-        MainPres.IsMihomoRunning = Process.GetProcessesByName("Cealing-Mihomo").Length != 0;
+        MainPres!.IsNginxExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, Path.GetFileName(MainConst.NginxPath)));
+        MainPres.IsNginxRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.NginxPath)).Length != 0;
+        MainPres.IsMihomoExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, Path.GetFileName(MainConst.MihomoPath)));
+        MainPres.IsMihomoRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)).Length != 0;
     }
-    private void HostWatcher_Changed(object sender, FileSystemEventArgs e)
+    private void CealingHostWatcher_Changed(object sender, FileSystemEventArgs e)
     {
         string hostName = e.Name!.TrimStart("Cealing-Host-".ToCharArray()).TrimEnd(".json".ToCharArray());
 
@@ -526,9 +525,9 @@ public partial class MainWin : Window
                     cealHostResolverRules += $"MAP {hostSni} {hostIp},";
                 }
 
-            CealArgs = @$"/c @start .\""Uncealed-Browser.lnk"" --host-rules=""{cealHostRules.TrimEnd(',')}"" --host-resolver-rules=""{cealHostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
+            CealArgs = @$"/c @start .\""{Path.GetFileName(MainConst.UncealedBrowserPath)}"" --host-rules=""{cealHostRules.TrimEnd(',')}"" --host-resolver-rules=""{cealHostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
 
-            NginxConfWatcher_Changed(null!, new(new(), NginxConfWatcher.Path, NginxConfWatcher.Filter));
+            NginxConfWatcher_Changed(null!, null!);
         }
     }
     private void NginxConfWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -542,7 +541,7 @@ public partial class MainWin : Window
             if (!Directory.Exists(MainConst.NginxTempPath))
                 Directory.CreateDirectory(MainConst.NginxTempPath);
 
-            ExtraNginxConfs = File.ReadAllText(e.FullPath);
+            ExtraNginxConfs = File.ReadAllText(MainConst.NginxConfPath);
             int ruleIndex = 1;
 
             NginxConfs = NginxConfig.Load(ExtraNginxConfs)
@@ -580,23 +579,23 @@ public partial class MainWin : Window
             if (!File.Exists(MainConst.MihomoConfPath))
                 File.Create(MainConst.MihomoConfPath).Dispose();
 
-            ExtraMihomoConfs = File.ReadAllText(e.FullPath);
+            ExtraMihomoConfs = File.ReadAllText(MainConst.MihomoConfPath);
 
-            Dictionary<string, object> mihomoConfs = new DeserializerBuilder()
+            Dictionary<string, object> mihomoConfDict = new DeserializerBuilder()
                 .WithNamingConvention(HyphenatedNamingConvention.Instance)
                 .IgnoreUnmatchedProperties()
                 .Build()
                 .Deserialize<Dictionary<string, object>>(ExtraMihomoConfs) ?? [];
 
-            mihomoConfs["mixed-port"] = 7880;
-            mihomoConfs["dns"] = new
+            mihomoConfDict["mixed-port"] = 7880;
+            mihomoConfDict["dns"] = new
             {
                 enable = true,
                 listen = ":53",
                 enhancedMode = "redir-host",
-                nameserver = new[] { "https://doh.apad.pro/dns-query" }
+                nameserver = new[] { "https://doh.apad.pro/dns-query", "https://ns.net.kg/dns-query" }
             };
-            mihomoConfs["tun"] = new
+            mihomoConfDict["tun"] = new
             {
                 enable = true,
                 stack = "system",
@@ -605,7 +604,7 @@ public partial class MainWin : Window
                 dnsHijack = new[] { "any:53", "tcp://any:53" }
             };
 
-            MihomoConfs = new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfs);
+            MihomoConfs = new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfDict);
         }
     }
     private void MainWin_KeyDown(object sender, KeyEventArgs e)
