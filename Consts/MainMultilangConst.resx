@@ -151,7 +151,7 @@
     <value>Click to edit nginx conf</value>
   </data>
   <data name="EditUpstreamHostButtonContent" xml:space="preserve">
-    <value>Edit Upstream Host</value>
+    <value>Edit UPSTR. Host</value>
   </data>
   <data name="EditUpstreamHostButtonToolTip" xml:space="preserve">
     <value>Click to edit upstream host</value>
@@ -160,7 +160,7 @@
     <value>Extra Args</value>
   </data>
   <data name="MihomoButtonIsInitingContent" xml:space="preserve">
-    <value>Global Purging is Initing</value>
+    <value>GLB. Purging INIT.</value>
   </data>
   <data name="MihomoButtonIsRunningContent" xml:space="preserve">
     <value>Stop Global Purging</value>
@@ -175,16 +175,16 @@
     <value>Click to launch a local Mihomo</value>
   </data>
   <data name="NginxButtonIsInitingContent" xml:space="preserve">
-    <value>Global Cealing is Initing</value>
+    <value>GLB. Cealing INIT.</value>
   </data>
   <data name="NginxButtonIsRunningContent" xml:space="preserve">
-    <value>Stop Global Cealing</value>
+    <value>Stop GLB. Cealing</value>
   </data>
   <data name="NginxButtonIsRunningToolTip" xml:space="preserve">
     <value>Click to stop the local Nginx</value>
   </data>
   <data name="NginxButtonIsStoppedContent" xml:space="preserve">
-    <value>Start Global Cealing</value>
+    <value>Start GLB. Cealing</value>
   </data>
   <data name="NginxButtonIsStoppedToolTip" xml:space="preserve">
     <value>Click to launch a local Nginx</value>

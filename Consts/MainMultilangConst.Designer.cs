@@ -295,7 +295,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Edit Upstream Host 的本地化字符串。
+        ///   查找类似 Edit UPSTR. Host 的本地化字符串。
         /// </summary>
         public static string EditUpstreamHostButtonContent {
             get {
@@ -322,7 +322,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Global Purging is Initing 的本地化字符串。
+        ///   查找类似 GLB. Purging INIT. 的本地化字符串。
         /// </summary>
         public static string MihomoButtonIsInitingContent {
             get {
@@ -367,7 +367,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Global Cealing is Initing 的本地化字符串。
+        ///   查找类似 GLB. Cealing INIT. 的本地化字符串。
         /// </summary>
         public static string NginxButtonIsInitingContent {
             get {
@@ -376,7 +376,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Stop Global Cealing 的本地化字符串。
+        ///   查找类似 Stop GLB. Cealing 的本地化字符串。
         /// </summary>
         public static string NginxButtonIsRunningContent {
             get {
@@ -394,7 +394,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Start Global Cealing 的本地化字符串。
+        ///   查找类似 Start GLB. Cealing 的本地化字符串。
         /// </summary>
         public static string NginxButtonIsStoppedContent {
             get {
