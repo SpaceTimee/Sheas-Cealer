@@ -326,8 +326,7 @@ public partial class MainWin : Window
                 enable = true,
                 listen = ":53",
                 enhancedMode = "redir-host",
-                nameserver = new[] { "https://dns.alidns.com/dns-query" },
-                fallback = new[] { "https://doh.apad.pro/dns-query" }
+                nameserver = new[] { "https://doh.apad.pro/dns-query" }
             };
             mihomoConfs["tun"] = new
             {
