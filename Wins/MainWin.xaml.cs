@@ -141,7 +141,7 @@ public partial class MainWin : Window
         HoldButtonTimer.Tick += StartButtonHoldTimer_Tick;
         HoldButtonTimer.Start();
     }
-    private void StartButtonHoldTimer_Tick(object? sender, EventArgs e)
+    private async void StartButtonHoldTimer_Tick(object? sender, EventArgs e)
     {
         HoldButtonTimer?.Stop();
 
@@ -161,7 +161,10 @@ public partial class MainWin : Window
             browserProcess.WaitForExit();
         }
 
-        new CommandProc(sender == null).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, ($"{CealArgs} {MainPres!.ExtraArgs}").Trim());
+        await Task.Run(() =>
+        {
+            new CommandProc(sender == null).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, ($"{CealArgs} {MainPres!.ExtraArgs}").Trim());
+        });
     }
     private void NginxButton_Click(object sender, RoutedEventArgs e)
     {
@@ -192,9 +195,7 @@ public partial class MainWin : Window
             RSA certKey = RSA.Create(2048);
 
             CertificateRequest rootCertRequest = new("CN=Cealing Cert Root", certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-
             rootCertRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, false));
-
             X509Certificate2 rootCert = rootCertRequest.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(100));
             using X509Store certStore = new(StoreName.Root, StoreLocation.CurrentUser, OpenFlags.ReadWrite);
 
@@ -204,10 +205,13 @@ public partial class MainWin : Window
             CertificateRequest childCertRequest = new("CN=Cealing Cert Child", certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
             SubjectAlternativeNameBuilder childCertSanBuilder = new();
 
+            string hostsConfAppendContent = MainConst.HostsConfStartMarker;
+
             foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
                 foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, _, _) in hostRules)
                     foreach ((string hostIncludeDomain, _) in hostDomainPairs)
                     {
+                        // 配置证书 SAN
                         if (hostIncludeDomain.StartsWith("*."))
                         {
                             childCertSanBuilder.AddDnsName("*" + hostIncludeDomain.Replace("*", string.Empty));
@@ -217,36 +221,28 @@ public partial class MainWin : Window
                             childCertSanBuilder.AddDnsName("*." + hostIncludeDomain.Replace("*", string.Empty));
 
                         childCertSanBuilder.AddDnsName(hostIncludeDomain.Replace("*", string.Empty));
-                    }
 
-            childCertRequest.CertificateExtensions.Add(childCertSanBuilder.Build());
-
-            X509Certificate2 childCert = childCertRequest.Create(rootCert, rootCert.NotBefore, rootCert.NotAfter, Guid.NewGuid().ToByteArray());
-
-            File.WriteAllText(MainConst.NginxCertPath, childCert.ExportCertificatePem());
-            File.WriteAllText(MainConst.NginxKeyPath, certKey.ExportPkcs8PrivateKeyPem());
-
-            string hostsAppendContent = MainConst.HostsConfStartMarker;
-
-            foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
-                foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) in hostRules)
-                    foreach ((string hostIncludeDomain, string hostExcludeDomain) in hostDomainPairs)
-                    {
+                        // 配置 hosts
                         string hostIncludeDomainWithoutWildcard = hostIncludeDomain.Replace("*", string.Empty);
 
                         if (hostIncludeDomainWithoutWildcard.StartsWith('^') || hostIncludeDomainWithoutWildcard.EndsWith('^') ||
                             hostIncludeDomainWithoutWildcard.StartsWith('.') || hostIncludeDomainWithoutWildcard.EndsWith('.'))
                             continue;
 
-                        hostsAppendContent += $"127.0.0.1 {hostIncludeDomainWithoutWildcard.Split('^', 2)[0]}\n";
+                        hostsConfAppendContent += $"127.0.0.1 {hostIncludeDomainWithoutWildcard.Split('^', 2)[0]}\n";
 
                         if (hostIncludeDomain.StartsWith('*'))
-                            hostsAppendContent += $"127.0.0.1 www.{hostIncludeDomainWithoutWildcard.Split('^', 2)[0]}\n";
+                            hostsConfAppendContent += $"127.0.0.1 www.{hostIncludeDomainWithoutWildcard.Split('^', 2)[0]}\n";
                     }
 
-            hostsAppendContent += MainConst.HostsConfEndMarker;
+            childCertRequest.CertificateExtensions.Add(childCertSanBuilder.Build());
+            X509Certificate2 childCert = childCertRequest.Create(rootCert, rootCert.NotBefore, rootCert.NotAfter, Guid.NewGuid().ToByteArray());
 
-            File.AppendAllText(MainConst.HostsConfPath, hostsAppendContent);
+            File.WriteAllText(MainConst.NginxCertPath, childCert.ExportCertificatePem());
+            File.WriteAllText(MainConst.NginxKeyPath, certKey.ExportPkcs8PrivateKeyPem());
+
+            hostsConfAppendContent += MainConst.HostsConfEndMarker;
+            File.AppendAllText(MainConst.HostsConfPath, hostsConfAppendContent);
 
             MainPres.IsNginxIniting = true;
             NginxConfWatcher.EnableRaisingEvents = false;
