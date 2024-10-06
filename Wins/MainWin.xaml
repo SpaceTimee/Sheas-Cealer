@@ -9,11 +9,20 @@
         xmlns:preses="clr-namespace:Sheas_Cealer.Preses"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance preses:MainPres}" AllowDrop="True"
-        Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" SizeToContent="Height" Width="600"
+        Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" SizeToContent="Height"
         Loaded="MainWin_Loaded" Closing="MainWin_Closing" DragEnter="MainWin_DragEnter" Drop="MainWin_Drop" KeyDown="MainWin_KeyDown">
+    <Window.Width>
+        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+            <Binding.Converter>
+                <convs:MainWinWidthConv />
+            </Binding.Converter>
+        </Binding>
+    </Window.Width>
+    
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -167,11 +176,26 @@
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.3*" />
-                <ColumnDefinition Width="1.3*" />
-                <ColumnDefinition Width="1.3*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition>
+                    <ColumnDefinition.Width>
+                        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                            <Binding.Converter>
+                                <convs:MainProxyColumnWidthConv />
+                            </Binding.Converter>
+                        </Binding>
+                    </ColumnDefinition.Width>
+                </ColumnDefinition>
+                <ColumnDefinition>
+                    <ColumnDefinition.Width>
+                        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                            <Binding.Converter>
+                                <convs:MainProxyColumnWidthConv />
+                            </Binding.Converter>
+                        </Binding>
+                    </ColumnDefinition.Width>
+                </ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Button x:Name="EditLocalHostButton"
@@ -179,7 +203,45 @@
                     Click="EditHostButton_Click" />
             <Button Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditUpstreamHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditUpstreamHostButtonToolTip}}"
                     Click="EditHostButton_Click" />
-            <Button Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:MainConst.UpdateUpstreamHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.UpdateUpstreamHostButtonToolTip}}"
+            <Button x:Name="EditNginxConfButton"
+                    IsEnabled="{Binding IsNginxExist}"
+                    Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditNginxConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditNginxConfButtonToolTip}}"
+                    Click="EditConfButton_Click">
+                <Button.Visibility>
+                    <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                        <Binding.Converter>
+                            <convs:MainAdminControlVisibilityConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Visibility>
+            </Button>
+            <Button IsEnabled="{Binding IsMihomoExist}"
+                    Grid.Column="3" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonToolTip}}"
+                    Click="EditConfButton_Click">
+                <Button.Visibility>
+                    <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                        <Binding.Converter>
+                            <convs:MainAdminControlVisibilityConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Visibility>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition>
+                    <ColumnDefinition.Width>
+                        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                            <Binding.Converter>
+                                <convs:MainProxyColumnWidthConv />
+                            </Binding.Converter>
+                        </Binding>
+                    </ColumnDefinition.Width>
+                </ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:MainConst.UpdateUpstreamHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.UpdateUpstreamHostButtonToolTip}}"
                     Click="UpdateUpstreamHostButton_Click">
                 <Button.IsEnabled>
                     <Binding Path="UpstreamUrl">
@@ -189,7 +251,34 @@
                     </Binding>
                 </Button.IsEnabled>
             </Button>
-            <Button Grid.Column="3" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:MainConst.ThemesButtonToolTip}}"
+            <Button x:Name="EditHostsConfButton"
+                    Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditHostsConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditHostsConfButtonToolTip}}"
+                    Click="EditConfButton_Click">
+                <Button.Visibility>
+                    <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                        <Binding.Converter>
+                            <convs:MainAdminControlVisibilityConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Visibility>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition>
+                    <ColumnDefinition.Width>
+                        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                            <Binding.Converter>
+                                <convs:MainProxyColumnWidthConv />
+                            </Binding.Converter>
+                        </Binding>
+                    </ColumnDefinition.Width>
+                </ColumnDefinition>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:MainConst.ThemesButtonToolTip}}"
                     Click="ThemesButton_Click">
                 <Button.Content>
                     <Binding Path="IsLightTheme">
@@ -199,38 +288,16 @@
                     </Binding>
                 </Button.Content>
             </Button>
-            <Button x:Name="AboutButton"
-                    Grid.Column="4" Margin="5" Content="{Binding Source={x:Static consts:MainConst.AboutButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.AboutButtonToolTip}}"
-                    Click="AboutButton_Click" />
-        </Grid>
-        <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.6*" />
-                <ColumnDefinition Width="1.7*" />
-                <ColumnDefinition Width="1.6*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.Visibility>
-                <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
-                    <Binding.Converter>
-                        <convs:MainAdminControlVisibilityConv />
-                    </Binding.Converter>
-                </Binding>
-            </Grid.Visibility>
-
-            <Button x:Name="EditNginxConfButton"
-                    IsEnabled="{Binding IsNginxExist}"
-                    Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditNginxConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditNginxConfButtonToolTip}}"
-                    Click="EditConfButton_Click" />
-            <Button IsEnabled="{Binding IsMihomoExist}"
-                    Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditMihomoConfButtonToolTip}}"
-                    Click="EditConfButton_Click" />
-            <Button x:Name="EditHostsConfButton"
-                    Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditHostsConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditHostsConfButtonToolTip}}"
-                    Click="EditConfButton_Click" />
             <Button Focusable="False"
-                    Grid.Column="3" Margin="5" d:Content="# # # #"
+                    Grid.Column="1" Margin="5" d:Content="# # # #"
                     Click="NoClickButton_Click" Cursor="Hand">
+                <Button.Visibility>
+                    <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                        <Binding.Converter>
+                            <convs:MainAdminControlVisibilityConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Visibility>
                 <Button.Content>
                     <Binding Path="IsFlashing">
                         <Binding.Converter>
@@ -246,6 +313,9 @@
                     </Binding>
                 </Button.ToolTip>
             </Button>
+            <Button x:Name="AboutButton"
+                    Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:MainConst.AboutButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.AboutButtonToolTip}}"
+                    Click="AboutButton_Click" />
         </Grid>
     </Grid>
 </Window>

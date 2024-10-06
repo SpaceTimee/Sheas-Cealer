@@ -6,7 +6,7 @@
         xmlns:consts="clr-namespace:Sheas_Cealer.Consts"
         xmlns:convs="clr-namespace:Sheas_Cealer.Convs"
         mc:Ignorable="d"
-        Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="600"
+        Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="500"
         KeyDown="AboutWin_KeyDown">
     <Grid Margin="5">
         <Grid.RowDefinitions>
@@ -14,7 +14,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1.1*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
