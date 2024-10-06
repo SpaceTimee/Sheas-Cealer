@@ -22,7 +22,8 @@ using OnaCore;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Preses;
 using Sheas_Cealer.Utils;
-using YamlDotNet.RepresentationModel;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 using File = System.IO.File;
 
 namespace Sheas_Cealer.Wins;
@@ -306,25 +307,40 @@ public partial class MainWin : Window
             if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;
 
-            string configPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "config.yaml");
+            string confPath = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "config.yaml");
 
-            if (!File.Exists(configPath))
-                File.Create(configPath).Dispose();
+            if (!File.Exists(confPath))
+                File.Create(confPath).Dispose();
 
-            YamlStream configStream = [];
-            YamlMappingNode configMapNode;
-            YamlNode mihomoPortNode;
+            Dictionary<string, object> mihomoConfs = new DeserializerBuilder()
+                .WithNamingConvention(HyphenatedNamingConvention.Instance)
+                .Build().Deserialize<Dictionary<string, object>>(File.ReadAllText(confPath)) ?? []; ;
 
-            configStream.Load(File.OpenText(configPath));
+            mihomoConfs["mixed-port"] = 7880;
+            mihomoConfs["ipv6"] = true;
+            mihomoConfs["log-level"] = "silent";
+            mihomoConfs["dns"] = new
+            {
+                enable = true,
+                listen = ":53",
+                enhancedMode = "redir-host",
+                nameserver = new[] { "https://dns.alidns.com/dns-query" },
+                fallback = new[] { "https://doh.apad.pro/dns-query" }
+            };
+            mihomoConfs["tun"] = new
+            {
+                enable = true,
+                stack = "system",
+                autoRoute = true,
+                autoDetectInterface = true,
+                dnsHijack = new[] { "any:53", "tcp://any:53" }
+            };
+            mihomoConfs["rules"] = new[] { "MATCH,DIRECT" };
 
-            try { configMapNode = (YamlMappingNode)configStream.Documents[0].RootNode; }
-            catch { throw new Exception(MainConst._ConfErrorMsg); }
-
-            if (!configMapNode.Children.TryGetValue("mixed-port", out mihomoPortNode!) && !configMapNode.Children.TryGetValue("port", out mihomoPortNode!))
-                mihomoPortNode = "7890";
+            File.WriteAllText(confPath, new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfs));
 
             proxyKey.SetValue("ProxyEnable", 1);
-            proxyKey.SetValue("ProxyServer", "127.0.0.1:" + mihomoPortNode);
+            proxyKey.SetValue("ProxyServer", "127.0.0.1:7880");
 
             new MihomoProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "-d .");
 
