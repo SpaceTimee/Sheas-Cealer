@@ -296,7 +296,7 @@ public partial class MainWin : Window
         HoldButtonTimer.Tick += MihomoButtonHoldTimer_Tick;
         HoldButtonTimer.Start();
     }
-    private void MihomoButtonHoldTimer_Tick(object? sender, EventArgs e)
+    private async void MihomoButtonHoldTimer_Tick(object? sender, EventArgs e)
     {
         HoldButtonTimer?.Stop();
 
@@ -312,9 +312,11 @@ public partial class MainWin : Window
             if (!File.Exists(confPath))
                 File.Create(confPath).Dispose();
 
+            string extraConfs = File.ReadAllText(confPath);
+
             Dictionary<string, object> mihomoConfs = new DeserializerBuilder()
                 .WithNamingConvention(HyphenatedNamingConvention.Instance)
-                .Build().Deserialize<Dictionary<string, object>>(File.ReadAllText(confPath)) ?? []; ;
+                .Build().Deserialize<Dictionary<string, object>>(extraConfs) ?? []; ;
 
             mihomoConfs["mixed-port"] = 7880;
             mihomoConfs["ipv6"] = true;
@@ -343,6 +345,20 @@ public partial class MainWin : Window
             proxyKey.SetValue("ProxyServer", "127.0.0.1:7880");
 
             new MihomoProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "-d .");
+
+            while (true)
+                try
+                {
+                    await Http.GetAsync<HttpResponseMessage>("http://localhost:7880", MainClient);
+                    break;
+                }
+                catch (HttpRequestException ex) when (ex.InnerException is SocketException innerEx)
+                {
+                    if (innerEx.SocketErrorCode != SocketError.ConnectionRefused)
+                        break;
+                }
+
+            File.WriteAllText(confPath, extraConfs);
 
             if (sender == null)
                 Application.Current.Dispatcher.InvokeShutdown();
