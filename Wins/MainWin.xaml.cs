@@ -34,7 +34,7 @@ public partial class MainWin : Window
     private static readonly HttpClient MainClient = new(new HttpClientHandler() { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator });
     private static DispatcherTimer? HoldButtonTimer;
     private static readonly DispatcherTimer ProxyTimer = new() { Interval = TimeSpan.FromSeconds(0.1) };
-    private static readonly FileSystemWatcher HostWatcher = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-*.json") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
+    private static readonly FileSystemWatcher HostWatcher = new(Path.GetDirectoryName(MainConst.CealingHostPath)!, Path.GetFileName(MainConst.CealingHostPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static readonly FileSystemWatcher ConfWatcher = new(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf") { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static readonly Dictionary<string, List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)>> HostRulesDict = [];
     private static string CealArgs = string.Empty;
