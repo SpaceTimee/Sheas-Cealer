@@ -11,10 +11,10 @@
 **[Sheas Cealer Dictionary](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Dictionary)**
 
 ## 注意事项
-1. **Cealing-Host.json** 内置伪造规则在 [Cealing Host 存储库](https://github.com/SpaceTimee/Cealing-Host) 持续更新
-2. Sheas Cealer 更新时不会覆盖已有的 **Cealing-Host.json** 配置文件，如需与上游同步，需点击**更新规则**按钮 (>= 1.1.0)，或**手动修改覆盖**
+1. 内置伪造规则在 [Cealing Host 存储库](https://github.com/SpaceTimee/Cealing-Host) 持续更新
+2. Sheas Cealer 更新时不会覆盖已有的伪造规则，如需与上游同步，需点击**更新规则**按钮 (>= 1.1.0)，或**手动修改覆盖**
 3. 本项目仅供**学习参考**，无意绕过任何审查设备的审查
-4. 请根据你应遵守的法律法规修改和使用对应版本
+4. 请根据你应遵守的法律法规修改后使用本项目
 5. 为避免不必要的麻烦，使用前请先阅读**注意事项**和**用户协议**
 6. Sheas Cealer 仍处于**开发阶段**，但每个正式版发布前会尽量确保其**稳定可用**
 7. Github Release 中会保留目前能够使用的**所有版本**，但强烈推荐使用**最新版**
@@ -38,7 +38,7 @@
 [Sheas Cealer Build](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Build)
 
 ## 项目原理
-利用 Chromium 内核的参数特性伪造 SNI 头，详细原理可参考[这篇文章](https://nicebowl.fun/24_8)
+利用 Chromium 内核的参数特性伪造 SNI 拓展标记，详细原理可参考[这篇文章](https://nicebowl.fun/24_8)
 
 ## 致谢名单
 * **kit: 为本项目提供全部的原理基础**
