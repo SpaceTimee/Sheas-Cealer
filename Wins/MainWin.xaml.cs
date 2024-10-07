@@ -184,6 +184,7 @@ public partial class MainWin : Window
         {
             if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;
+
             if (!File.Exists(MainConst.NginxConfPath))
                 File.Create(MainConst.NginxConfPath).Dispose();
             if (!Directory.Exists(MainConst.NginxLogsPath))
@@ -300,8 +301,11 @@ public partial class MainWin : Window
 
         if (!MainPres!.IsMihomoRunning)
         {
+            if (string.IsNullOrWhiteSpace(MihomoConfs))
+                throw new Exception(MainConst._ConfErrorMsg);
             if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;
+
             if (!File.Exists(MainConst.MihomoConfPath))
                 File.Create(MainConst.MihomoConfPath).Dispose();
 
@@ -576,35 +580,39 @@ public partial class MainWin : Window
     {
         if (MainConst.IsAdmin && MainPres!.IsMihomoExist)
         {
-            if (!File.Exists(MainConst.MihomoConfPath))
-                File.Create(MainConst.MihomoConfPath).Dispose();
-
-            ExtraMihomoConfs = File.ReadAllText(MainConst.MihomoConfPath);
-
-            Dictionary<string, object> mihomoConfDict = new DeserializerBuilder()
-                .WithNamingConvention(HyphenatedNamingConvention.Instance)
-                .IgnoreUnmatchedProperties()
-                .Build()
-                .Deserialize<Dictionary<string, object>>(ExtraMihomoConfs) ?? [];
-
-            mihomoConfDict["mixed-port"] = 7880;
-            mihomoConfDict["dns"] = new
+            try
             {
-                enable = true,
-                listen = ":53",
-                enhancedMode = "redir-host",
-                nameserver = new[] { "https://doh.apad.pro/dns-query", "https://ns.net.kg/dns-query" }
-            };
-            mihomoConfDict["tun"] = new
-            {
-                enable = true,
-                stack = "system",
-                autoRoute = true,
-                autoDetectInterface = true,
-                dnsHijack = new[] { "any:53", "tcp://any:53" }
-            };
+                if (!File.Exists(MainConst.MihomoConfPath))
+                    File.Create(MainConst.MihomoConfPath).Dispose();
 
-            MihomoConfs = new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfDict);
+                ExtraMihomoConfs = File.ReadAllText(MainConst.MihomoConfPath);
+
+                Dictionary<string, object> mihomoConfDict = new DeserializerBuilder()
+                    .WithNamingConvention(HyphenatedNamingConvention.Instance)
+                    .IgnoreUnmatchedProperties()
+                    .Build()
+                    .Deserialize<Dictionary<string, object>>(ExtraMihomoConfs) ?? [];
+
+                mihomoConfDict["mixed-port"] = 7880;
+                mihomoConfDict["dns"] = new
+                {
+                    enable = true,
+                    listen = ":53",
+                    enhancedMode = "redir-host",
+                    nameserver = new[] { "https://doh.apad.pro/dns-query", "https://ns.net.kg/dns-query" }
+                };
+                mihomoConfDict["tun"] = new
+                {
+                    enable = true,
+                    stack = "system",
+                    autoRoute = true,
+                    autoDetectInterface = true,
+                    dnsHijack = new[] { "any:53", "tcp://any:53" }
+                };
+
+                MihomoConfs = new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfDict);
+            }
+            catch { MihomoConfs = string.Empty; }
         }
     }
     private void MainWin_KeyDown(object sender, KeyEventArgs e)
