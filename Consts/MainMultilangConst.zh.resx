@@ -285,6 +285,9 @@
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>启动前将关闭所选浏览器的所有进程，是否继续？</value>
   </data>
+  <data name="_LaunchNginxFlashingPrompt" xml:space="preserve">
+    <value>Warning: 代理核心正在遭受攻击，无法伪造 SNI，已紧急开启 SNI 拔除模式，是否继续?</value>
+  </data>
   <data name="_LaunchProxyPrompt" xml:space="preserve">
     <value>使用完请务必记得回来手动关闭代理，是否继续?</value>
   </data>

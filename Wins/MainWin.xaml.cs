@@ -182,7 +182,11 @@ public partial class MainWin : Window
 
         if (!MainPres!.IsNginxRunning)
         {
+            if (string.IsNullOrWhiteSpace(CealArgs))
+                throw new Exception(MainConst._HostErrorMsg);
             if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                return;
+            if (MainPres.IsFlashing && MessageBox.Show(MainConst._LaunchNginxFlashingPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;
 
             if (!File.Exists(MainConst.NginxConfPath))
@@ -429,6 +433,7 @@ public partial class MainWin : Window
         {
             MessageBox.Show(MainConst._GameStartMsg);
             MainPres.IsFlashing = true;
+            NginxConfWatcher_Changed(null!, null!);
 
             Random random = new();
 
@@ -451,6 +456,7 @@ public partial class MainWin : Window
             }
 
             MainPres.IsFlashing = false;
+            NginxConfWatcher_Changed(null!, null!);
             MessageBox.Show(MainConst._GameEndingMsg);
         }
         else
@@ -552,7 +558,7 @@ public partial class MainWin : Window
                 .AddOrUpdate("worker_processes", "auto")
                 .AddOrUpdate("events:worker_connections", "65536")
                 .AddOrUpdate("http:proxy_set_header", "Host $http_host")
-                .AddOrUpdate("http:proxy_ssl_server_name", "on")
+                .AddOrUpdate("http:proxy_ssl_server_name", !MainPres.IsFlashing ? "on" : "off")
                 .AddOrUpdate("http:server:return", "https://$host$request_uri");
 
             foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)

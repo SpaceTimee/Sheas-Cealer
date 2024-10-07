@@ -285,6 +285,9 @@
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>All processes of the selected browser will be closed before launching. Do you want to continue?</value>
   </data>
+  <data name="_LaunchNginxFlashingPrompt" xml:space="preserve">
+    <value>Warning: The proxy core is under attack and cannot forge SNI. The SNI removal mode has been turned on urgently. Do you want to continue?</value>
+  </data>
   <data name="_LaunchProxyPrompt" xml:space="preserve">
     <value>Please remember to come back and stop the proxy manually after use. Do you want to continue?</value>
   </data>

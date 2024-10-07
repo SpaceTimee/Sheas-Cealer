@@ -160,6 +160,15 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Warning: The proxy core is under attack and cannot forge SNI. The SNI removal mode has been turned on urgently. Do you want to continue? 的本地化字符串。
+        /// </summary>
+        public static string _LaunchNginxFlashingPrompt {
+            get {
+                return ResourceManager.GetString("_LaunchNginxFlashingPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please remember to come back and stop the proxy manually after use. Do you want to continue? 的本地化字符串。
         /// </summary>
         public static string _LaunchProxyPrompt {
