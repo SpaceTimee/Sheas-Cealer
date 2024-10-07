@@ -57,7 +57,6 @@ public partial class MainWin : Window
         NginxConfWatcher.Changed += NginxConfWatcher_Changed;
         MihomoConfWatcher.Changed += MihomoConfWatcher_Changed;
     }
-
     protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
     private async void MainWin_Loaded(object sender, RoutedEventArgs e)
     {
@@ -196,7 +195,7 @@ public partial class MainWin : Window
 
             CertificateRequest rootCertRequest = new(MainConst.NginxRootCertSubjectName, certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
             rootCertRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, false));
-            X509Certificate2 rootCert = rootCertRequest.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(100));
+            using X509Certificate2 rootCert = rootCertRequest.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(100));
             using X509Store certStore = new(StoreName.Root, StoreLocation.CurrentUser, OpenFlags.ReadWrite);
 
             certStore.Add(rootCert);
@@ -236,7 +235,7 @@ public partial class MainWin : Window
                     }
 
             childCertRequest.CertificateExtensions.Add(childCertSanBuilder.Build());
-            X509Certificate2 childCert = childCertRequest.Create(rootCert, rootCert.NotBefore, rootCert.NotAfter, Guid.NewGuid().ToByteArray());
+            using X509Certificate2 childCert = childCertRequest.Create(rootCert, rootCert.NotBefore, rootCert.NotAfter, Guid.NewGuid().ToByteArray());
 
             File.WriteAllText(MainConst.NginxCertPath, childCert.ExportCertificatePem());
             File.WriteAllText(MainConst.NginxKeyPath, certKey.ExportPkcs8PrivateKeyPem());
@@ -362,6 +361,7 @@ public partial class MainWin : Window
     private void EditConfButton_Click(object sender, RoutedEventArgs e)
     {
         Button? senderButton = sender as Button;
+
         string confPath = senderButton == EditHostsConfButton ? MainConst.HostsConfPath :
             senderButton == EditNginxConfButton ? MainConst.NginxConfPath : MainConst.MihomoConfPath;
 

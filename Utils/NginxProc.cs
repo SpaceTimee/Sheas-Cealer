@@ -24,5 +24,7 @@ internal class NginxProc : Proc
         foreach (X509Certificate2 storedCert in certStore.Certificates)
             if (storedCert.Subject == MainConst.NginxRootCertSubjectName)
                 certStore.Remove(storedCert);
+
+        certStore.Close();
     }
 }
