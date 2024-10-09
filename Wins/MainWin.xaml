@@ -332,7 +332,7 @@
             </Button>
             <Button Focusable="False"
                     Grid.Column="1" Margin="5" d:Content="# # # #"
-                    Click="NoClickButton_Click" Cursor="Hand">
+                    Click="NoClickButton_Click">
                 <Button.Visibility>
                     <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
                         <Binding.Converter>
