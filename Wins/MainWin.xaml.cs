@@ -285,7 +285,7 @@ public partial class MainWin : Window
             foreach (Process nginxProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.NginxPath)))
             {
                 nginxProcess.Kill();
-                nginxProcess.WaitForExit();
+                await nginxProcess.WaitForExitAsync();
             }
     }
     private void MihomoButton_Click(object sender, RoutedEventArgs e)
@@ -350,7 +350,7 @@ public partial class MainWin : Window
             foreach (Process mihomoProcess in Process.GetProcessesByName("Cealing-Mihomo"))
             {
                 mihomoProcess.Kill();
-                mihomoProcess.WaitForExit();
+                await mihomoProcess.WaitForExitAsync();
             }
     }
 
