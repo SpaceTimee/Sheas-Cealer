@@ -551,7 +551,8 @@ public partial class MainWin : Window
             if (!Directory.Exists(MainConst.NginxTempPath))
                 Directory.CreateDirectory(MainConst.NginxTempPath);
 
-            ExtraNginxConfs = File.ReadAllText(MainConst.NginxConfPath);
+            using FileStream nginxConfStream = new(MainConst.NginxConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+            ExtraNginxConfs = new StreamReader(nginxConfStream).ReadToEnd();
             int ruleIndex = 1;
 
             NginxConfs = NginxConfig.Load(ExtraNginxConfs)
@@ -591,7 +592,8 @@ public partial class MainWin : Window
                 if (!File.Exists(MainConst.MihomoConfPath))
                     File.Create(MainConst.MihomoConfPath).Dispose();
 
-                ExtraMihomoConfs = File.ReadAllText(MainConst.MihomoConfPath);
+                using FileStream mihomoConfStream = new(MainConst.NginxConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                ExtraMihomoConfs = new StreamReader(mihomoConfStream).ReadToEnd();
 
                 Dictionary<string, object> mihomoConfDict = new DeserializerBuilder()
                     .WithNamingConvention(HyphenatedNamingConvention.Instance)
