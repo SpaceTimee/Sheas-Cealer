@@ -553,33 +553,45 @@ public partial class MainWin : Window
 
             using FileStream nginxConfStream = new(MainConst.NginxConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
             ExtraNginxConfs = new StreamReader(nginxConfStream).ReadToEnd();
-            int ruleIndex = 1;
 
-            NginxConfs = NginxConfig.Load(ExtraNginxConfs)
+            NginxConfig extraNginxConfig = NginxConfig.Load(ExtraNginxConfs);
+            int serverIndex = 0;
+
+            foreach (IToken mainToken in extraNginxConfig.GetTokens())
+                if (mainToken is GroupToken mainGroupToken && mainGroupToken.Key.Equals("http", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    foreach (IToken serverToken in mainGroupToken.Tokens)
+                        if (serverToken is GroupToken serverGroupServer && mainGroupToken.Key.Equals("server", StringComparison.InvariantCultureIgnoreCase))
+                            ++serverIndex;
+
+                    break;
+                }
+
+            NginxConfs = extraNginxConfig
                 .AddOrUpdate("worker_processes", "auto")
                 .AddOrUpdate("events:worker_connections", "65536")
                 .AddOrUpdate("http:proxy_set_header", "Host $http_host")
                 .AddOrUpdate("http:proxy_ssl_server_name", !MainPres.IsFlashing ? "on" : "off")
-                .AddOrUpdate("http:server:return", "https://$host$request_uri");
+                .AddOrUpdate($"http:server[{serverIndex}]:return", "https://$host$request_uri");
 
             foreach (List<(List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp)> hostRules in HostRulesDict.Values)
                 foreach ((List<(string hostIncludeDomain, string hostExcludeDomain)> hostDomainPairs, string hostSni, string hostIp) in hostRules)
                 {
+                    ++serverIndex;
+
                     string serverName = "~";
 
                     foreach ((string hostIncludeDomain, string hostExcludeDomain) in hostDomainPairs)
                         serverName += "^" + (!string.IsNullOrWhiteSpace(hostExcludeDomain) ? $"(?!{hostExcludeDomain.Replace(".", "\\.").Replace("*", ".*")})" : string.Empty) + hostIncludeDomain.Replace(".", "\\.").Replace("*", ".*") + "$|";
 
                     NginxConfs = NginxConfs
-                        .AddOrUpdate($"http:server[{ruleIndex}]:server_name", serverName.TrimEnd('|'))
-                        .AddOrUpdate($"http:server[{ruleIndex}]:listen", "443 ssl")
-                        .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate", Path.GetFileName(MainConst.NginxCertPath))
-                        .AddOrUpdate($"http:server[{ruleIndex}]:ssl_certificate_key", Path.GetFileName(MainConst.NginxKeyPath))
-                        .AddOrUpdate($"http:server[{ruleIndex}]:proxy_ssl_name", hostSni)
-                        .AddOrUpdate($"http:server[{ruleIndex}]:location", "/", true)
-                        .AddOrUpdate($"http:server[{ruleIndex}]:location:proxy_pass", $"https://{hostIp}");
-
-                    ++ruleIndex;
+                        .AddOrUpdate($"http:server[{serverIndex}]:server_name", serverName.TrimEnd('|'))
+                        .AddOrUpdate($"http:server[{serverIndex}]:listen", "443 ssl")
+                        .AddOrUpdate($"http:server[{serverIndex}]:ssl_certificate", Path.GetFileName(MainConst.NginxCertPath))
+                        .AddOrUpdate($"http:server[{serverIndex}]:ssl_certificate_key", Path.GetFileName(MainConst.NginxKeyPath))
+                        .AddOrUpdate($"http:server[{serverIndex}]:proxy_ssl_name", hostSni)
+                        .AddOrUpdate($"http:server[{serverIndex}]:location", "/", true)
+                        .AddOrUpdate($"http:server[{serverIndex}]:location:proxy_pass", $"https://{hostIp}");
                 }
         }
     }
