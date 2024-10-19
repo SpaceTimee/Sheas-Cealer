@@ -38,7 +38,7 @@ public partial class MainWin : Window
     private static readonly FileSystemWatcher NginxConfWatcher = new(Path.GetDirectoryName(MainConst.NginxConfPath)!, Path.GetFileName(MainConst.NginxConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static readonly FileSystemWatcher MihomoConfWatcher = new(Path.GetDirectoryName(MainConst.MihomoConfPath)!, Path.GetFileName(MainConst.MihomoConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
 
-    private static readonly Dictionary<string, List<(List<(string cealHostIncludeDomain, string ceahHostExcludeDomain)> cealHostDomainPairs, string cealHostSni, string cealHostIp)>> CealHostRulesDict = [];
+    private static readonly SortedDictionary<string, List<(List<(string cealHostIncludeDomain, string ceahHostExcludeDomain)> cealHostDomainPairs, string cealHostSni, string cealHostIp)>> CealHostRulesDict = [];
     private static string CealArgs = string.Empty;
     private static NginxConfig? NginxConfs;
     private static string? ExtraNginxConfs;
@@ -349,7 +349,7 @@ public partial class MainWin : Window
                 Application.Current.Dispatcher.InvokeShutdown();
         }
         else
-            foreach (Process mihomoProcess in Process.GetProcessesByName("Cealing-Mihomo"))
+            foreach (Process mihomoProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)))
             {
                 mihomoProcess.Kill();
                 await mihomoProcess.WaitForExitAsync();
