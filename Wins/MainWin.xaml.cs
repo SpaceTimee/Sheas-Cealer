@@ -51,11 +51,6 @@ public partial class MainWin : Window
         InitializeComponent();
 
         DataContext = MainPres = new(args);
-
-        ProxyTimer.Tick += ProxyTimer_Tick;
-        CealingHostWatcher.Changed += CealingHostWatcher_Changed;
-        NginxConfWatcher.Changed += NginxConfWatcher_Changed;
-        MihomoConfWatcher.Changed += MihomoConfWatcher_Changed;
     }
     protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
     private async void MainWin_Loaded(object sender, RoutedEventArgs e)
@@ -64,6 +59,11 @@ public partial class MainWin : Window
 
         await Task.Run(() =>
         {
+            ProxyTimer.Tick += ProxyTimer_Tick;
+            CealingHostWatcher.Changed += CealingHostWatcher_Changed;
+            NginxConfWatcher.Changed += NginxConfWatcher_Changed;
+            MihomoConfWatcher.Changed += MihomoConfWatcher_Changed;
+
             ProxyTimer.Start();
 
             foreach (string hostPath in Directory.GetFiles(CealingHostWatcher.Path, CealingHostWatcher.Filter))
