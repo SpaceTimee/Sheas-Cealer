@@ -18,7 +18,7 @@ public partial class AboutWin : Window
         Button? senderButton = sender as Button;
 
         if (senderButton == VersionButton)
-            MessageBox.Show($"{AboutConst._ReleasePagePasswordLabel} {AboutConst.ReleasePagePassword}");
+            MessageBox.Show($"{AboutConst._ReleasePagePasswordLabel} 3wnj");
 
         ProcessStartInfo processStartInfo = new(senderButton == EmailButton ? "mailto:" : string.Empty + senderButton!.ToolTip) { UseShellExecute = true };
         Process.Start(processStartInfo);

@@ -5,9 +5,8 @@ namespace Sheas_Cealer.Consts;
 internal class AboutConst : AboutMultilangConst
 {
     public static string DeveloperButtonUrl => "https://www.spacetimee.xyz";
-    public static string VersionButtonVersionContent => Assembly.GetExecutingAssembly().GetName().Version!.ToString().TrimEnd(".0".ToCharArray());
+    public static string VersionButtonVersionContent => Assembly.GetExecutingAssembly().GetName().Version!.ToString()[0..^2];
     public static string VersionButtonUrl => "https://spacetime.lanzouu.com/b017hp0lc";
-    internal static string ReleasePagePassword => "3wnj";
     public static string EmailButtonUrl => "Zeus6_6@163.com";
 
     public static string DocumentationButtonUrl => "https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Documentation";
