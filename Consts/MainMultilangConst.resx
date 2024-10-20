@@ -199,7 +199,7 @@
     <value>No Clicking</value>
   </data>
   <data name="NoClickButtonIsStoppedToolTip" xml:space="preserve">
-    <value>Donot click the button</value>
+    <value>Do not click the button</value>
   </data>
   <data name="SettingsBoxBrowserPathToolTip" xml:space="preserve">
     <value>Fill in a Chromium-based browser path</value>

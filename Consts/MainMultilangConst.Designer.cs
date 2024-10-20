@@ -448,7 +448,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Donot click the button 的本地化字符串。
+        ///   查找类似 Do not click the button 的本地化字符串。
         /// </summary>
         public static string NoClickButtonIsStoppedToolTip {
             get {

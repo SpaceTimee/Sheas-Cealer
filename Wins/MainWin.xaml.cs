@@ -217,28 +217,22 @@ public partial class MainWin : Window
                 foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, _, _) in cealHostRules)
                     foreach ((string cealHostIncludeDomain, _) in cealHostDomainPairs)
                     {
-                        // 配置证书 SAN
-                        if (cealHostIncludeDomain.StartsWith("*."))
-                        {
-                            childCertSanBuilder.AddDnsName("*" + cealHostIncludeDomain.Replace("*", string.Empty));
+                        string cealHostIncludeDomainWithoutWildcard = cealHostIncludeDomain.TrimStart('*').TrimStart('.');
+
+                        if (cealHostIncludeDomain.StartsWith('#') || cealHostIncludeDomainWithoutWildcard.Contains('*'))
                             continue;
-                        }
-                        else if (cealHostIncludeDomain.StartsWith('*'))
-                            childCertSanBuilder.AddDnsName("*." + cealHostIncludeDomain.Replace("*", string.Empty));
-
-                        childCertSanBuilder.AddDnsName(cealHostIncludeDomain.Replace("*", string.Empty));
-
-                        // 配置 hosts
-                        string cealHostIncludeDomainWithoutWildcard = cealHostIncludeDomain.Replace("*", string.Empty);
-
-                        if (cealHostIncludeDomainWithoutWildcard.StartsWith('^') || cealHostIncludeDomainWithoutWildcard.EndsWith('^') ||
-                            cealHostIncludeDomainWithoutWildcard.StartsWith('.') || cealHostIncludeDomainWithoutWildcard.EndsWith('.'))
-                            continue;
-
-                        hostsConfAppendContent += $"127.0.0.1 {cealHostIncludeDomainWithoutWildcard.Split('^', 2)[0]}\n";
 
                         if (cealHostIncludeDomain.StartsWith('*'))
-                            hostsConfAppendContent += $"127.0.0.1 www.{cealHostIncludeDomainWithoutWildcard.Split('^', 2)[0]}\n";
+                        {
+                            childCertSanBuilder.AddDnsName($"*.{cealHostIncludeDomainWithoutWildcard}");
+                            hostsConfAppendContent += $"127.0.0.1 www.{cealHostIncludeDomainWithoutWildcard}\n";
+
+                            if (cealHostIncludeDomain.StartsWith("*."))
+                                continue;
+                        }
+
+                        childCertSanBuilder.AddDnsName(cealHostIncludeDomainWithoutWildcard);
+                        hostsConfAppendContent += $"127.0.0.1 {cealHostIncludeDomainWithoutWildcard}\n";
                     }
 
             childCertRequest.CertificateExtensions.Add(childCertSanBuilder.Build());
