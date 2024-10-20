@@ -21,8 +21,6 @@ internal partial class MainConst : MainMultilangConst
     internal static string EdgeBrowserRegistryPath => @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe";
     internal static string ChromeBrowserRegistryPath => @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe";
     internal static string BraveBrowserRegistryPath => @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\brave.exe";
-    internal static string UncealedBrowserPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Uncealed-Browser.lnk");
-    internal static string UncealedBrowserDescription => "Created By Sheas Cealer";
 
     internal static string HostsConfPath => Path.Combine(Registry.LocalMachine.OpenSubKey(@"\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DataBasePath")?.GetValue("DataBasePath", null)?.ToString() ?? @"C:\Windows\System32\drivers\etc", "hosts");
     internal static string HostsConfStartMarker => "# Cealing Nginx Start\n";

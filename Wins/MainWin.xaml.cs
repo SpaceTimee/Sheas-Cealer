@@ -14,7 +14,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using IWshRuntimeLibrary;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using NginxConfigParser;
@@ -151,12 +150,7 @@ public partial class MainWin : Window
         if (MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
             return;
 
-        IWshShortcut uncealedBrowserShortcut = (IWshShortcut)new WshShell().CreateShortcut(MainConst.UncealedBrowserPath);
-        uncealedBrowserShortcut.TargetPath = MainPres!.BrowserPath;
-        uncealedBrowserShortcut.Description = MainConst.UncealedBrowserDescription;
-        uncealedBrowserShortcut.Save();
-
-        foreach (Process browserProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainPres.BrowserPath)))
+        foreach (Process browserProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainPres!.BrowserPath)))
         {
             browserProcess.Kill();
             await browserProcess.WaitForExitAsync();
@@ -164,7 +158,7 @@ public partial class MainWin : Window
 
         await Task.Run(() =>
         {
-            new CommandProc(sender == null).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, ($"{CealArgs} {MainPres!.ExtraArgs}").Trim());
+            new BrowserProc(MainPres.BrowserPath, sender == null).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, ($"{CealArgs} {MainPres.ExtraArgs}").Trim());
         });
     }
     private void NginxButton_Click(object sender, RoutedEventArgs e)
@@ -543,7 +537,7 @@ public partial class MainWin : Window
                         hostResolverRules += $"MAP {cealHostSniWithoutNull} {cealHostIp},";
                 }
 
-            CealArgs = @$"/c @start .\""{Path.GetFileName(MainConst.UncealedBrowserPath)}"" --host-rules=""{hostRules.TrimEnd(',')}"" --host-resolver-rules=""{hostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
+            CealArgs = @$"--host-rules=""{hostRules.TrimEnd(',')}"" --host-resolver-rules=""{hostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
 
             NginxConfWatcher_Changed(null!, null!);
         }
