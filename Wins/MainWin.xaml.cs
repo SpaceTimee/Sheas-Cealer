@@ -38,7 +38,7 @@ public partial class MainWin : Window
     private static readonly FileSystemWatcher NginxConfWatcher = new(Path.GetDirectoryName(MainConst.NginxConfPath)!, Path.GetFileName(MainConst.NginxConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static readonly FileSystemWatcher MihomoConfWatcher = new(Path.GetDirectoryName(MainConst.MihomoConfPath)!, Path.GetFileName(MainConst.MihomoConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
 
-    private static readonly SortedDictionary<string, List<(List<(string cealHostIncludeDomain, string ceahHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>> CealHostRulesDict = [];
+    private static readonly SortedDictionary<string, List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>> CealHostRulesDict = [];
     private static string CealArgs = string.Empty;
     private static NginxConfig? NginxConfs;
     private static string? ExtraNginxConfs;
@@ -210,7 +210,6 @@ public partial class MainWin : Window
 
             CertificateRequest childCertRequest = new(MainConst.NginxChildCertSubjectName, certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
             SubjectAlternativeNameBuilder childCertSanBuilder = new();
-
             string hostsConfAppendContent = MainConst.HostsConfStartMarker;
 
             foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
@@ -242,6 +241,7 @@ public partial class MainWin : Window
             File.WriteAllText(MainConst.NginxKeyPath, certKey.ExportPkcs8PrivateKeyPem());
 
             hostsConfAppendContent += MainConst.HostsConfEndMarker;
+
             File.AppendAllText(MainConst.HostsConfPath, hostsConfAppendContent);
 
             MainPres.IsNginxIniting = true;
@@ -501,8 +501,8 @@ public partial class MainWin : Window
             {
                 List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs = [];
                 string? cealHostSni = cealHostRule[1].ValueKind == JsonValueKind.Null ? null :
-                    string.IsNullOrWhiteSpace(cealHostRule[1].ToString()) ? $"{cealHostName}{CealHostRulesDict[cealHostName].Count}" : cealHostRule[1].ToString();
-                string cealHostIp = string.IsNullOrWhiteSpace(cealHostRule[2].ToString()) ? "127.0.0.1" : cealHostRule[2].ToString();
+                    string.IsNullOrWhiteSpace(cealHostRule[1].ToString()) ? $"{cealHostName}{CealHostRulesDict[cealHostName].Count}" : cealHostRule[1].ToString().Trim();
+                string cealHostIp = string.IsNullOrWhiteSpace(cealHostRule[2].ToString()) ? "127.0.0.1" : cealHostRule[2].ToString().Trim();
 
                 foreach (JsonElement cealHostDomain in cealHostRule[0].EnumerateArray())
                 {
@@ -511,7 +511,7 @@ public partial class MainWin : Window
 
                     string[] cealHostDomainPair = cealHostDomain.ToString().Split('^', 2);
 
-                    cealHostDomainPairs.Add((cealHostDomainPair[0], cealHostDomainPair.Length == 2 ? cealHostDomainPair[1] : string.Empty));
+                    cealHostDomainPairs.Add((cealHostDomainPair[0].Trim(), cealHostDomainPair.Length == 2 ? cealHostDomainPair[1].Trim() : string.Empty));
                 }
 
                 CealHostRulesDict[cealHostName].Add((cealHostDomainPairs, cealHostSni, cealHostIp));
@@ -594,7 +594,8 @@ public partial class MainWin : Window
                         if (cealHostIncludeDomain.StartsWith('#'))
                             continue;
 
-                        serverName += "^" + (!string.IsNullOrWhiteSpace(cealHostExcludeDomain) ? $"(?!{cealHostExcludeDomain.Replace(".", "\\.").Replace("*", ".*")})" : string.Empty) + cealHostIncludeDomain.TrimStart('$').Replace(".", "\\.").Replace("*", ".*") + "$|";
+                        serverName += "^" + (!string.IsNullOrWhiteSpace(cealHostExcludeDomain) ? $"(?!{cealHostExcludeDomain.Replace(".", "\\.").Replace("*", ".*")})" : string.Empty) +
+                            cealHostIncludeDomain.TrimStart('$').Replace(".", "\\.").Replace("*", ".*") + "$|";
                     }
 
                     NginxConfs = NginxConfs
