@@ -511,12 +511,12 @@ public partial class MainWin : Window
 
                 foreach (JsonElement cealHostDomain in cealHostRule[0].EnumerateArray())
                 {
-                    if (cealHostDomain.ToString().StartsWith('^') || cealHostDomain.ToString().EndsWith('^'))
+                    if (cealHostDomain.ToString().StartsWith('^'))
                         continue;
 
                     string[] cealHostDomainPair = cealHostDomain.ToString().Split('^', 2);
 
-                    cealHostDomainPairs.Add((cealHostDomainPair[0], cealHostDomainPair.Length == 2 ? cealHostDomainPair[1] : string.Empty));
+                    cealHostDomainPairs.Add((cealHostDomainPair[0], cealHostDomainPair[1]));
                 }
 
                 CealHostRulesDict[cealHostName].Add((cealHostDomainPairs, cealHostSni, cealHostIp));
@@ -531,10 +531,19 @@ public partial class MainWin : Window
             foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
                 foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string cealHostSni, string cealHostIp) in cealHostRules)
                 {
-                    foreach ((string cealHostIncludeDomain, string cealHostExcludeDomain) in cealHostDomainPairs)
-                        hostRules += $"MAP {cealHostIncludeDomain} {cealHostSni}," + (!string.IsNullOrWhiteSpace(cealHostExcludeDomain) ? $"EXCLUDE {cealHostExcludeDomain}," : string.Empty);
+                    bool isValidCealHostDomainExist = false;
 
-                    hostResolverRules += $"MAP {cealHostSni} {cealHostIp},";
+                    foreach ((string cealHostIncludeDomain, string cealHostExcludeDomain) in cealHostDomainPairs)
+                    {
+                        if (cealHostIncludeDomain.StartsWith('$'))
+                            continue;
+
+                        hostRules += $"MAP {cealHostIncludeDomain} {cealHostSni}," + (!string.IsNullOrWhiteSpace(cealHostExcludeDomain) ? $"EXCLUDE {cealHostExcludeDomain}," : string.Empty);
+                        isValidCealHostDomainExist = true;
+                    }
+
+                    if (isValidCealHostDomainExist)
+                        hostResolverRules += $"MAP {cealHostSni} {cealHostIp},";
                 }
 
             CealArgs = @$"/c @start .\""{Path.GetFileName(MainConst.UncealedBrowserPath)}"" --host-rules=""{hostRules.TrimEnd(',')}"" --host-resolver-rules=""{hostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
@@ -584,7 +593,12 @@ public partial class MainWin : Window
                     string serverName = "~";
 
                     foreach ((string cealHostIncludeDomain, string cealHostExcludeDomain) in cealHostDomainPairs)
+                    {
+                        if (cealHostIncludeDomain.StartsWith('#'))
+                            continue;
+
                         serverName += "^" + (!string.IsNullOrWhiteSpace(cealHostExcludeDomain) ? $"(?!{cealHostExcludeDomain.Replace(".", "\\.").Replace("*", ".*")})" : string.Empty) + cealHostIncludeDomain.Replace(".", "\\.").Replace("*", ".*") + "$|";
+                    }
 
                     NginxConfs = NginxConfs
                         .AddOrUpdate($"http:server[{serverIndex}]:server_name", serverName.TrimEnd('|'))
