@@ -217,17 +217,17 @@ public partial class MainWin : Window
                 foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, _, _) in cealHostRules)
                     foreach ((string cealHostIncludeDomain, _) in cealHostDomainPairs)
                     {
-                        string cealHostIncludeDomainWithoutWildcard = cealHostIncludeDomain.TrimStart('*').TrimStart('.');
+                        string cealHostIncludeDomainWithoutWildcard = cealHostIncludeDomain.TrimStart('$').TrimStart('*').TrimStart('.');
 
                         if (cealHostIncludeDomain.StartsWith('#') || cealHostIncludeDomainWithoutWildcard.Contains('*'))
                             continue;
 
-                        if (cealHostIncludeDomain.StartsWith('*'))
+                        if (cealHostIncludeDomain.TrimStart('$').StartsWith('*'))
                         {
                             childCertSanBuilder.AddDnsName($"*.{cealHostIncludeDomainWithoutWildcard}");
                             hostsConfAppendContent += $"127.0.0.1 www.{cealHostIncludeDomainWithoutWildcard}\n";
 
-                            if (cealHostIncludeDomain.StartsWith("*."))
+                            if (cealHostIncludeDomain.TrimStart('$').StartsWith("*."))
                                 continue;
                         }
 
@@ -511,7 +511,7 @@ public partial class MainWin : Window
 
                     string[] cealHostDomainPair = cealHostDomain.ToString().Split('^', 2);
 
-                    cealHostDomainPairs.Add((cealHostDomainPair[0], cealHostDomainPair[1]));
+                    cealHostDomainPairs.Add((cealHostDomainPair[0], cealHostDomainPair.Length == 2 ? cealHostDomainPair[1] : string.Empty));
                 }
 
                 CealHostRulesDict[cealHostName].Add((cealHostDomainPairs, cealHostSni, cealHostIp));
@@ -522,10 +522,12 @@ public partial class MainWin : Window
         {
             string hostRules = string.Empty;
             string hostResolverRules = string.Empty;
+            int nullSniNum = 0;
 
             foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
                 foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp) in cealHostRules)
                 {
+                    string cealHostSniWithoutNull = cealHostSni ?? $"{cealHostName}{CealHostRulesDict[cealHostName].Count + ++nullSniNum}";
                     bool isValidCealHostDomainExist = false;
 
                     foreach ((string cealHostIncludeDomain, string cealHostExcludeDomain) in cealHostDomainPairs)
@@ -533,12 +535,12 @@ public partial class MainWin : Window
                         if (cealHostIncludeDomain.StartsWith('$'))
                             continue;
 
-                        hostRules += $"MAP {cealHostIncludeDomain} {cealHostSni}," + (!string.IsNullOrWhiteSpace(cealHostExcludeDomain) ? $"EXCLUDE {cealHostExcludeDomain}," : string.Empty);
+                        hostRules += $"MAP {cealHostIncludeDomain.TrimStart('#')} {cealHostSniWithoutNull}," + (!string.IsNullOrWhiteSpace(cealHostExcludeDomain) ? $"EXCLUDE {cealHostExcludeDomain}," : string.Empty);
                         isValidCealHostDomainExist = true;
                     }
 
                     if (isValidCealHostDomainExist)
-                        hostResolverRules += $"MAP {cealHostSni} {cealHostIp},";
+                        hostResolverRules += $"MAP {cealHostSniWithoutNull} {cealHostIp},";
                 }
 
             CealArgs = @$"/c @start .\""{Path.GetFileName(MainConst.UncealedBrowserPath)}"" --host-rules=""{hostRules.TrimEnd(',')}"" --host-resolver-rules=""{hostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
@@ -592,7 +594,7 @@ public partial class MainWin : Window
                         if (cealHostIncludeDomain.StartsWith('#'))
                             continue;
 
-                        serverName += "^" + (!string.IsNullOrWhiteSpace(cealHostExcludeDomain) ? $"(?!{cealHostExcludeDomain.Replace(".", "\\.").Replace("*", ".*")})" : string.Empty) + cealHostIncludeDomain.Replace(".", "\\.").Replace("*", ".*") + "$|";
+                        serverName += "^" + (!string.IsNullOrWhiteSpace(cealHostExcludeDomain) ? $"(?!{cealHostExcludeDomain.Replace(".", "\\.").Replace("*", ".*")})" : string.Empty) + cealHostIncludeDomain.TrimStart('$').Replace(".", "\\.").Replace("*", ".*") + "$|";
                     }
 
                     NginxConfs = NginxConfs
@@ -600,10 +602,12 @@ public partial class MainWin : Window
                         .AddOrUpdate($"http:server[{serverIndex}]:listen", "443 ssl")
                         .AddOrUpdate($"http:server[{serverIndex}]:ssl_certificate", Path.GetFileName(MainConst.NginxCertPath))
                         .AddOrUpdate($"http:server[{serverIndex}]:ssl_certificate_key", Path.GetFileName(MainConst.NginxKeyPath))
-                        .AddOrUpdate($"http:server[{serverIndex}]:proxy_ssl_server_name", cealHostSni != null ? "on" : "off")
-                        .AddOrUpdate($"http:server[{serverIndex}]:proxy_ssl_name", cealHostSni ?? string.Empty)
                         .AddOrUpdate($"http:server[{serverIndex}]:location", "/", true)
                         .AddOrUpdate($"http:server[{serverIndex}]:location:proxy_pass", $"https://{cealHostIp}");
+
+                    NginxConfs = cealHostSni == null ?
+                        NginxConfs.AddOrUpdate($"http:server[{serverIndex}]:proxy_ssl_server_name", "off") :
+                        NginxConfs.AddOrUpdate($"http:server[{serverIndex}]:proxy_ssl_name", cealHostSni);
                 }
         }
     }
