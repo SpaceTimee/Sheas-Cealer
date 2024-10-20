@@ -38,7 +38,7 @@ public partial class MainWin : Window
     private static readonly FileSystemWatcher NginxConfWatcher = new(Path.GetDirectoryName(MainConst.NginxConfPath)!, Path.GetFileName(MainConst.NginxConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private static readonly FileSystemWatcher MihomoConfWatcher = new(Path.GetDirectoryName(MainConst.MihomoConfPath)!, Path.GetFileName(MainConst.MihomoConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
 
-    private static readonly SortedDictionary<string, List<(List<(string cealHostIncludeDomain, string ceahHostExcludeDomain)> cealHostDomainPairs, string cealHostSni, string cealHostIp)>> CealHostRulesDict = [];
+    private static readonly SortedDictionary<string, List<(List<(string cealHostIncludeDomain, string ceahHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>> CealHostRulesDict = [];
     private static string CealArgs = string.Empty;
     private static NginxConfig? NginxConfs;
     private static string? ExtraNginxConfs;
@@ -213,7 +213,7 @@ public partial class MainWin : Window
 
             string hostsConfAppendContent = MainConst.HostsConfStartMarker;
 
-            foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
+            foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
                 foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, _, _) in cealHostRules)
                     foreach ((string cealHostIncludeDomain, _) in cealHostDomainPairs)
                     {
@@ -500,7 +500,8 @@ public partial class MainWin : Window
             foreach (JsonElement cealHostRule in cealHostArray.EnumerateArray())
             {
                 List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs = [];
-                string cealHostSni = string.IsNullOrWhiteSpace(cealHostRule[1].ToString()) ? $"{cealHostName}{CealHostRulesDict[cealHostName].Count}" : cealHostRule[1].ToString();
+                string? cealHostSni = cealHostRule[1].ValueKind == JsonValueKind.Null ? null :
+                    string.IsNullOrWhiteSpace(cealHostRule[1].ToString()) ? $"{cealHostName}{CealHostRulesDict[cealHostName].Count}" : cealHostRule[1].ToString();
                 string cealHostIp = string.IsNullOrWhiteSpace(cealHostRule[2].ToString()) ? "127.0.0.1" : cealHostRule[2].ToString();
 
                 foreach (JsonElement cealHostDomain in cealHostRule[0].EnumerateArray())
@@ -522,8 +523,8 @@ public partial class MainWin : Window
             string hostRules = string.Empty;
             string hostResolverRules = string.Empty;
 
-            foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
-                foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string cealHostSni, string cealHostIp) in cealHostRules)
+            foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
+                foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp) in cealHostRules)
                 {
                     bool isValidCealHostDomainExist = false;
 
@@ -562,11 +563,11 @@ public partial class MainWin : Window
             NginxConfig extraNginxConfig = NginxConfig.Load(ExtraNginxConfs);
             int serverIndex = 0;
 
-            foreach (IToken mainToken in extraNginxConfig.GetTokens())
-                if (mainToken is GroupToken mainGroupToken && mainGroupToken.Key.Equals("http", StringComparison.InvariantCultureIgnoreCase))
+            foreach (IToken extraNginxConfigToken in extraNginxConfig.GetTokens())
+                if (extraNginxConfigToken is GroupToken extraNginxConfigGroupToken && extraNginxConfigGroupToken.Key.Equals("http", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    foreach (IToken serverToken in mainGroupToken.Tokens)
-                        if (serverToken is GroupToken serverGroupServer && mainGroupToken.Key.Equals("server", StringComparison.InvariantCultureIgnoreCase))
+                    foreach (IToken serverToken in extraNginxConfigGroupToken.Tokens)
+                        if (serverToken is GroupToken serverGroupServer && extraNginxConfigGroupToken.Key.Equals("server", StringComparison.InvariantCultureIgnoreCase))
                             ++serverIndex;
 
                     break;
@@ -579,8 +580,8 @@ public partial class MainWin : Window
                 .AddOrUpdate("http:proxy_ssl_server_name", !MainPres.IsFlashing ? "on" : "off")
                 .AddOrUpdate($"http:server[{serverIndex}]:return", "https://$host$request_uri");
 
-            foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
-                foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string cealHostSni, string cealHostIp) in cealHostRules)
+            foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
+                foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp) in cealHostRules)
                 {
                     ++serverIndex;
 
@@ -599,7 +600,8 @@ public partial class MainWin : Window
                         .AddOrUpdate($"http:server[{serverIndex}]:listen", "443 ssl")
                         .AddOrUpdate($"http:server[{serverIndex}]:ssl_certificate", Path.GetFileName(MainConst.NginxCertPath))
                         .AddOrUpdate($"http:server[{serverIndex}]:ssl_certificate_key", Path.GetFileName(MainConst.NginxKeyPath))
-                        .AddOrUpdate($"http:server[{serverIndex}]:proxy_ssl_name", cealHostSni)
+                        .AddOrUpdate($"http:server[{serverIndex}]:proxy_ssl_server_name", cealHostSni != null ? "on" : "off")
+                        .AddOrUpdate($"http:server[{serverIndex}]:proxy_ssl_name", cealHostSni ?? string.Empty)
                         .AddOrUpdate($"http:server[{serverIndex}]:location", "/", true)
                         .AddOrUpdate($"http:server[{serverIndex}]:location:proxy_pass", $"https://{cealHostIp}");
                 }
