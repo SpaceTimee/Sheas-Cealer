@@ -158,7 +158,7 @@ public partial class MainWin : Window
 
         await Task.Run(() =>
         {
-            new BrowserProc(MainPres.BrowserPath, sender == null).ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, ($"{CealArgs} {MainPres.ExtraArgs}").Trim());
+            new BrowserProc(MainPres.BrowserPath, sender == null).ShellRun(Path.GetDirectoryName(MainPres.BrowserPath), ($"{CealArgs} {MainPres.ExtraArgs}").Trim());
         });
     }
     private void NginxButton_Click(object sender, RoutedEventArgs e)
@@ -244,7 +244,7 @@ public partial class MainWin : Window
 
             await Task.Run(() =>
             {
-                new NginxProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @$"-c ""{MainConst.NginxConfPath}""");
+                new NginxProc().ShellRun(Path.GetDirectoryName(MainConst.NginxPath), @$"-c ""{MainConst.NginxConfPath}""");
             });
 
             while (true)
@@ -309,7 +309,7 @@ public partial class MainWin : Window
 
             await Task.Run(() =>
             {
-                new MihomoProc().ShellRun(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, @$"-d ""{Path.GetDirectoryName(MainConst.MihomoConfPath)}""");
+                new MihomoProc().ShellRun(Path.GetDirectoryName(MainConst.MihomoPath), @$"-d ""{Path.GetDirectoryName(MainConst.MihomoConfPath)}""");
             });
 
             while (true)
