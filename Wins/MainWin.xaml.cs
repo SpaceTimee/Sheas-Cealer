@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -371,16 +372,17 @@ public partial class MainWin : Window
     }
     private async void UpdateUpstreamHostButton_Click(object sender, RoutedEventArgs e)
     {
-        string upstreamUpstreamHostUrl = (MainPres!.UpstreamUrl.StartsWith("http://") || MainPres.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres.UpstreamUrl;
-        string upstreamUpstreamHostString = await Http.GetAsync<string>(upstreamUpstreamHostUrl, MainClient);
-        string localUpstreamHostString;
-
         if (!File.Exists(MainConst.UpstreamHostPath))
             File.Create(MainConst.UpstreamHostPath).Dispose();
 
-        localUpstreamHostString = File.ReadAllText(MainConst.UpstreamHostPath);
+        string upstreamUpstreamHostUrl = (MainPres!.UpstreamUrl.StartsWith("http://") || MainPres.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres.UpstreamUrl;
+        string upstreamUpstreamHostString = await Http.GetAsync<string>(upstreamUpstreamHostUrl, MainClient);
+        string localUpstreamHostString = File.ReadAllText(MainConst.UpstreamHostPath);
 
-        if (localUpstreamHostString.Replace("\r", string.Empty) == upstreamUpstreamHostString)
+        try { upstreamUpstreamHostString = Encoding.UTF8.GetString(Convert.FromBase64String(upstreamUpstreamHostString)); }
+        catch { }
+
+        if (localUpstreamHostString == upstreamUpstreamHostString || localUpstreamHostString.Replace("\r", string.Empty) == upstreamUpstreamHostString)
             MessageBox.Show(MainConst._UpstreamHostUtdMsg);
         else
         {
