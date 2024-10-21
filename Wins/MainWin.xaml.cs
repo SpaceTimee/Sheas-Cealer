@@ -212,7 +212,7 @@ public partial class MainWin : Window
                     {
                         string cealHostIncludeDomainWithoutWildcard = cealHostIncludeDomain.TrimStart('$').TrimStart('*').TrimStart('.');
 
-                        if (cealHostIncludeDomain.StartsWith('#') || cealHostIncludeDomainWithoutWildcard.Contains('*'))
+                        if (cealHostIncludeDomain.StartsWith('#') || cealHostIncludeDomainWithoutWildcard.Contains('*') || string.IsNullOrWhiteSpace(cealHostIncludeDomainWithoutWildcard))
                             continue;
 
                         if (cealHostIncludeDomain.TrimStart('$').StartsWith('*'))
@@ -500,7 +500,7 @@ public partial class MainWin : Window
 
                 foreach (JsonElement cealHostDomain in cealHostRule[0].EnumerateArray())
                 {
-                    if (cealHostDomain.ToString().StartsWith('^'))
+                    if (cealHostDomain.ToString().StartsWith('^') || string.IsNullOrWhiteSpace(cealHostDomain.ToString().TrimStart('#')) || string.IsNullOrWhiteSpace(cealHostDomain.ToString().TrimStart('$')))
                         continue;
 
                     string[] cealHostDomainPair = cealHostDomain.ToString().Split('^', 2);
