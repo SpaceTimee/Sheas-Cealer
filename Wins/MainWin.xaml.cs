@@ -406,9 +406,7 @@ public partial class MainWin : Window
             return;
         }
 
-        ++GameClickTime;
-
-        switch (GameClickTime)
+        switch (++GameClickTime)
         {
             case 1:
                 MessageBox.Show(MainConst._GameClickOnceMsg);
@@ -565,7 +563,7 @@ public partial class MainWin : Window
                 if (extraNginxConfigToken is GroupToken extraNginxConfigGroupToken && extraNginxConfigGroupToken.Key.Equals("http", StringComparison.InvariantCultureIgnoreCase))
                 {
                     foreach (IToken serverToken in extraNginxConfigGroupToken.Tokens)
-                        if (serverToken is GroupToken serverGroupServer && extraNginxConfigGroupToken.Key.Equals("server", StringComparison.InvariantCultureIgnoreCase))
+                        if (serverToken is GroupToken serverGroupToken && serverGroupToken.Key.Equals("server", StringComparison.InvariantCultureIgnoreCase))
                             ++serverIndex;
 
                     break;
@@ -576,13 +574,12 @@ public partial class MainWin : Window
                 .AddOrUpdate("events:worker_connections", "65536")
                 .AddOrUpdate("http:proxy_set_header", "Host $http_host")
                 .AddOrUpdate("http:proxy_ssl_server_name", !MainPres.IsFlashing ? "on" : "off")
+                .AddOrUpdate($"http:server[{serverIndex}]:listen", "80 default_server")
                 .AddOrUpdate($"http:server[{serverIndex}]:return", "https://$host$request_uri");
 
             foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
                 foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp) in cealHostRules)
                 {
-                    ++serverIndex;
-
                     string serverName = "~";
 
                     foreach ((string cealHostIncludeDomain, string cealHostExcludeDomain) in cealHostDomainPairs)
@@ -593,6 +590,11 @@ public partial class MainWin : Window
                         serverName += "^" + (!string.IsNullOrWhiteSpace(cealHostExcludeDomain) ? $"(?!{cealHostExcludeDomain.Replace(".", "\\.").Replace("*", ".*")})" : string.Empty) +
                             cealHostIncludeDomain.TrimStart('$').Replace(".", "\\.").Replace("*", ".*") + "$|";
                     }
+
+                    if (serverName == "~")
+                        continue;
+
+                    ++serverIndex;
 
                     NginxConfs = NginxConfs
                         .AddOrUpdate($"http:server[{serverIndex}]:server_name", serverName.TrimEnd('|'))
