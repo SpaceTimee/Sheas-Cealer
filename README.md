@@ -2,6 +2,9 @@
 <h3 align="center">- Just Ceal It -</h3>
 </br>
 
+## 其他语言
+[English README](README_EN.md)
+
 ## 自我介绍
 **Sheas Cealer**: 一只基于 **WPF(.Net8)** 的 SNI 伪造工具
 
