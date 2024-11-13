@@ -619,7 +619,7 @@ public partial class MainWin : Window
                 if (!File.Exists(MainConst.MihomoConfPath))
                     File.Create(MainConst.MihomoConfPath).Dispose();
 
-                using FileStream mihomoConfStream = new(MainConst.NginxConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                using FileStream mihomoConfStream = new(MainConst.MihomoConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
                 ExtraMihomoConfs = new StreamReader(mihomoConfStream).ReadToEnd();
 
                 Dictionary<string, object> mihomoConfDict = new DeserializerBuilder()

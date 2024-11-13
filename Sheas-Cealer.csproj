@@ -59,6 +59,7 @@
     <None Remove=".gitattributes" />
     <None Remove=".gitignore" />
     <None Remove="README.md" />
+    <None Remove="README_EN.md" />
     <None Remove="Sheas-Cealer-Logo.ico" />
   </ItemGroup>
 
