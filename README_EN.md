@@ -55,6 +55,14 @@ Using the startup parameter feature of the Chromium kernel to conceal SNI. For m
 2. TG Group (Sub Group): [PixCealerChat](https://t.me/PixCealerChat)
 3. **Email: Zeus6_6@163.com**
 
+## Projects
+1. [Cealing Host](https://github.com/SpaceTimee/Cealing-Host): The latest Built-in Cealing Host
+2. [Sheas Dop](https://github.com/SpaceTimee/Sheas-Dop): DNS anti-pollution resolution tool (Sheas Cealer Global Cealing subproject)
+3. [Sheas Nginx](https://github.com/SpaceTimee/Sheas-Nginx): Pixiv Nginx launcher (Sheas Cealer Global Purging × Pixiv Nginx cooperative subproject)
+4. [Bot CealingCat](https://github.com/SpaceTimee/Bot-CealingCat): Telegram Bot providing Sheas Cealer related services
+5. [Console HostChecker](https://github.com/SpaceTimee/Console-HostChecker): Cealing Host automated checking script
+6. [Console HostGenerator](https://github.com/SpaceTimee/Console-HostGenerator): Cealing Host automated generation script
+
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer?ref=badge_large)
 
