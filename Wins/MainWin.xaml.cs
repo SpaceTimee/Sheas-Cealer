@@ -500,15 +500,16 @@ public partial class MainWin : Window
 
                 foreach (JsonElement cealHostDomain in cealHostRule[0].EnumerateArray())
                 {
-                    if (cealHostDomain.ToString().StartsWith('^') || string.IsNullOrWhiteSpace(cealHostDomain.ToString().TrimStart('#')) || string.IsNullOrWhiteSpace(cealHostDomain.ToString().TrimStart('$')))
+                    string[] cealHostDomainPair = cealHostDomain.ToString().Split('^', 2, StringSplitOptions.TrimEntries);
+
+                    if (string.IsNullOrEmpty(cealHostDomainPair[0].TrimStart('#').TrimStart('$')))
                         continue;
 
-                    string[] cealHostDomainPair = cealHostDomain.ToString().Split('^', 2);
-
-                    cealHostDomainPairs.Add((cealHostDomainPair[0].Trim(), cealHostDomainPair.Length == 2 ? cealHostDomainPair[1].Trim() : string.Empty));
+                    cealHostDomainPairs.Add((cealHostDomainPair[0], cealHostDomainPair.Length == 2 ? cealHostDomainPair[1] : string.Empty));
                 }
 
-                CealHostRulesDict[cealHostName].Add((cealHostDomainPairs, cealHostSni, cealHostIp));
+                if (cealHostDomainPairs.Count != 0)
+                    CealHostRulesDict[cealHostName].Add((cealHostDomainPairs, cealHostSni, cealHostIp));
             }
         }
         catch { CealHostRulesDict.Remove(cealHostName); }
