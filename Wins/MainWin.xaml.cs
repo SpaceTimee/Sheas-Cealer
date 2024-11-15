@@ -219,14 +219,14 @@ public partial class MainWin : Window
                         if (cealHostIncludeDomain.TrimStart('$').StartsWith('*'))
                         {
                             childCertSanBuilder.AddDnsName($"*.{cealHostIncludeDomainWithoutWildcard}");
-                            hostsConfAppendContent += $"127.0.0.1 www.{cealHostIncludeDomainWithoutWildcard}\n";
+                            hostsConfAppendContent += $"127.0.0.1 www.{cealHostIncludeDomainWithoutWildcard}{Environment.NewLine}";
 
                             if (cealHostIncludeDomain.TrimStart('$').StartsWith("*."))
                                 continue;
                         }
 
                         childCertSanBuilder.AddDnsName(cealHostIncludeDomainWithoutWildcard);
-                        hostsConfAppendContent += $"127.0.0.1 {cealHostIncludeDomainWithoutWildcard}\n";
+                        hostsConfAppendContent += $"127.0.0.1 {cealHostIncludeDomainWithoutWildcard}{Environment.NewLine}";
                     }
 
             childCertRequest.CertificateExtensions.Add(childCertSanBuilder.Build());
@@ -382,7 +382,7 @@ public partial class MainWin : Window
         try { upstreamUpstreamHostString = Encoding.UTF8.GetString(Convert.FromBase64String(upstreamUpstreamHostString)); }
         catch { }
 
-        if (localUpstreamHostString == upstreamUpstreamHostString || localUpstreamHostString.Replace("\r", string.Empty) == upstreamUpstreamHostString)
+        if (localUpstreamHostString == upstreamUpstreamHostString || localUpstreamHostString.ReplaceLineEndings() == upstreamUpstreamHostString.ReplaceLineEndings())
             MessageBox.Show(MainConst._UpstreamHostUtdMsg);
         else
         {

@@ -23,7 +23,7 @@ internal partial class MainConst : MainMultilangConst
     internal static string UpstreamHostPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-U.json");
 
     internal static string HostsConfPath => Path.Combine(Registry.LocalMachine.OpenSubKey(@"\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DataBasePath")?.GetValue("DataBasePath", null)?.ToString() ?? @"C:\Windows\System32\drivers\etc", "hosts");
-    internal static string HostsConfStartMarker => "# Cealing Nginx Start\n";
+    internal static string HostsConfStartMarker => $"# Cealing Nginx Start{Environment.NewLine}";
     internal static string HostsConfEndMarker => "# Cealing Nginx End";
 
     internal static string NginxPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Nginx.exe");
