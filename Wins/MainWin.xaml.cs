@@ -268,9 +268,6 @@ public partial class MainWin : Window
             File.WriteAllText(MainConst.NginxConfPath, ExtraNginxConfs);
             NginxConfWatcher.EnableRaisingEvents = true;
             MainPres.IsNginxIniting = false;
-
-            if (sender == null)
-                Application.Current.Dispatcher.InvokeShutdown();
         }
         else
             foreach (Process nginxProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.NginxPath)))
@@ -333,9 +330,6 @@ public partial class MainWin : Window
             File.WriteAllText(MainConst.MihomoConfPath, ExtraMihomoConfs);
             MihomoConfWatcher.EnableRaisingEvents = true;
             MainPres.IsMihomoIniting = false;
-
-            if (sender == null)
-                Application.Current.Dispatcher.InvokeShutdown();
         }
         else
             foreach (Process mihomoProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)))
