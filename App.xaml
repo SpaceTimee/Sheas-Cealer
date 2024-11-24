@@ -20,6 +20,7 @@
             <Style BasedOn="{StaticResource MaterialDesignRaisedButton}" TargetType="{x:Type Button}">
                 <Setter Property="Height" Value="Auto" />
                 <Setter Property="Width" Value="Auto" />
+                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBackground}" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>
