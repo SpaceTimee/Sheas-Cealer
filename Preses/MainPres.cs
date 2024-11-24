@@ -10,7 +10,7 @@ using File = System.IO.File;
 
 namespace Sheas_Cealer.Preses;
 
-internal partial class MainPres : ObservableObject
+internal partial class MainPres : AppPres
 {
     internal MainPres(string[] args)
     {
@@ -68,17 +68,6 @@ internal partial class MainPres : ObservableObject
             Settings.Default.ExtraArgs = value;
             Settings.Default.Save();
         }
-    }
-
-    [ObservableProperty]
-    private bool? isLightTheme = null;
-    partial void OnIsLightThemeChanged(bool? value)
-    {
-        PaletteHelper paletteHelper = new();
-        Theme newTheme = paletteHelper.GetTheme();
-
-        newTheme.SetBaseTheme(value.HasValue ? value.GetValueOrDefault() ? BaseTheme.Light : BaseTheme.Dark : BaseTheme.Inherit);
-        paletteHelper.SetTheme(newTheme);
     }
 
     [ObservableProperty]
