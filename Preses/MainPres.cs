@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
-using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Props;
@@ -10,7 +9,7 @@ using File = System.IO.File;
 
 namespace Sheas_Cealer.Preses;
 
-internal partial class MainPres : AppPres
+internal partial class MainPres : GlobalPres
 {
     internal MainPres(string[] args)
     {
