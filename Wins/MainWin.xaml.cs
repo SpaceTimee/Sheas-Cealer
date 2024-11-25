@@ -54,7 +54,11 @@ public partial class MainWin : Window
 
         DataContext = MainPres = new(args);
     }
-    protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        IconRemover.RemoveIcon(this);
+        BorderThemeSetter.SetBorderTheme(this, MainPres!.IsLightTheme);
+    }
     private async void MainWin_Loaded(object sender, RoutedEventArgs e)
     {
         SettingsBox.Focus();

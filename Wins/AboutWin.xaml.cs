@@ -4,14 +4,26 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Sheas_Cealer.Consts;
+using Sheas_Cealer.Preses;
 using Sheas_Cealer.Utils;
 
 namespace Sheas_Cealer.Wins;
 
 public partial class AboutWin : Window
 {
-    internal AboutWin() => InitializeComponent();
-    protected override void OnSourceInitialized(EventArgs e) => IconRemover.RemoveIcon(this);
+    private static AboutPres? AboutPres;
+
+    internal AboutWin()
+    {
+        InitializeComponent();
+
+        AboutPres = new();
+    }
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        IconRemover.RemoveIcon(this);
+        BorderThemeSetter.SetBorderTheme(this, AboutPres!.IsLightTheme);
+    }
 
     private void AboutButton_Click(object sender, RoutedEventArgs e)
     {

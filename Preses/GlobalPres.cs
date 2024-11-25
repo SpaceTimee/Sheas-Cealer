@@ -12,7 +12,7 @@ internal partial class GlobalPres : ObservableRecipient, IRecipient<PropertyChan
     internal GlobalPres() => IsActive = true;
 
     [ObservableProperty, NotifyPropertyChangedRecipients]
-    private bool? isLightTheme = null;
+    private static bool? isLightTheme = null;
     partial void OnIsLightThemeChanged(bool? value)
     {
         PaletteHelper paletteHelper = new();
