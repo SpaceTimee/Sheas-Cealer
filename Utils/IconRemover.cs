@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -16,28 +15,24 @@ internal static partial class IconRemover
     private const uint WM_SETICON = 0x0080;
 
     [LibraryImport("user32.dll", EntryPoint = "GetWindowLongW")]
-    private static partial int GetWindowLong(IntPtr hwnd, int index);
+    private static partial int GetWindowLong(nint hwnd, int index);
     [LibraryImport("user32.dll", EntryPoint = "SetWindowLongW")]
-    private static partial int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+    private static partial int SetWindowLong(nint hwnd, int index, nint newStyle);
     [LibraryImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter, int x, int y, int width, int height, uint flags);
+    private static partial bool SetWindowPos(nint hwnd, nint hwndInsertAfter, int x, int y, int width, int height, uint flags);
     [LibraryImport("user32.dll", EntryPoint = "SendMessageW")]
-    private static partial IntPtr SendMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
+    private static partial nint SendMessage(nint hwnd, uint msg, nint wParam, nint lParam);
 
     internal static void RemoveIcon(Window window)
     {
-        // 获取该窗口句柄
-        IntPtr hwnd = new WindowInteropHelper(window).Handle;
+        nint hwnd = new WindowInteropHelper(window).Handle;
 
-        // 将窗口更改为不显示窗口图标
         _ = SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_DLGMODALFRAME);
 
-        // 更新窗口的非客户区域来显示更改
-        SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+        SetWindowPos(hwnd, nint.Zero, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 
-        // 防止自定义图标生效
-        SendMessage(hwnd, WM_SETICON, new IntPtr(1), IntPtr.Zero);
-        SendMessage(hwnd, WM_SETICON, IntPtr.Zero, IntPtr.Zero);
+        SendMessage(hwnd, WM_SETICON, new nint(1), nint.Zero);
+        SendMessage(hwnd, WM_SETICON, nint.Zero, nint.Zero);
     }
 }
