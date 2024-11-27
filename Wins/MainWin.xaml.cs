@@ -248,6 +248,7 @@ public partial class MainWin : Window
 
             hostsConfAppendContent += MainConst.HostsConfEndMarker;
 
+            File.SetAttributes(MainConst.HostsConfPath, File.GetAttributes(MainConst.HostsConfPath) & ~FileAttributes.ReadOnly);
             File.AppendAllText(MainConst.HostsConfPath, hostsConfAppendContent);
 
             MainPres.IsNginxIniting = true;
