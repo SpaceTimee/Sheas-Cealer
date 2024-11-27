@@ -47,8 +47,6 @@ public partial class MainWin : Window
     private static string? MihomoConfs;
     private static string? ExtraMihomoConfs;
 
-    private static bool IsCealHostError = false;
-
     private static int NginxHttpPort = 80;
     private static int NginxHttpsPort = 443;
     private static int MihomoMixedPort = 7880;
@@ -158,7 +156,7 @@ public partial class MainWin : Window
     {
         HoldButtonTimer?.Stop();
 
-        if ((IsCealHostError && MessageBox.Show(MainConst._HostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+        if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._HostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
             (MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
             return;
 
@@ -190,7 +188,7 @@ public partial class MainWin : Window
 
         if (!MainPres!.IsNginxRunning)
         {
-            if ((IsCealHostError && MessageBox.Show(MainConst._HostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+            if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._HostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                 (NginxHttpPort != 80 && MessageBox.Show(MainConst._NginxHttpPortOccupiedPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                 (NginxHttpsPort != 443 && MessageBox.Show(MainConst._NginxHttpsPortOccupiedPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                 (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
@@ -366,12 +364,21 @@ public partial class MainWin : Window
     private void EditConfButton_Click(object sender, RoutedEventArgs e)
     {
         Button? senderButton = sender as Button;
+        string confPath;
 
-        string confPath = senderButton == EditHostsConfButton ? MainConst.HostsConfPath :
-            senderButton == EditNginxConfButton ? MainConst.NginxConfPath : MainConst.MihomoConfPath;
+        if (senderButton == EditHostsConfButton)
+        {
+            confPath = MainConst.HostsConfPath;
 
-        if (!File.Exists(confPath))
-            File.Create(confPath).Dispose();
+            File.SetAttributes(MainConst.HostsConfPath, File.GetAttributes(MainConst.HostsConfPath) & ~FileAttributes.ReadOnly);
+        }
+        else
+        {
+            confPath = senderButton == EditNginxConfButton ? MainConst.NginxConfPath : MainConst.MihomoConfPath;
+
+            if (!File.Exists(confPath))
+                File.Create(confPath).Dispose();
+        }
 
         ProcessStartInfo processStartInfo = new(confPath) { UseShellExecute = true };
         Process.Start(processStartInfo);
@@ -490,10 +497,12 @@ public partial class MainWin : Window
         try
         {
             CealHostRulesDict[cealHostName] = [];
-            string cealHostRulesFragments = string.Empty;
-            string cealHostResolverRulesFragments = string.Empty;
 
             using FileStream cealHostStream = new(e.FullPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+
+            if (cealHostStream.Length == 0)
+                return;
+
             JsonDocumentOptions cealHostOptions = new() { AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip };
             JsonElement cealHostArray = JsonDocument.Parse(cealHostStream, cealHostOptions).RootElement;
 
@@ -517,25 +526,19 @@ public partial class MainWin : Window
                 if (cealHostDomainPairs.Count != 0)
                     CealHostRulesDict[cealHostName].Add((cealHostDomainPairs, cealHostSni, cealHostIp));
             }
-
-            IsCealHostError = false;
         }
-        catch
-        {
-            CealHostRulesDict.Remove(cealHostName);
-
-            IsCealHostError = true;
-        }
+        catch { CealHostRulesDict[cealHostName] = null!; }
         finally
         {
             string hostRules = string.Empty;
             string hostResolverRules = string.Empty;
             int nullSniNum = 0;
 
-            foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
-                foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp) in cealHostRules)
+            foreach (KeyValuePair<string, List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>> cealHostRulesPair in CealHostRulesDict)
+            {
+                foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp) in cealHostRulesPair.Value ?? [])
                 {
-                    string cealHostSniWithoutNull = cealHostSni ?? $"{cealHostName}{CealHostRulesDict[cealHostName].Count + ++nullSniNum}";
+                    string cealHostSniWithoutNull = cealHostSni ?? $"{cealHostRulesPair.Key}{(cealHostRulesPair.Value ?? []).Count + ++nullSniNum}";
                     bool isValidCealHostDomainExist = false;
 
                     foreach ((string cealHostIncludeDomain, string cealHostExcludeDomain) in cealHostDomainPairs)
@@ -550,6 +553,7 @@ public partial class MainWin : Window
                     if (isValidCealHostDomainExist)
                         hostResolverRules += $"MAP {cealHostSniWithoutNull} {cealHostIp},";
                 }
+            }
 
             CealArgs = @$"--host-rules=""{hostRules.TrimEnd(',')}"" --host-resolver-rules=""{hostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
 
@@ -600,7 +604,7 @@ public partial class MainWin : Window
                 .AddOrUpdate($"http:server[{serverIndex}]:return", "https://$host$request_uri");
 
             foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
-                foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp) in cealHostRules)
+                foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp) in cealHostRules ?? [])
                 {
                     string serverName = "~";
 
