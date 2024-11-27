@@ -256,13 +256,13 @@
     <value>Browser</value>
   </data>
   <data name="_ConfErrorMsg" xml:space="preserve">
-    <value>The config cannot be recognized. Check if the config contain syntax errors</value>
+    <value>The config contains syntax errors and cannot be recognized</value>
   </data>
   <data name="_GameClickOnceMsg" xml:space="preserve">
-    <value>I know you would do it, but nothing will actually happen. Whee.</value>
+    <value>I know you would do it, but nothing will actually happen. Whee</value>
   </data>
   <data name="_GameClickThreeMsg" xml:space="preserve">
-    <value>Ugh, what are you doing. Please stop, I don't want to hurt anyone. Stop please, this is your last chance. Ugh, I can't control it anymore.</value>
+    <value>Ugh, what are you doing. Please stop, I don't want to hurt anyone. Stop please, this is your last chance. Ugh, I can't control it anymore</value>
   </data>
   <data name="_GameClickTwiceMsg" xml:space="preserve">
     <value>No no no, don't click me. Sorry, I shouldn't have lied to you, I am a cursed button, and continuing to click me will bring disaster to the entire Sheas Cealer. Please believe me, this is not a game, and there are no new features here. Listen to me and use the normal functions, okay?</value>
@@ -279,8 +279,8 @@
   <data name="_GameStartMsg" xml:space="preserve">
     <value>No, please kill me, I...can't control myself...</value>
   </data>
-  <data name="_HostErrorMsg" xml:space="preserve">
-    <value>The args cannot be recognized. Check if the hosts contain syntax errors</value>
+  <data name="_HostErrorPrompt" xml:space="preserve">
+    <value>Some hosts contain syntax errors and cannot be recognized. Do you want to continue anyway?</value>
   </data>
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>All processes of the selected browser will be closed before launching. Do you want to continue?</value>
@@ -290,6 +290,12 @@
   </data>
   <data name="_LaunchProxyPrompt" xml:space="preserve">
     <value>Please remember to come back and stop the proxy manually after use. Do you want to continue?</value>
+  </data>
+  <data name="_NginxHttpPortOccupiedPrompt" xml:space="preserve">
+    <value>The local port 80 is occupied, which may cause the http connection to fail to automatically jump to https. Do you want to continue?</value>
+  </data>
+  <data name="_NginxHttpsPortOccupiedPrompt" xml:space="preserve">
+    <value>The local port 443 is occupied, which may cause the global forgery to fail to take effect. Do you want to continue?</value>
   </data>
   <data name="_OverrideUpstreamHostPrompt" xml:space="preserve">
     <value>There is an update available. Do you want to update upstream host? If No it will only open the upstream host page for you</value>

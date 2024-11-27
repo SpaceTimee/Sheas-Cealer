@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -44,6 +46,12 @@ public partial class MainWin : Window
     private static string? ExtraNginxConfs;
     private static string? MihomoConfs;
     private static string? ExtraMihomoConfs;
+
+    private static bool IsCealHostError = false;
+
+    private static int NginxHttpPort = 80;
+    private static int NginxHttpsPort = 443;
+    private static int MihomoMixedPort = 7880;
 
     private static int GameClickTime = 0;
     private static int GameFlashInterval = 1000;
@@ -150,9 +158,8 @@ public partial class MainWin : Window
     {
         HoldButtonTimer?.Stop();
 
-        if (string.IsNullOrWhiteSpace(CealArgs))
-            throw new Exception(MainConst._HostErrorMsg);
-        if (MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+        if ((IsCealHostError && MessageBox.Show(MainConst._HostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+            (MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
             return;
 
         foreach (Process browserProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainPres!.BrowserPath)))
@@ -183,11 +190,11 @@ public partial class MainWin : Window
 
         if (!MainPres!.IsNginxRunning)
         {
-            if (string.IsNullOrWhiteSpace(CealArgs))
-                throw new Exception(MainConst._HostErrorMsg);
-            if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
-                return;
-            if (MainPres.IsFlashing && MessageBox.Show(MainConst._LaunchNginxFlashingPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+            if ((IsCealHostError && MessageBox.Show(MainConst._HostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+                (NginxHttpPort != 80 && MessageBox.Show(MainConst._NginxHttpPortOccupiedPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+                (NginxHttpsPort != 443 && MessageBox.Show(MainConst._NginxHttpsPortOccupiedPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+                (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+                (MainPres.IsFlashing && MessageBox.Show(MainConst._LaunchNginxFlashingPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
                 return;
 
             if (!File.Exists(MainConst.NginxConfPath))
@@ -256,7 +263,7 @@ public partial class MainWin : Window
             {
                 try
                 {
-                    await Http.GetAsync<HttpResponseMessage>("https://localhost", MainClient);
+                    await Http.GetAsync<HttpResponseMessage>($"https://localhost:{NginxHttpPort}", MainClient);
                     break;
                 }
                 catch (HttpRequestException ex) when (ex.InnerException is SocketException innerEx)
@@ -318,7 +325,7 @@ public partial class MainWin : Window
             {
                 try
                 {
-                    await Http.GetAsync<HttpResponseMessage>("http://localhost:7880", MainClient);
+                    await Http.GetAsync<HttpResponseMessage>($"http://localhost:{MihomoMixedPort}", MainClient);
                     break;
                 }
                 catch (HttpRequestException ex) when (ex.InnerException is SocketException innerEx)
@@ -509,8 +516,15 @@ public partial class MainWin : Window
                 if (cealHostDomainPairs.Count != 0)
                     CealHostRulesDict[cealHostName].Add((cealHostDomainPairs, cealHostSni, cealHostIp));
             }
+
+            IsCealHostError = false;
         }
-        catch { CealHostRulesDict.Remove(cealHostName); }
+        catch
+        {
+            CealHostRulesDict.Remove(cealHostName);
+
+            IsCealHostError = true;
+        }
         finally
         {
             string hostRules = string.Empty;
@@ -552,6 +566,14 @@ public partial class MainWin : Window
             if (!Directory.Exists(MainConst.NginxTempPath))
                 Directory.CreateDirectory(MainConst.NginxTempPath);
 
+            foreach (IPEndPoint activeTcpListener in IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners())
+                if (activeTcpListener.Port == NginxHttpPort)
+                    NginxHttpPort++;
+                else if (activeTcpListener.Port == NginxHttpsPort)
+                    NginxHttpsPort++;
+                else if (activeTcpListener.Port > NginxHttpsPort)
+                    break;
+
             using FileStream nginxConfStream = new(MainConst.NginxConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
             ExtraNginxConfs = new StreamReader(nginxConfStream).ReadToEnd();
 
@@ -573,7 +595,7 @@ public partial class MainWin : Window
                 .AddOrUpdate("events:worker_connections", "65536")
                 .AddOrUpdate("http:proxy_set_header", "Host $http_host")
                 .AddOrUpdate("http:proxy_ssl_server_name", !MainPres.IsFlashing ? "on" : "off")
-                .AddOrUpdate($"http:server[{serverIndex}]:listen", "80 default_server")
+                .AddOrUpdate($"http:server[{serverIndex}]:listen", $"{NginxHttpPort} default_server")
                 .AddOrUpdate($"http:server[{serverIndex}]:return", "https://$host$request_uri");
 
             foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
@@ -597,7 +619,7 @@ public partial class MainWin : Window
 
                     NginxConfs = NginxConfs
                         .AddOrUpdate($"http:server[{serverIndex}]:server_name", serverName.TrimEnd('|'))
-                        .AddOrUpdate($"http:server[{serverIndex}]:listen", "443 ssl")
+                        .AddOrUpdate($"http:server[{serverIndex}]:listen", $"{NginxHttpsPort} ssl")
                         .AddOrUpdate($"http:server[{serverIndex}]:ssl_certificate", Path.GetFileName(MainConst.NginxCertPath))
                         .AddOrUpdate($"http:server[{serverIndex}]:ssl_certificate_key", Path.GetFileName(MainConst.NginxKeyPath))
                         .AddOrUpdate($"http:server[{serverIndex}]:location", "/", true)
@@ -618,6 +640,12 @@ public partial class MainWin : Window
                 if (!File.Exists(MainConst.MihomoConfPath))
                     File.Create(MainConst.MihomoConfPath).Dispose();
 
+                foreach (IPEndPoint activeTcpListener in IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners())
+                    if (activeTcpListener.Port == MihomoMixedPort)
+                        MihomoMixedPort++;
+                    else if (activeTcpListener.Port > MihomoMixedPort)
+                        break;
+
                 using FileStream mihomoConfStream = new(MainConst.MihomoConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
                 ExtraMihomoConfs = new StreamReader(mihomoConfStream).ReadToEnd();
 
@@ -627,7 +655,7 @@ public partial class MainWin : Window
                     .Build()
                     .Deserialize<Dictionary<string, object>>(ExtraMihomoConfs) ?? [];
 
-                mihomoConfDict["mixed-port"] = 7880;
+                mihomoConfDict["mixed-port"] = MihomoMixedPort;
                 mihomoConfDict["dns"] = new
                 {
                     enable = true,

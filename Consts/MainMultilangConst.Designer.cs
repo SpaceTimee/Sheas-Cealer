@@ -70,7 +70,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 The config cannot be recognized. Check if the config contain syntax errors 的本地化字符串。
+        ///   查找类似 The config contains syntax errors and cannot be recognized 的本地化字符串。
         /// </summary>
         public static string _ConfErrorMsg {
             get {
@@ -79,7 +79,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 I know you would do it, but nothing will actually happen. Whee. 的本地化字符串。
+        ///   查找类似 I know you would do it, but nothing will actually happen. Whee 的本地化字符串。
         /// </summary>
         public static string _GameClickOnceMsg {
             get {
@@ -88,7 +88,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Ugh, what are you doing. Please stop, I don&apos;t want to hurt anyone. Stop please, this is your last chance. Ugh, I can&apos;t control it anymore. 的本地化字符串。
+        ///   查找类似 Ugh, what are you doing. Please stop, I don&apos;t want to hurt anyone. Stop please, this is your last chance. Ugh, I can&apos;t control it anymore 的本地化字符串。
         /// </summary>
         public static string _GameClickThreeMsg {
             get {
@@ -142,11 +142,11 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 The args cannot be recognized. Check if the hosts contain syntax errors 的本地化字符串。
+        ///   查找类似 Some hosts contain syntax errors and cannot be recognized. Do you want to continue anyway? 的本地化字符串。
         /// </summary>
-        public static string _HostErrorMsg {
+        public static string _HostErrorPrompt {
             get {
-                return ResourceManager.GetString("_HostErrorMsg", resourceCulture);
+                return ResourceManager.GetString("_HostErrorPrompt", resourceCulture);
             }
         }
         
@@ -174,6 +174,24 @@ namespace Sheas_Cealer.Consts {
         public static string _LaunchProxyPrompt {
             get {
                 return ResourceManager.GetString("_LaunchProxyPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The local port 80 is occupied, which may cause the http connection to fail to automatically jump to https. Do you want to continue? 的本地化字符串。
+        /// </summary>
+        public static string _NginxHttpPortOccupiedPrompt {
+            get {
+                return ResourceManager.GetString("_NginxHttpPortOccupiedPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The local port 443 is occupied, which may cause the global forgery to fail to take effect. Do you want to continue? 的本地化字符串。
+        /// </summary>
+        public static string _NginxHttpsPortOccupiedPrompt {
+            get {
+                return ResourceManager.GetString("_NginxHttpsPortOccupiedPrompt", resourceCulture);
             }
         }
         
