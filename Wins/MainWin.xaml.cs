@@ -217,7 +217,7 @@ public partial class MainWin : Window
             string hostsConfAppendContent = MainConst.HostsConfStartMarker;
 
             foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
-                foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, _, _) in cealHostRules)
+                foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, _, _) in cealHostRules ?? [])
                     foreach ((string cealHostIncludeDomain, _) in cealHostDomainPairs)
                     {
                         string cealHostIncludeDomainWithoutWildcard = cealHostIncludeDomain.TrimStart('$').TrimStart('*').TrimStart('.');
@@ -262,7 +262,7 @@ public partial class MainWin : Window
             {
                 try
                 {
-                    await Http.GetAsync<HttpResponseMessage>($"https://localhost:{NginxHttpPort}", MainClient);
+                    await Http.GetAsync<HttpResponseMessage>($"https://localhost:{NginxHttpsPort}", MainClient);
                     break;
                 }
                 catch (HttpRequestException ex) when (ex.InnerException is SocketException innerEx)
