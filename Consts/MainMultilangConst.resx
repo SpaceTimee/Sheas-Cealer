@@ -255,8 +255,11 @@
   <data name="_BrowserPathDialogFilterFileType" xml:space="preserve">
     <value>Browser</value>
   </data>
-  <data name="_ConfErrorMsg" xml:space="preserve">
-    <value>The config contains syntax errors and cannot be recognized</value>
+  <data name="_CealHostErrorPrompt" xml:space="preserve">
+    <value>Some cealing hosts contain syntax errors and cannot be recognized. Do you want to continue anyway?</value>
+  </data>
+  <data name="_MihomoConfErrorMsg" xml:space="preserve">
+    <value>The mihomo conf contains syntax errors and cannot be recognized</value>
   </data>
   <data name="_GameClickOnceMsg" xml:space="preserve">
     <value>I know you would do it, but nothing will actually happen. Whee</value>
@@ -279,9 +282,6 @@
   <data name="_GameStartMsg" xml:space="preserve">
     <value>No, please kill me, I...can't control myself...</value>
   </data>
-  <data name="_HostErrorPrompt" xml:space="preserve">
-    <value>Some hosts contain syntax errors and cannot be recognized. Do you want to continue anyway?</value>
-  </data>
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>All processes of the selected browser will be closed before launching. Do you want to continue?</value>
   </data>
@@ -295,7 +295,7 @@
     <value>The local port 80 is occupied, which may cause the http connection to fail to automatically jump to https. Do you want to continue?</value>
   </data>
   <data name="_NginxHttpsPortOccupiedPrompt" xml:space="preserve">
-    <value>The local port 443 is occupied, which may cause the global forgery to fail to take effect. Do you want to continue?</value>
+    <value>The local port 443 is occupied, which may cause the global cealing to not work properly. Do you want to continue?</value>
   </data>
   <data name="_OverrideUpstreamHostPrompt" xml:space="preserve">
     <value>There is an update available. Do you want to update upstream host? If No it will only open the upstream host page for you</value>

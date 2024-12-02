@@ -255,7 +255,10 @@
   <data name="_BrowserPathDialogFilterFileType" xml:space="preserve">
     <value>浏览器</value>
   </data>
-  <data name="_ConfErrorMsg" xml:space="preserve">
+  <data name="_CealHostErrorPrompt" xml:space="preserve">
+    <value>伪造规则含有语法错误，部分规则无法识别，是否仍然继续?</value>
+  </data>
+  <data name="_MihomoConfErrorMsg" xml:space="preserve">
     <value>配置文件含有语法错误，部分配置无法识别</value>
   </data>
   <data name="_GameClickOnceMsg" xml:space="preserve">
@@ -278,9 +281,6 @@
   </data>
   <data name="_GameStartMsg" xml:space="preserve">
     <value>不，求你杀了我，我...控制不住了...</value>
-  </data>
-  <data name="_HostErrorPrompt" xml:space="preserve">
-    <value>伪造规则含有语法错误，部分规则无法识别，是否仍然继续?</value>
   </data>
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>启动前将关闭所选浏览器的所有进程，是否继续？</value>

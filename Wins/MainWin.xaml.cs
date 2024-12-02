@@ -156,7 +156,7 @@ public partial class MainWin : Window
     {
         HoldButtonTimer?.Stop();
 
-        if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._HostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+        if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._CealHostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
             (MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
             return;
 
@@ -188,9 +188,9 @@ public partial class MainWin : Window
 
         if (!MainPres!.IsNginxRunning)
         {
-            if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._HostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-                (NginxHttpPort != 80 && MessageBox.Show(MainConst._NginxHttpPortOccupiedPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+            if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._CealHostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                 (NginxHttpsPort != 443 && MessageBox.Show(MainConst._NginxHttpsPortOccupiedPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+                (NginxHttpPort != 80 && MessageBox.Show(MainConst._NginxHttpPortOccupiedPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                 (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                 (MainPres.IsFlashing && MessageBox.Show(MainConst._LaunchNginxFlashingPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
                 return;
@@ -304,7 +304,7 @@ public partial class MainWin : Window
         if (!MainPres!.IsMihomoRunning)
         {
             if (string.IsNullOrWhiteSpace(MihomoConfs))
-                throw new Exception(MainConst._ConfErrorMsg);
+                throw new Exception(MainConst._MihomoConfErrorMsg);
             if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;
 

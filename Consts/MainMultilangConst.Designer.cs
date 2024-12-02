@@ -70,11 +70,11 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 The config contains syntax errors and cannot be recognized 的本地化字符串。
+        ///   查找类似 Some cealing hosts contain syntax errors and cannot be recognized. Do you want to continue anyway? 的本地化字符串。
         /// </summary>
-        public static string _ConfErrorMsg {
+        public static string _CealHostErrorPrompt {
             get {
-                return ResourceManager.GetString("_ConfErrorMsg", resourceCulture);
+                return ResourceManager.GetString("_CealHostErrorPrompt", resourceCulture);
             }
         }
         
@@ -142,15 +142,6 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Some hosts contain syntax errors and cannot be recognized. Do you want to continue anyway? 的本地化字符串。
-        /// </summary>
-        public static string _HostErrorPrompt {
-            get {
-                return ResourceManager.GetString("_HostErrorPrompt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 All processes of the selected browser will be closed before launching. Do you want to continue? 的本地化字符串。
         /// </summary>
         public static string _KillBrowserProcessPrompt {
@@ -178,6 +169,15 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 The mihomo conf contains syntax errors and cannot be recognized 的本地化字符串。
+        /// </summary>
+        public static string _MihomoConfErrorMsg {
+            get {
+                return ResourceManager.GetString("_MihomoConfErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The local port 80 is occupied, which may cause the http connection to fail to automatically jump to https. Do you want to continue? 的本地化字符串。
         /// </summary>
         public static string _NginxHttpPortOccupiedPrompt {
@@ -187,7 +187,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 The local port 443 is occupied, which may cause the global forgery to fail to take effect. Do you want to continue? 的本地化字符串。
+        ///   查找类似 The local port 443 is occupied, which may cause the global cealing to not work properly. Do you want to continue? 的本地化字符串。
         /// </summary>
         public static string _NginxHttpsPortOccupiedPrompt {
             get {
