@@ -11,7 +11,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="CommonWindow" TargetType="{x:Type Window}">
-                <Setter Property="Background" Value="{DynamicResource MaterialDesignBackground}" />
+                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
                 <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
             </Style>
 
