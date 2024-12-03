@@ -210,6 +210,12 @@
   <data name="SettingsBoxUpstreamUrlToolTip" xml:space="preserve">
     <value>填入任意上游规则链接</value>
   </data>
+  <data name="SettingsButtonContent" xml:space="preserve">
+    <value>软件设置</value>
+  </data>
+  <data name="SettingsButtonToolTip" xml:space="preserve">
+    <value>点击打开设置窗口</value>
+  </data>
   <data name="SettingsFunctionButtonBrowserPathContent" xml:space="preserve">
     <value>浏览路径</value>
   </data>
@@ -231,18 +237,6 @@
   <data name="StartButtonToolTip" xml:space="preserve">
     <value>点击启动参数注入完成的浏览器</value>
   </data>
-  <data name="ThemesButtonDarkThemeContent" xml:space="preserve">
-    <value>跟随系统</value>
-  </data>
-  <data name="ThemesButtonInheritThemeContent" xml:space="preserve">
-    <value>暗色模式</value>
-  </data>
-  <data name="ThemesButtonLightThemeContent" xml:space="preserve">
-    <value>亮色模式</value>
-  </data>
-  <data name="ThemesButtonToolTip" xml:space="preserve">
-    <value>点击切换显示主题</value>
-  </data>
   <data name="UpdateUpstreamHostButtonContent" xml:space="preserve">
     <value>更新上游规则</value>
   </data>
@@ -257,9 +251,6 @@
   </data>
   <data name="_CealHostErrorPrompt" xml:space="preserve">
     <value>伪造规则含有语法错误，部分规则无法识别，是否仍然继续?</value>
-  </data>
-  <data name="_MihomoConfErrorMsg" xml:space="preserve">
-    <value>配置文件含有语法错误，部分配置无法识别</value>
   </data>
   <data name="_GameClickOnceMsg" xml:space="preserve">
     <value>就知道你会点，但其实什么事情都不会发生的。嘻嘻</value>
@@ -290,6 +281,9 @@
   </data>
   <data name="_LaunchProxyPrompt" xml:space="preserve">
     <value>使用完请务必记得回来手动关闭代理，是否继续?</value>
+  </data>
+  <data name="_MihomoConfErrorMsg" xml:space="preserve">
+    <value>配置文件含有语法错误，部分配置无法识别</value>
   </data>
   <data name="_NginxHttpPortOccupiedPrompt" xml:space="preserve">
     <value>本地 80 端口被占用，这可能导致 http 连接无法自动跳转到 https，是否继续?</value>

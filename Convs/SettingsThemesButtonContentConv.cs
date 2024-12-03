@@ -5,15 +5,15 @@ using Sheas_Cealer.Consts;
 
 namespace Sheas_Cealer.Convs;
 
-internal class MainThemesButtonContentConv : IValueConverter
+internal class SettingsThemesButtonContentConv : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         bool? isLightMode = value as bool?;
 
         return isLightMode.HasValue ?
-            isLightMode.GetValueOrDefault() ? MainConst.ThemesButtonLightThemeContent : MainConst.ThemesButtonDarkThemeContent :
-            MainConst.ThemesButtonInheritThemeContent;
+            isLightMode.GetValueOrDefault() ? SettingsConst.ThemesButtonLightThemeContent : SettingsConst.ThemesButtonDarkThemeContent :
+            SettingsConst.ThemesButtonInheritThemeContent;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();

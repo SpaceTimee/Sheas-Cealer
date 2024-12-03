@@ -320,16 +320,8 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:MainConst.ThemesButtonToolTip}}"
-                    Click="ThemesButton_Click">
-                <Button.Content>
-                    <Binding Path="IsLightTheme">
-                        <Binding.Converter>
-                            <convs:MainThemesButtonContentConv />
-                        </Binding.Converter>
-                    </Binding>
-                </Button.Content>
-            </Button>
+            <Button Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:MainConst.SettingsButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.SettingsButtonToolTip}}"
+                    Click="SettingsButton_Click" />
             <Button Focusable="False"
                     Grid.Column="1" Margin="5" d:Content="# # # #"
                     Click="NoClickButton_Click">

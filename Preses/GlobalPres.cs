@@ -17,6 +17,7 @@ internal partial class GlobalPres : ObservableObject
         newTheme.SetBaseTheme(value.HasValue ? value.GetValueOrDefault() ? BaseTheme.Light : BaseTheme.Dark : BaseTheme.Inherit);
         paletteHelper.SetTheme(newTheme);
 
-        BorderThemeSetter.SetBorderTheme(Application.Current.MainWindow, value);
+        foreach (Window currentWindow in Application.Current.Windows)
+            BorderThemeSetter.SetBorderTheme(currentWindow, value);
     }
 }

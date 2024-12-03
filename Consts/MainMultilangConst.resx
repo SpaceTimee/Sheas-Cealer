@@ -210,6 +210,12 @@
   <data name="SettingsBoxUpstreamUrlToolTip" xml:space="preserve">
     <value>Fill in an upstream host URL</value>
   </data>
+  <data name="SettingsButtonContent" xml:space="preserve">
+    <value>Software Settings</value>
+  </data>
+  <data name="SettingsButtonToolTip" xml:space="preserve">
+    <value>Click to open an settings window</value>
+  </data>
   <data name="SettingsFunctionButtonBrowserPathContent" xml:space="preserve">
     <value>Browse Path</value>
   </data>
@@ -231,18 +237,6 @@
   <data name="StartButtonToolTip" xml:space="preserve">
     <value>Click to launch an injected browser</value>
   </data>
-  <data name="ThemesButtonDarkThemeContent" xml:space="preserve">
-    <value>Auto Theme</value>
-  </data>
-  <data name="ThemesButtonInheritThemeContent" xml:space="preserve">
-    <value>Dark Theme</value>
-  </data>
-  <data name="ThemesButtonLightThemeContent" xml:space="preserve">
-    <value>Light Theme</value>
-  </data>
-  <data name="ThemesButtonToolTip" xml:space="preserve">
-    <value>Click to switch themes</value>
-  </data>
   <data name="UpdateUpstreamHostButtonContent" xml:space="preserve">
     <value>Update Upstream Host</value>
   </data>
@@ -257,9 +251,6 @@
   </data>
   <data name="_CealHostErrorPrompt" xml:space="preserve">
     <value>Some cealing hosts contain syntax errors and cannot be recognized. Do you want to continue anyway?</value>
-  </data>
-  <data name="_MihomoConfErrorMsg" xml:space="preserve">
-    <value>The mihomo conf contains syntax errors and cannot be recognized</value>
   </data>
   <data name="_GameClickOnceMsg" xml:space="preserve">
     <value>I know you would do it, but nothing will actually happen. Whee</value>
@@ -290,6 +281,9 @@
   </data>
   <data name="_LaunchProxyPrompt" xml:space="preserve">
     <value>Please remember to come back and stop the proxy manually after use. Do you want to continue?</value>
+  </data>
+  <data name="_MihomoConfErrorMsg" xml:space="preserve">
+    <value>The mihomo conf contains syntax errors and cannot be recognized</value>
   </data>
   <data name="_NginxHttpPortOccupiedPrompt" xml:space="preserve">
     <value>The local port 80 is occupied, which may cause the http connection to fail to automatically jump to https. Do you want to continue?</value>

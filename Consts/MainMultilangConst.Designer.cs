@@ -502,6 +502,24 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Software Settings 的本地化字符串。
+        /// </summary>
+        public static string SettingsButtonContent {
+            get {
+                return ResourceManager.GetString("SettingsButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click to open an settings window 的本地化字符串。
+        /// </summary>
+        public static string SettingsButtonToolTip {
+            get {
+                return ResourceManager.GetString("SettingsButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Browse Path 的本地化字符串。
         /// </summary>
         public static string SettingsFunctionButtonBrowserPathContent {
@@ -561,42 +579,6 @@ namespace Sheas_Cealer.Consts {
         public static string StartButtonToolTip {
             get {
                 return ResourceManager.GetString("StartButtonToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Auto Theme 的本地化字符串。
-        /// </summary>
-        public static string ThemesButtonDarkThemeContent {
-            get {
-                return ResourceManager.GetString("ThemesButtonDarkThemeContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Dark Theme 的本地化字符串。
-        /// </summary>
-        public static string ThemesButtonInheritThemeContent {
-            get {
-                return ResourceManager.GetString("ThemesButtonInheritThemeContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Light Theme 的本地化字符串。
-        /// </summary>
-        public static string ThemesButtonLightThemeContent {
-            get {
-                return ResourceManager.GetString("ThemesButtonLightThemeContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Click to switch themes 的本地化字符串。
-        /// </summary>
-        public static string ThemesButtonToolTip {
-            get {
-                return ResourceManager.GetString("ThemesButtonToolTip", resourceCulture);
             }
         }
         

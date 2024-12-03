@@ -410,7 +410,7 @@ public partial class MainWin : Window
         }
     }
 
-    private void ThemesButton_Click(object sender, RoutedEventArgs e) => MainPres!.IsLightTheme = MainPres.IsLightTheme.HasValue ? MainPres.IsLightTheme.Value ? null : true : false;
+    private void SettingsButton_Click(object sender, RoutedEventArgs e) => new SettingsWin().ShowDialog();
     private async void NoClickButton_Click(object sender, RoutedEventArgs e)
     {
         if (GameFlashInterval <= 10)
