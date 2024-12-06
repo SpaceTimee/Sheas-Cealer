@@ -276,8 +276,14 @@
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>All processes of the selected browser will be closed before launching. Do you want to continue?</value>
   </data>
+  <data name="_LaunchMihomoErrorMsg" xml:space="preserve">
+    <value>Mihomo failed to start</value>
+  </data>
+  <data name="_LaunchNginxErrorPrompt" xml:space="preserve">
+    <value>Nginx failed to start, do you want to open the error log</value>
+  </data>
   <data name="_LaunchNginxFlashingPrompt" xml:space="preserve">
-    <value>Warning: The proxy core is under attack and cannot forge SNI. The SNI removal mode has been turned on urgently. Do you want to continue?</value>
+    <value>Warning: The proxy core is under attack and cannot ceal SNI. The SNI removal mode has been turned on urgently. Do you want to continue?</value>
   </data>
   <data name="_LaunchProxyPrompt" xml:space="preserve">
     <value>Please remember to come back and stop the proxy manually after use. Do you want to continue?</value>

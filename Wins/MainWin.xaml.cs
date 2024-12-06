@@ -272,7 +272,12 @@ public partial class MainWin : Window
                 }
 
                 if (!MainPres.IsNginxRunning)
+                {
+                    if (MessageBox.Show(MainConst._LaunchNginxErrorPrompt, string.Empty, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        Process.Start(new ProcessStartInfo(MainConst.NginxErrorLogsPath) { UseShellExecute = true });
+
                     break;
+                }
             }
 
             File.WriteAllText(MainConst.NginxConfPath, ExtraNginxConfs);
@@ -334,7 +339,11 @@ public partial class MainWin : Window
                 }
 
                 if (!MainPres.IsMihomoRunning)
+                {
+                    MessageBox.Show(MainConst._LaunchMihomoErrorMsg);
+
                     break;
+                }
             }
 
             File.WriteAllText(MainConst.MihomoConfPath, ExtraMihomoConfs);
@@ -358,8 +367,7 @@ public partial class MainWin : Window
         if (!File.Exists(cealHostPath))
             File.Create(cealHostPath).Dispose();
 
-        ProcessStartInfo processStartInfo = new(cealHostPath) { UseShellExecute = true };
-        Process.Start(processStartInfo);
+        Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true });
     }
     private void EditConfButton_Click(object sender, RoutedEventArgs e)
     {
@@ -380,8 +388,7 @@ public partial class MainWin : Window
                 File.Create(confPath).Dispose();
         }
 
-        ProcessStartInfo processStartInfo = new(confPath) { UseShellExecute = true };
-        Process.Start(processStartInfo);
+        Process.Start(new ProcessStartInfo(confPath) { UseShellExecute = true });
     }
     private async void UpdateUpstreamHostButton_Click(object sender, RoutedEventArgs e)
     {

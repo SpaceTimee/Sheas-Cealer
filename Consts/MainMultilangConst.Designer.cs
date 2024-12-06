@@ -151,7 +151,25 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Warning: The proxy core is under attack and cannot forge SNI. The SNI removal mode has been turned on urgently. Do you want to continue? 的本地化字符串。
+        ///   查找类似 Mihomo failed to start 的本地化字符串。
+        /// </summary>
+        public static string _LaunchMihomoErrorMsg {
+            get {
+                return ResourceManager.GetString("_LaunchMihomoErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Nginx failed to start, do you want to open the error log 的本地化字符串。
+        /// </summary>
+        public static string _LaunchNginxErrorPrompt {
+            get {
+                return ResourceManager.GetString("_LaunchNginxErrorPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Warning: The proxy core is under attack and cannot ceal SNI. The SNI removal mode has been turned on urgently. Do you want to continue? 的本地化字符串。
         /// </summary>
         public static string _LaunchNginxFlashingPrompt {
             get {

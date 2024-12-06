@@ -276,6 +276,12 @@
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>启动前将关闭所选浏览器的所有进程，是否继续？</value>
   </data>
+  <data name="_LaunchMihomoErrorMsg" xml:space="preserve">
+    <value>Mihomo 启动失败</value>
+  </data>
+  <data name="_LaunchNginxErrorPrompt" xml:space="preserve">
+    <value>Nginx 启动失败，是否打开错误日志</value>
+  </data>
   <data name="_LaunchNginxFlashingPrompt" xml:space="preserve">
     <value>Warning: 代理核心正在遭受攻击，无法伪造 SNI，已紧急开启 SNI 拔除模式，是否继续?</value>
   </data>

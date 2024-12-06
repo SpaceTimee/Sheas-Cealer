@@ -29,6 +29,7 @@ internal partial class MainConst : MainMultilangConst
     internal static string NginxPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Nginx.exe");
     internal static string NginxConfPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "nginx.conf");
     internal static string NginxLogsPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "logs");
+    internal static string NginxErrorLogsPath => Path.Combine(NginxLogsPath, "error.log");
     internal static string NginxTempPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "temp");
     internal static string NginxCertPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Cert.pem");
     internal static string NginxKeyPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Key.pem");
