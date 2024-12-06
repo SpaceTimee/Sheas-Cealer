@@ -454,10 +454,22 @@ public partial class MainWin : Window
 
                 PaletteHelper paletteHelper = new();
                 Theme newTheme = paletteHelper.GetTheme();
+                Color newColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+                bool isLightTheme = random.Next(2) == 0;
 
-                newTheme.SetPrimaryColor(Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256)));
-                newTheme.SetBaseTheme(random.Next(2) == 0 ? BaseTheme.Light : BaseTheme.Dark);
+                newTheme.SetPrimaryColor(newColor);
+                newTheme.SetBaseTheme(isLightTheme ? BaseTheme.Light : BaseTheme.Dark);
                 paletteHelper.SetTheme(newTheme);
+
+                foreach (Window currentWindow in Application.Current.Windows)
+                    BorderThemeSetter.SetBorderTheme(currentWindow, isLightTheme);
+
+                Color? foregroundColor = ForegroundGenerator.GetForeground(newColor.R, newColor.G, newColor.B);
+
+                if (foregroundColor.HasValue)
+                    Application.Current.Resources["MaterialDesignBackground"] = new SolidColorBrush(foregroundColor.Value);
+                else
+                    Application.Current.Resources.Remove("MaterialDesignBackground");
 
                 if (GameFlashInterval > 100)
                     GameFlashInterval += random.Next(1, 4);
