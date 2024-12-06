@@ -13,13 +13,14 @@
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="0" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:SettingsConst.ThemesButtonToolTip}}"
+        <Button Grid.Row="0" Grid.Column="0" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:SettingsConst.ThemesButtonToolTip}}"
                 Click="ThemesButton_Click">
             <Button.Content>
                 <Binding Path="IsLightTheme">
@@ -30,7 +31,7 @@
             </Button.Content>
         </Button>
 
-        <Button Grid.Column="1" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:SettingsConst.LangsButtonToolTip}}"
+        <Button Grid.Row="0" Grid.Column="1" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:SettingsConst.LangsButtonToolTip}}"
                 Click="LangsButton_Click">
             <Button.Content>
                 <Binding Path="IsEnglishLang">
@@ -40,5 +41,8 @@
                 </Binding>
             </Button.Content>
         </Button>
+
+        <Button Grid.Row="1" Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:SettingsConst.ColorsButtonContent}}" ToolTip="{Binding Source={x:Static consts:SettingsConst.ColorsButtonToolTip}}"
+                Click="ColorsButton_Click" />
     </Grid>
 </Window>

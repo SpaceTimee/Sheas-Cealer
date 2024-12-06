@@ -97,6 +97,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ColorsButtonContent" xml:space="preserve">
+    <value>切换颜色 (全随机)</value>
+  </data>
+  <data name="ColorsButtonToolTip" xml:space="preserve">
+    <value>点击切换按钮颜色</value>
+  </data>
   <data name="LangsButtonChineseLangContent" xml:space="preserve">
     <value>切换语言 (中文 → En)</value>
   </data>
@@ -107,7 +113,7 @@
     <value>切换语言 (系统 → 中文)</value>
   </data>
   <data name="LangsButtonToolTip" xml:space="preserve">
-    <value>Click to switch langs</value>
+    <value>点击切换界面语言</value>
   </data>
   <data name="ThemesButtonDarkThemeContent" xml:space="preserve">
     <value>切换主题 (暗色 → 亮色)</value>

@@ -70,6 +70,24 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Switch Color (Fully random) 的本地化字符串。
+        /// </summary>
+        public static string ColorsButtonContent {
+            get {
+                return ResourceManager.GetString("ColorsButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click to switch colors 的本地化字符串。
+        /// </summary>
+        public static string ColorsButtonToolTip {
+            get {
+                return ResourceManager.GetString("ColorsButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Switch Lang (中文 → En) 的本地化字符串。
         /// </summary>
         public static string LangsButtonChineseLangContent {
@@ -97,7 +115,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 点击切换界面语言 的本地化字符串。
+        ///   查找类似 Click to switch langs 的本地化字符串。
         /// </summary>
         public static string LangsButtonToolTip {
             get {

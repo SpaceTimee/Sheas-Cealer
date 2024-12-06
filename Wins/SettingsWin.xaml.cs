@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using MaterialDesignThemes.Wpf;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Preses;
+using Sheas_Cealer.Props;
 using Sheas_Cealer.Utils;
 
 namespace Sheas_Cealer.Wins;
@@ -29,6 +32,27 @@ public partial class SettingsWin : Window
         SettingsPres!.IsEnglishLang = SettingsPres.IsEnglishLang.HasValue ? SettingsPres.IsEnglishLang.Value ? null : true : false;
 
         MessageBox.Show(SettingsConst._ChangeLangSuccessMsg);
+    }
+    private void ColorsButton_Click(object sender, RoutedEventArgs e)
+    {
+        Random random = new();
+
+        PaletteHelper paletteHelper = new();
+        Theme newTheme = paletteHelper.GetTheme();
+        Color newColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+
+        newTheme.SetPrimaryColor(newColor);
+        paletteHelper.SetTheme(newTheme);
+
+        Color? foregroundColor = ForegroundGenerator.GetForeground(newColor.R, newColor.G, newColor.B);
+
+        if (foregroundColor.HasValue)
+            Application.Current.Resources["MaterialDesignBackground"] = new SolidColorBrush(foregroundColor.Value);
+        else
+            Application.Current.Resources.Remove("MaterialDesignBackground");
+
+        Settings.Default.PrimaryColor = System.Drawing.Color.FromArgb(newColor.A, newColor.R, newColor.G, newColor.B);
+        Settings.Default.Save();
     }
 
     private void SettingsWin_KeyDown(object sender, KeyEventArgs e)
