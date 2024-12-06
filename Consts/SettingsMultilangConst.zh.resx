@@ -97,16 +97,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="LangsButtonChineseLangContent" xml:space="preserve">
+    <value>切换语言 (中文 → En)</value>
+  </data>
+  <data name="LangsButtonEnglishLangContent" xml:space="preserve">
+    <value>切换语言 (En → 系统)</value>
+  </data>
+  <data name="LangsButtonInheritLangContent" xml:space="preserve">
+    <value>切换语言 (系统 → 中文)</value>
+  </data>
+  <data name="LangsButtonToolTip" xml:space="preserve">
+    <value>Click to switch langs</value>
+  </data>
   <data name="ThemesButtonDarkThemeContent" xml:space="preserve">
-    <value>亮色模式</value>
+    <value>切换主题 (暗色 → 亮色)</value>
   </data>
   <data name="ThemesButtonInheritThemeContent" xml:space="preserve">
-    <value>暗色模式</value>
+    <value>切换主题 (系统 → 暗色)</value>
   </data>
   <data name="ThemesButtonLightThemeContent" xml:space="preserve">
-    <value>跟随系统</value>
+    <value>切换主题 (亮色 → 系统)</value>
   </data>
   <data name="ThemesButtonToolTip" xml:space="preserve">
     <value>点击切换显示主题</value>
+  </data>
+  <data name="_ChangeLangSuccessMsg" xml:space="preserve">
+    <value>语言更改完成，重启以刷新界面</value>
   </data>
 </root>

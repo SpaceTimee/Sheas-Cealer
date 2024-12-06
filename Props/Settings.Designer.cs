@@ -70,5 +70,17 @@ namespace Sheas_Cealer.Props {
                 this["IsLightTheme"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public sbyte IsEnglishLang {
+            get {
+                return ((sbyte)(this["IsEnglishLang"]));
+            }
+            set {
+                this["IsEnglishLang"] = value;
+            }
+        }
     }
 }

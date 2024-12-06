@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using Sheas_Cealer.Consts;
 using Sheas_Cealer.Preses;
 using Sheas_Cealer.Utils;
 
@@ -23,6 +24,12 @@ public partial class SettingsWin : Window
     }
 
     private void ThemesButton_Click(object sender, RoutedEventArgs e) => SettingsPres!.IsLightTheme = SettingsPres.IsLightTheme.HasValue ? SettingsPres.IsLightTheme.Value ? null : true : false;
+    private void LangsButton_Click(object sender, RoutedEventArgs e)
+    {
+        SettingsPres!.IsEnglishLang = SettingsPres.IsEnglishLang.HasValue ? SettingsPres.IsEnglishLang.Value ? null : true : false;
+
+        MessageBox.Show(SettingsConst._ChangeLangSuccessMsg);
+    }
 
     private void SettingsWin_KeyDown(object sender, KeyEventArgs e)
     {

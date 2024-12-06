@@ -27,13 +27,13 @@ internal partial class GlobalPres : ObservableObject
         PaletteHelper paletteHelper = new();
         Theme newTheme = paletteHelper.GetTheme();
 
-        newTheme.SetBaseTheme(value.HasValue ? value.GetValueOrDefault() ? BaseTheme.Light : BaseTheme.Dark : BaseTheme.Inherit);
+        newTheme.SetBaseTheme(value.HasValue ? value.Value ? BaseTheme.Light : BaseTheme.Dark : BaseTheme.Inherit);
         paletteHelper.SetTheme(newTheme);
 
         foreach (Window currentWindow in Application.Current.Windows)
             BorderThemeSetter.SetBorderTheme(currentWindow, value);
 
-        Settings.Default.IsLightTheme = (sbyte)(value.HasValue ? value.GetValueOrDefault() ? 1 : 0 : -1);
+        Settings.Default.IsLightTheme = (sbyte)(value.HasValue ? value.Value ? 1 : 0 : -1);
         Settings.Default.Save();
     }
 }

@@ -97,16 +97,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="LangsButtonChineseLangContent" xml:space="preserve">
+    <value>Switch Lang (中文 → En)</value>
+  </data>
+  <data name="LangsButtonEnglishLangContent" xml:space="preserve">
+    <value>Switch Lang (En → Auto)</value>
+  </data>
+  <data name="LangsButtonInheritLangContent" xml:space="preserve">
+    <value>Switch Lang (Auto → 中文)</value>
+  </data>
+  <data name="LangsButtonToolTip" xml:space="preserve">
+    <value>点击切换界面语言</value>
+  </data>
   <data name="ThemesButtonDarkThemeContent" xml:space="preserve">
-    <value>Auto Theme</value>
+    <value>Switch Theme (Dark → Light)</value>
   </data>
   <data name="ThemesButtonInheritThemeContent" xml:space="preserve">
-    <value>Dark Theme</value>
+    <value>Switch Theme (Auto → Dark)</value>
   </data>
   <data name="ThemesButtonLightThemeContent" xml:space="preserve">
-    <value>Light Theme</value>
+    <value>Switch Theme (Light → Auto)</value>
   </data>
   <data name="ThemesButtonToolTip" xml:space="preserve">
     <value>Click to switch themes</value>
+  </data>
+  <data name="_ChangeLangSuccessMsg" xml:space="preserve">
+    <value>Change successfuly, restart to refresh the windows</value>
   </data>
 </root>

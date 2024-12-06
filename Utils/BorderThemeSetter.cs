@@ -16,9 +16,6 @@ internal static partial class BorderThemeSetter
 
     internal static void SetBorderTheme(Window window, bool? isLightTheme)
     {
-        if (!window.IsLoaded)
-            return;
-
         nint isDarkTheme;
         nint desktopHwnd = nint.Zero;
         nint windowHwnd = new WindowInteropHelper(window).EnsureHandle();

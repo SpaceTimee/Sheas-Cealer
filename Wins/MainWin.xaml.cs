@@ -535,7 +535,6 @@ public partial class MainWin : Window
             int nullSniNum = 0;
 
             foreach (KeyValuePair<string, List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>> cealHostRulesPair in CealHostRulesDict)
-            {
                 foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp) in cealHostRulesPair.Value ?? [])
                 {
                     string cealHostSniWithoutNull = cealHostSni ?? $"{cealHostRulesPair.Key}{(cealHostRulesPair.Value ?? []).Count + ++nullSniNum}";
@@ -553,7 +552,6 @@ public partial class MainWin : Window
                     if (isValidCealHostDomainExist)
                         hostResolverRules += $"MAP {cealHostSniWithoutNull} {cealHostIp},";
                 }
-            }
 
             CealArgs = @$"--host-rules=""{hostRules.TrimEnd(',')}"" --host-resolver-rules=""{hostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
 

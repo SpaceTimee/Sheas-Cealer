@@ -12,9 +12,10 @@
         KeyDown="SettingsWin_KeyDown">
     <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -24,6 +25,17 @@
                 <Binding Path="IsLightTheme">
                     <Binding.Converter>
                         <convs:SettingsThemesButtonContentConv />
+                    </Binding.Converter>
+                </Binding>
+            </Button.Content>
+        </Button>
+
+        <Button Grid.Column="1" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:SettingsConst.LangsButtonToolTip}}"
+                Click="LangsButton_Click">
+            <Button.Content>
+                <Binding Path="IsEnglishLang">
+                    <Binding.Converter>
+                        <convs:SettingsLangsButtonContentConv />
                     </Binding.Converter>
                 </Binding>
             </Button.Content>

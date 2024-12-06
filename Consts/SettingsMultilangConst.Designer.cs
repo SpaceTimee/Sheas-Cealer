@@ -61,7 +61,52 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Auto Theme 的本地化字符串。
+        ///   查找类似 Change successfuly, restart to refresh the windows 的本地化字符串。
+        /// </summary>
+        public static string _ChangeLangSuccessMsg {
+            get {
+                return ResourceManager.GetString("_ChangeLangSuccessMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Switch Lang (中文 → En) 的本地化字符串。
+        /// </summary>
+        public static string LangsButtonChineseLangContent {
+            get {
+                return ResourceManager.GetString("LangsButtonChineseLangContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Switch Lang (En → Auto) 的本地化字符串。
+        /// </summary>
+        public static string LangsButtonEnglishLangContent {
+            get {
+                return ResourceManager.GetString("LangsButtonEnglishLangContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Switch Lang (Auto → 中文) 的本地化字符串。
+        /// </summary>
+        public static string LangsButtonInheritLangContent {
+            get {
+                return ResourceManager.GetString("LangsButtonInheritLangContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 点击切换界面语言 的本地化字符串。
+        /// </summary>
+        public static string LangsButtonToolTip {
+            get {
+                return ResourceManager.GetString("LangsButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Switch Theme (Dark → Light) 的本地化字符串。
         /// </summary>
         public static string ThemesButtonDarkThemeContent {
             get {
@@ -70,7 +115,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Dark Theme 的本地化字符串。
+        ///   查找类似 Switch Theme (Auto → Dark) 的本地化字符串。
         /// </summary>
         public static string ThemesButtonInheritThemeContent {
             get {
@@ -79,7 +124,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Light Theme 的本地化字符串。
+        ///   查找类似 Switch Theme (Light → Auto) 的本地化字符串。
         /// </summary>
         public static string ThemesButtonLightThemeContent {
             get {
