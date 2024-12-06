@@ -211,7 +211,7 @@
     <value>Fill in an upstream host URL</value>
   </data>
   <data name="SettingsButtonContent" xml:space="preserve">
-    <value>Software Settings</value>
+    <value>Appearance Settings</value>
   </data>
   <data name="SettingsButtonToolTip" xml:space="preserve">
     <value>Click to open an settings window</value>

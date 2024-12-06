@@ -502,7 +502,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Software Settings 的本地化字符串。
+        ///   查找类似 Appearance Settings 的本地化字符串。
         /// </summary>
         public static string SettingsButtonContent {
             get {

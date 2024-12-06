@@ -211,7 +211,7 @@
     <value>填入任意上游规则链接</value>
   </data>
   <data name="SettingsButtonContent" xml:space="preserve">
-    <value>软件设置</value>
+    <value>界面设置</value>
   </data>
   <data name="SettingsButtonToolTip" xml:space="preserve">
     <value>点击打开设置窗口</value>
