@@ -63,6 +63,9 @@
 5. [Console HostChecker](https://github.com/SpaceTimee/Console-HostChecker): Cealing Host 自动化检查脚本
 6. [Console HostGenerator](https://github.com/SpaceTimee/Console-HostGenerator): Cealing Host 自动化生成脚本
 
+## 推广合作
+[产品社区营](https://mp.weixin.qq.com/s?__biz=MzI3MTQ0ODQ3Ng==&mid=2247487284&idx=1&sn=94fcb19438ddba204c4fbe4803edc062&chksm=eb6ebe23f78ca1c3a360e8b46558c14cb8360ad199a19cbc1b4b4b8e2379c98699f2d6eca5da)
+
 ## 许可证
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer?ref=badge_large)
 
