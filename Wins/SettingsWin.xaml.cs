@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -60,5 +62,72 @@ public partial class SettingsWin : Window
     {
         if (e.Key == Key.Escape)
             Close();
+    }
+
+    private void Enabled_SelfStarting_Click(object sender, RoutedEventArgs e) {
+        SelfStarting ss = new();
+        if (ss.RunCommand(SelfStarting.Action.add))
+            MessageBox.Show("已启用开机自启");
+    }
+    private void Disabled_SelfStarting_Click(object sender, RoutedEventArgs e) {
+        SelfStarting ss = new();
+        if (ss.RunCommand(SelfStarting.Action.remove))
+            MessageBox.Show("已移除开机自启");
+    }
+    private class SelfStarting {
+        /// <summary>
+        /// 自启动注册表路径
+        /// </summary>
+        readonly string regPath = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run";
+        /// <summary>
+        /// 应用名
+        /// </summary>
+        readonly string appName = "SheasCealer";
+        /// <summary>
+        /// 当前exe文件所在目录
+        /// </summary>
+        internal string ThisExeFilePath => System.Windows.Forms.Application.ExecutablePath;
+        //自启动程序时会添加启动参数，可以在程序启动时加个判断，判断有-selfStarting参数时进行自动最小化程序等操作
+        string AddCommands => $"{RemoveCommands} & reg add {regPath} /f /v \"{appName}\" /t REG_SZ /d \"{ThisExeFilePath} -selfStarting\"";// & pause";        
+        string RemoveCommands => $"reg delete {regPath} /f /v \"{appName}\"";
+        internal enum Action {
+            add,remove
+        }
+        /// <summary>
+        /// 运行命令
+        /// </summary>
+        /// <param name="action">操作方式</param>
+        /// <returns>返回布尔值代表执行是否成功</returns>
+        internal bool RunCommand(Action action) {
+            // 检查当前进程是否以管理员身份运行
+            //if (!new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
+            string commands = "";
+            switch (action) {
+                case Action.add:
+                    commands = AddCommands; break;
+                case Action.remove:
+                    commands = RemoveCommands; break;
+            }
+
+            Process process = new() {
+                StartInfo = new ProcessStartInfo {
+                    UseShellExecute = true,
+                    Verb = "RunAs", // 请求管理员权限
+                    CreateNoWindow = true,
+                    FileName = "cmd.exe",
+                    Arguments = $" /c \"{ commands }\""
+                }
+            };
+            bool isTrue = false;
+            try {
+                process.Start();
+                process.WaitForExit();
+                isTrue = true;
+            } 
+            catch (Win32Exception) { System.Windows.Forms.MessageBox.Show("用户取消了授权", "", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error); }
+            catch { System.Windows.Forms.MessageBox.Show("发生未知错误！", "", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error); }
+            process.Close();
+            return isTrue;
+        }
     }
 }

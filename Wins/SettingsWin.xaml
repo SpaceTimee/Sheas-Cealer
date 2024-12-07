@@ -14,6 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -55,5 +56,10 @@
                 </Binding>
             </Button.Content>
         </Button>
+        
+        <Button Grid.Row="2" Grid.Column="0" Margin="5" Content="启用/修复 程序开机自启动" ToolTip="{Binding Source={x:Static consts:SettingsConst.ColorsButtonToolTip}}"
+                Click="Enabled_SelfStarting_Click"/>
+        <Button Grid.Row="2" Grid.Column="1" Margin="5" Content="禁用 程序开机自启动" ToolTip="{Binding Source={x:Static consts:SettingsConst.ColorsButtonToolTip}}"
+                Click="Disabled_SelfStarting_Click" />
     </Grid>
 </Window>
