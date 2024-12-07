@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
@@ -22,12 +24,18 @@ public partial class App : Application
         newTheme.SetPrimaryColor(Color.FromRgb(newColor.R, newColor.G, newColor.B));
         paletteHelper.SetTheme(newTheme);
 
+        if (Environment.OSVersion.Version.Major == 10 && Environment.OSVersion.Version.Build < 22000)
+        {
+            Style newWindowStyle = new(typeof(Window), Current.Resources["CommonWindow"] as Style);
+            newWindowStyle.Setters.Add(new Setter(Window.BackgroundProperty, new DynamicResourceExtension("MaterialDesignBackground")));
+            Current.Resources["CommonWindow"] = newWindowStyle;
+        }
+
         Color? foregroundColor = ForegroundGenerator.GetForeground(newColor.R, newColor.G, newColor.B);
 
-        if (foregroundColor.HasValue)
-            Current.Resources["MaterialDesignBackground"] = new SolidColorBrush(foregroundColor.Value);
-        else
-            Current.Resources.Remove("MaterialDesignBackground");
+        Style newButtonStyle = new(typeof(Button), Current.Resources[typeof(Button)] as Style);
+        newButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, foregroundColor.HasValue ? new SolidColorBrush(foregroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
+        Current.Resources[typeof(Button)] = newButtonStyle;
 
         new MainWin(e.Args).Show();
     }

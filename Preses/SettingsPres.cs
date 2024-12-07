@@ -51,13 +51,13 @@ internal partial class SettingsPres : GlobalPres
     {
         FontWeight newWeight = value.HasValue ? value.Value ? FontWeights.Light : FontWeights.Bold : FontWeights.Regular;
 
-        Style newStyle = new(typeof(Window), Application.Current.Resources["CommonWindow"] as Style);
-        newStyle.Setters.Add(new Setter(Window.FontWeightProperty, newWeight));
-        Application.Current.Resources["CommonWindow"] = newStyle;
+        Style newWindowStyle = new(typeof(Window), Application.Current.Resources["CommonWindow"] as Style);
+        newWindowStyle.Setters.Add(new Setter(Window.FontWeightProperty, newWeight));
+        Application.Current.Resources["CommonWindow"] = newWindowStyle;
 
-        newStyle = new(typeof(Button), Application.Current.Resources[typeof(Button)] as Style);
-        newStyle.Setters.Add(new Setter(Button.FontWeightProperty, newWeight));
-        Application.Current.Resources[typeof(Button)] = newStyle;
+        Style newButtonStyle = new(typeof(Button), Application.Current.Resources[typeof(Button)] as Style);
+        newButtonStyle.Setters.Add(new Setter(Button.FontWeightProperty, newWeight));
+        Application.Current.Resources[typeof(Button)] = newButtonStyle;
 
         Settings.Default.IsLightWeight = (sbyte)(value.HasValue ? value.Value ? 1 : 0 : -1);
         Settings.Default.Save();
