@@ -285,11 +285,15 @@ public partial class MainWin : Window
             MainPres.IsNginxIniting = false;
         }
         else
+        {
             foreach (Process nginxProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.NginxPath)))
             {
                 nginxProcess.Kill();
                 await nginxProcess.WaitForExitAsync();
             }
+
+            GlobalCealCleaner.Clean();
+        }
     }
     private void MihomoButton_Click(object sender, RoutedEventArgs e)
     {
