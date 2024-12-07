@@ -98,7 +98,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ColorsButtonContent" xml:space="preserve">
-    <value>Switch Color (Fully Random)</value>
+    <value>SWT. Color (Fully Random)</value>
   </data>
   <data name="ColorsButtonToolTip" xml:space="preserve">
     <value>Click to switch colors</value>
@@ -116,30 +116,30 @@
     <value>Click to switch langs</value>
   </data>
   <data name="ThemesButtonDarkThemeContent" xml:space="preserve">
-    <value>Switch Theme (Dark → Light)</value>
+    <value>SWT. Theme (Dark → Light)</value>
   </data>
   <data name="ThemesButtonInheritThemeContent" xml:space="preserve">
-    <value>Switch Theme (Auto → Dark)</value>
+    <value>SWT. Theme (Auto → Dark)</value>
   </data>
   <data name="ThemesButtonLightThemeContent" xml:space="preserve">
-    <value>Switch Theme (Light → Auto)</value>
+    <value>SWT. Theme (Light → Auto)</value>
   </data>
   <data name="ThemesButtonToolTip" xml:space="preserve">
     <value>Click to switch themes</value>
   </data>
   <data name="WeightsButtonBoldWeightContent" xml:space="preserve">
-    <value>Switch Weight (Bold → Light)</value>
+    <value>SWT. Weight (Bold → Light)</value>
   </data>
   <data name="WeightsButtonLightWeightContent" xml:space="preserve">
-    <value>Switch Weight (Light → Regular)</value>
+    <value>SWT. Weight (Light → Regular)</value>
   </data>
   <data name="WeightsButtonRegularWeightContent" xml:space="preserve">
-    <value>Switch Weight (Regular → Bold)</value>
+    <value>SWT. Weight (RGL. → Bold)</value>
   </data>
   <data name="WeightsButtonToolTip" xml:space="preserve">
     <value>Click to switch font weights</value>
   </data>
   <data name="_ChangeLangSuccessMsg" xml:space="preserve">
-    <value>Change successfuly, restart to refresh the windows</value>
+    <value>Switch successfuly, restart to refresh the windows</value>
   </data>
 </root>

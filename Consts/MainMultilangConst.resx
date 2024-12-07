@@ -163,13 +163,13 @@
     <value>GLB. Purging INIT.</value>
   </data>
   <data name="MihomoButtonIsRunningContent" xml:space="preserve">
-    <value>Stop Global Purging</value>
+    <value>Stop GLB. Purging</value>
   </data>
   <data name="MihomoButtonIsRunningToolTip" xml:space="preserve">
     <value>Click to stop the local Mihomo</value>
   </data>
   <data name="MihomoButtonIsStoppedContent" xml:space="preserve">
-    <value>Start Global Purging</value>
+    <value>Start GLB. Purging</value>
   </data>
   <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
     <value>Click to launch a local Mihomo</value>

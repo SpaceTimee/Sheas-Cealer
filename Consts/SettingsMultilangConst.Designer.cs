@@ -61,7 +61,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Change successfuly, restart to refresh the windows 的本地化字符串。
+        ///   查找类似 Switch successfuly, restart to refresh the windows 的本地化字符串。
         /// </summary>
         public static string _ChangeLangSuccessMsg {
             get {
@@ -70,7 +70,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Switch Color (Fully Random) 的本地化字符串。
+        ///   查找类似 SWT. Color (Fully Random) 的本地化字符串。
         /// </summary>
         public static string ColorsButtonContent {
             get {
@@ -124,7 +124,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Switch Theme (Dark → Light) 的本地化字符串。
+        ///   查找类似 SWT. Theme (Dark → Light) 的本地化字符串。
         /// </summary>
         public static string ThemesButtonDarkThemeContent {
             get {
@@ -133,7 +133,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Switch Theme (Auto → Dark) 的本地化字符串。
+        ///   查找类似 SWT. Theme (Auto → Dark) 的本地化字符串。
         /// </summary>
         public static string ThemesButtonInheritThemeContent {
             get {
@@ -142,7 +142,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Switch Theme (Light → Auto) 的本地化字符串。
+        ///   查找类似 SWT. Theme (Light → Auto) 的本地化字符串。
         /// </summary>
         public static string ThemesButtonLightThemeContent {
             get {
@@ -160,7 +160,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Switch Weight (Bold → Light) 的本地化字符串。
+        ///   查找类似 SWT. Weight (Bold → Light) 的本地化字符串。
         /// </summary>
         public static string WeightsButtonBoldWeightContent {
             get {
@@ -169,7 +169,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Switch Weight (Light → Regular) 的本地化字符串。
+        ///   查找类似 SWT. Weight (Light → Regular) 的本地化字符串。
         /// </summary>
         public static string WeightsButtonLightWeightContent {
             get {
@@ -178,7 +178,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Switch Weight (Regular → Bold) 的本地化字符串。
+        ///   查找类似 SWT. Weight (RGL. → Bold) 的本地化字符串。
         /// </summary>
         public static string WeightsButtonRegularWeightContent {
             get {
