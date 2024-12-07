@@ -54,6 +54,7 @@ public partial class SettingsWin : Window
         Settings.Default.PrimaryColor = System.Drawing.Color.FromArgb(newColor.A, newColor.R, newColor.G, newColor.B);
         Settings.Default.Save();
     }
+    private void WeightsButton_Click(object sender, RoutedEventArgs e) => SettingsPres!.IsLightWeight = SettingsPres.IsLightWeight.HasValue ? SettingsPres.IsLightWeight.Value ? null : true : false;
 
     private void SettingsWin_KeyDown(object sender, KeyEventArgs e)
     {

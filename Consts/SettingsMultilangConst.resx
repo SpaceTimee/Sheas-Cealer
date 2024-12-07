@@ -98,7 +98,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ColorsButtonContent" xml:space="preserve">
-    <value>Switch Color (Fully random)</value>
+    <value>Switch Color (Fully Random)</value>
   </data>
   <data name="ColorsButtonToolTip" xml:space="preserve">
     <value>Click to switch colors</value>
@@ -126,6 +126,18 @@
   </data>
   <data name="ThemesButtonToolTip" xml:space="preserve">
     <value>Click to switch themes</value>
+  </data>
+  <data name="WeightsButtonBoldWeightContent" xml:space="preserve">
+    <value>Switch Weight (Bold → Light)</value>
+  </data>
+  <data name="WeightsButtonLightWeightContent" xml:space="preserve">
+    <value>Switch Weight (Light → Regular)</value>
+  </data>
+  <data name="WeightsButtonRegularWeightContent" xml:space="preserve">
+    <value>Switch Weight (Regular → Bold)</value>
+  </data>
+  <data name="WeightsButtonToolTip" xml:space="preserve">
+    <value>Click to switch font weights</value>
   </data>
   <data name="_ChangeLangSuccessMsg" xml:space="preserve">
     <value>Change successfuly, restart to refresh the windows</value>

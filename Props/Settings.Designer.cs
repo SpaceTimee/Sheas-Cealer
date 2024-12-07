@@ -94,5 +94,17 @@ namespace Sheas_Cealer.Props {
                 this["PrimaryColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public sbyte IsLightWeight {
+            get {
+                return ((sbyte)(this["IsLightWeight"]));
+            }
+            set {
+                this["IsLightWeight"] = value;
+            }
+        }
     }
 }

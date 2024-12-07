@@ -127,6 +127,18 @@
   <data name="ThemesButtonToolTip" xml:space="preserve">
     <value>点击切换显示主题</value>
   </data>
+  <data name="WeightsButtonBoldWeightContent" xml:space="preserve">
+    <value>切换字重 (粗体 → 细体)</value>
+  </data>
+  <data name="WeightsButtonLightWeightContent" xml:space="preserve">
+    <value>切换字重 (细体 → 标准)</value>
+  </data>
+  <data name="WeightsButtonRegularWeightContent" xml:space="preserve">
+    <value>切换字重 (标准 → 粗体)</value>
+  </data>
+  <data name="WeightsButtonToolTip" xml:space="preserve">
+    <value>点击切换字体粗细</value>
+  </data>
   <data name="_ChangeLangSuccessMsg" xml:space="preserve">
     <value>语言更改完成，重启以刷新界面</value>
   </data>

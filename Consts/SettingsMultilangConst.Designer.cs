@@ -70,7 +70,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Switch Color (Fully random) 的本地化字符串。
+        ///   查找类似 Switch Color (Fully Random) 的本地化字符串。
         /// </summary>
         public static string ColorsButtonContent {
             get {
@@ -156,6 +156,42 @@ namespace Sheas_Cealer.Consts {
         public static string ThemesButtonToolTip {
             get {
                 return ResourceManager.GetString("ThemesButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Switch Weight (Bold → Light) 的本地化字符串。
+        /// </summary>
+        public static string WeightsButtonBoldWeightContent {
+            get {
+                return ResourceManager.GetString("WeightsButtonBoldWeightContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Switch Weight (Light → Regular) 的本地化字符串。
+        /// </summary>
+        public static string WeightsButtonLightWeightContent {
+            get {
+                return ResourceManager.GetString("WeightsButtonLightWeightContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Switch Weight (Regular → Bold) 的本地化字符串。
+        /// </summary>
+        public static string WeightsButtonRegularWeightContent {
+            get {
+                return ResourceManager.GetString("WeightsButtonRegularWeightContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click to switch font weights 的本地化字符串。
+        /// </summary>
+        public static string WeightsButtonToolTip {
+            get {
+                return ResourceManager.GetString("WeightsButtonToolTip", resourceCulture);
             }
         }
     }

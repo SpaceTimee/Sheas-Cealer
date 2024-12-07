@@ -12,7 +12,7 @@ internal static class ForegroundGenerator
         double blackContrast = (luminance + 0.05) / 0.05;
         double whiteContrast = 1.05 / (luminance + 0.05);
 
-        return blackContrast >= 3.9 && whiteContrast >= 2.9 ? null :
+        return blackContrast >= 4 && whiteContrast >= 3 ? null :
             blackContrast >= whiteContrast ? Color.FromRgb(0, 0, 0) : Color.FromRgb(255, 255, 255);
     }
 
