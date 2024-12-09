@@ -4,7 +4,7 @@ using Sheas_Cealer.Consts;
 
 namespace Sheas_Cealer.Utils
 {
-    internal static class GlobalCealCleaner
+    internal static class NginxStoppedCleaner
     {
         private static bool IsCleaning = false;
 

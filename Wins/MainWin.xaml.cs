@@ -293,7 +293,7 @@ public partial class MainWin : Window
                 await nginxProcess.WaitForExitAsync();
             }
 
-            GlobalCealCleaner.Clean();
+            NginxStoppedCleaner.Clean();
         }
     }
     private void MihomoButton_Click(object sender, RoutedEventArgs e)
