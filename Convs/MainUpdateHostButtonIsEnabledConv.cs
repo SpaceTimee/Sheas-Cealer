@@ -9,9 +9,9 @@ internal class MainUpdateHostButtonIsEnabledConv : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        string? upstreamUrl = value as string;
+        string upstreamUrl = (string)value;
 
-        return MainConst.UpstreamUrlRegex().IsMatch(upstreamUrl!);
+        return MainConst.UpstreamUrlRegex().IsMatch(upstreamUrl);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();

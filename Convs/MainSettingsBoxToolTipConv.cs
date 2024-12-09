@@ -10,7 +10,7 @@ internal class MainSettingsBoxToolTipConv : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        MainConst.SettingsMode? settingsMode = value as MainConst.SettingsMode?;
+        MainConst.SettingsMode settingsMode = (MainConst.SettingsMode)value;
 
         return settingsMode switch
         {

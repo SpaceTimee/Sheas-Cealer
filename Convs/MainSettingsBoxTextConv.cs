@@ -9,16 +9,16 @@ internal class MainSettingsBoxTextConv : IMultiValueConverter
 {
     public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
-        MainConst.SettingsMode? settingsMode = values[0] as MainConst.SettingsMode?;
-        string? browserPath = values[1] as string;
-        string? upstreamUrl = values[2] as string;
-        string? extraArgs = values[3] as string;
+        MainConst.SettingsMode settingsMode = (MainConst.SettingsMode)values[0];
+        string browserPath = (string)values[1];
+        string upstreamUrl = (string)values[2];
+        string extraArgs = (string)values[3];
 
         return settingsMode switch
         {
-            MainConst.SettingsMode.BrowserPathMode => browserPath!,
-            MainConst.SettingsMode.UpstreamUrlMode => upstreamUrl!,
-            MainConst.SettingsMode.ExtraArgsMode => extraArgs!,
+            MainConst.SettingsMode.BrowserPathMode => browserPath,
+            MainConst.SettingsMode.UpstreamUrlMode => upstreamUrl,
+            MainConst.SettingsMode.ExtraArgsMode => extraArgs,
             _ => throw new UnreachableException(),
         };
     }

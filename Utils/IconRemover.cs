@@ -6,13 +6,13 @@ namespace Sheas_Cealer.Utils;
 
 internal static partial class IconRemover
 {
-    private const int GWL_EXSTYLE = -20;
-    private const int WS_EX_DLGMODALFRAME = 0x0001;
-    private const int SWP_NOSIZE = 0x0001;
-    private const int SWP_NOMOVE = 0x0002;
-    private const int SWP_NOZORDER = 0x0004;
-    private const int SWP_FRAMECHANGED = 0x0020;
-    private const uint WM_SETICON = 0x0080;
+    private const int GwlExStyle = -20;
+    private const int WsExDlgModalFrame = 0x0001;
+    private const int SwpNoSize = 0x0001;
+    private const int SwpNoMove = 0x0002;
+    private const int SwpNoZOrder = 0x0004;
+    private const int SwpFrameChanged = 0x0020;
+    private const uint WmSetIcon = 0x0080;
 
     [LibraryImport("user32.dll", EntryPoint = "GetWindowLongW")]
     private static partial int GetWindowLong(nint hwnd, int index);
@@ -28,11 +28,11 @@ internal static partial class IconRemover
     {
         nint hwnd = new WindowInteropHelper(window).Handle;
 
-        _ = SetWindowLong(hwnd, GWL_EXSTYLE, GetWindowLong(hwnd, GWL_EXSTYLE) | WS_EX_DLGMODALFRAME);
+        _ = SetWindowLong(hwnd, GwlExStyle, GetWindowLong(hwnd, GwlExStyle) | WsExDlgModalFrame);
 
-        SetWindowPos(hwnd, nint.Zero, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+        SetWindowPos(hwnd, nint.Zero, 0, 0, 0, 0, SwpNoMove | SwpNoSize | SwpNoZOrder | SwpFrameChanged);
 
-        SendMessage(hwnd, WM_SETICON, new nint(1), nint.Zero);
-        SendMessage(hwnd, WM_SETICON, nint.Zero, nint.Zero);
+        SendMessage(hwnd, WmSetIcon, new nint(1), nint.Zero);
+        SendMessage(hwnd, WmSetIcon, nint.Zero, nint.Zero);
     }
 }
