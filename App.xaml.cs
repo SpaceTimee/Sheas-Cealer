@@ -24,7 +24,7 @@ public partial class App : Application
         newTheme.SetPrimaryColor(Color.FromRgb(newColor.R, newColor.G, newColor.B));
         paletteHelper.SetTheme(newTheme);
 
-        if (Environment.OSVersion.Version.Major == 10 && Environment.OSVersion.Version.Build < 22000)
+        if (Environment.OSVersion.Version.Build < 22000)
         {
             Style newWindowStyle = new(typeof(Window), Current.Resources["CommonWindow"] as Style);
             newWindowStyle.Setters.Add(new Setter(Window.BackgroundProperty, new DynamicResourceExtension("MaterialDesignBackground")));
