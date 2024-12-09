@@ -1,7 +1,7 @@
 ﻿using Sheas_Cealer.Consts;
 using SheasCore;
 
-namespace Sheas_Cealer.Utils;
+namespace Sheas_Cealer.Proces;
 
 internal class MihomoProc : Proc
 {

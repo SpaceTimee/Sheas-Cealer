@@ -1,8 +1,9 @@
 ﻿using System;
 using Sheas_Cealer.Consts;
+using Sheas_Cealer.Utils;
 using SheasCore;
 
-namespace Sheas_Cealer.Utils;
+namespace Sheas_Cealer.Proces;
 
 internal class NginxProc : Proc
 {

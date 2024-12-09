@@ -2,7 +2,7 @@
 using System.Windows;
 using SheasCore;
 
-namespace Sheas_Cealer.Utils;
+namespace Sheas_Cealer.Proces;
 
 internal class BrowserProc : Proc
 {
