@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:consts="clr-namespace:Sheas_Cealer.Consts"
         xmlns:convs="clr-namespace:Sheas_Cealer.Convs"
+        xmlns:preses="clr-namespace:Sheas_Cealer.Preses"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance preses:AboutPres}"
         Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="500"
         KeyDown="AboutWin_KeyDown">
     <Grid Margin="5">

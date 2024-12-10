@@ -20,9 +20,9 @@ public partial class App : Application
         #region Primary Color
         PaletteHelper paletteHelper = new();
         Theme newTheme = paletteHelper.GetTheme();
-        System.Drawing.Color newColor = Settings.Default.PrimaryColor;
+        System.Drawing.Color newPrimaryColor = Settings.Default.PrimaryColor;
 
-        newTheme.SetPrimaryColor(Color.FromRgb(newColor.R, newColor.G, newColor.B));
+        newTheme.SetPrimaryColor(Color.FromRgb(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B));
         paletteHelper.SetTheme(newTheme);
         #endregion Primary Color
 
@@ -30,16 +30,17 @@ public partial class App : Application
         if (Environment.OSVersion.Version.Build < 22000)
         {
             Style newWindowStyle = new(typeof(Window), Current.Resources["CommonWindow"] as Style);
+
             newWindowStyle.Setters.Add(new Setter(Window.BackgroundProperty, new DynamicResourceExtension("MaterialDesignBackground")));
             Current.Resources["CommonWindow"] = newWindowStyle;
         }
         #endregion Background Color
 
         #region Foreground Color
-        Color? foregroundColor = ForegroundGenerator.GetForeground(newColor.R, newColor.G, newColor.B);
-
         Style newButtonStyle = new(typeof(Button), Current.Resources[typeof(Button)] as Style);
-        newButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, foregroundColor.HasValue ? new SolidColorBrush(foregroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
+        Color? newForegroundColor = ForegroundGenerator.GetForeground(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
+
+        newButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
         Current.Resources[typeof(Button)] = newButtonStyle;
         #endregion Foreground Color
 

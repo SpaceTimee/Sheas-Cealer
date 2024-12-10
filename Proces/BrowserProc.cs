@@ -6,7 +6,7 @@ namespace Sheas_Cealer.Proces;
 
 internal class BrowserProc : Proc
 {
-    private static bool ShutDownAppOnProcessExit;
+    private readonly bool ShutDownAppOnProcessExit;
 
     internal BrowserProc(string browserPath, bool shutDownAppOnProcessExit) : base(browserPath) => ShutDownAppOnProcessExit = shutDownAppOnProcessExit;
 

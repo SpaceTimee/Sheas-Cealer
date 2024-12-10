@@ -33,27 +33,27 @@ namespace Sheas_Cealer.Wins;
 
 public partial class MainWin : Window
 {
-    private static MainPres? MainPres;
-    private static readonly HttpClient MainClient = new(new HttpClientHandler() { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator });
-    private static DispatcherTimer? HoldButtonTimer;
-    private static readonly DispatcherTimer ProxyTimer = new() { Interval = TimeSpan.FromSeconds(0.1) };
-    private static readonly FileSystemWatcher CealHostWatcher = new(Path.GetDirectoryName(MainConst.CealHostPath)!, Path.GetFileName(MainConst.CealHostPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
-    private static readonly FileSystemWatcher NginxConfWatcher = new(Path.GetDirectoryName(MainConst.NginxConfPath)!, Path.GetFileName(MainConst.NginxConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
-    private static readonly FileSystemWatcher MihomoConfWatcher = new(Path.GetDirectoryName(MainConst.MihomoConfPath)!, Path.GetFileName(MainConst.MihomoConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
+    private readonly MainPres MainPres;
+    private readonly HttpClient MainClient = new(new HttpClientHandler() { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator });
+    private DispatcherTimer? HoldButtonTimer;
+    private readonly DispatcherTimer ProxyTimer = new() { Interval = TimeSpan.FromSeconds(0.1) };
+    private readonly FileSystemWatcher CealHostWatcher = new(Path.GetDirectoryName(MainConst.CealHostPath)!, Path.GetFileName(MainConst.CealHostPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
+    private readonly FileSystemWatcher NginxConfWatcher = new(Path.GetDirectoryName(MainConst.NginxConfPath)!, Path.GetFileName(MainConst.NginxConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
+    private readonly FileSystemWatcher MihomoConfWatcher = new(Path.GetDirectoryName(MainConst.MihomoConfPath)!, Path.GetFileName(MainConst.MihomoConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
 
-    private static readonly SortedDictionary<string, List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>> CealHostRulesDict = [];
-    private static string CealArgs = string.Empty;
-    private static NginxConfig? NginxConfs;
-    private static string? ExtraNginxConfs;
-    private static string? MihomoConfs;
-    private static string? ExtraMihomoConfs;
+    private readonly SortedDictionary<string, List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>> CealHostRulesDict = [];
+    private string CealArgs = string.Empty;
+    private NginxConfig? NginxConfs;
+    private string? ExtraNginxConfs;
+    private string? MihomoConfs;
+    private string? ExtraMihomoConfs;
 
-    private static int NginxHttpPort = 80;
-    private static int NginxHttpsPort = 443;
-    private static int MihomoMixedPort = 7880;
+    private int NginxHttpPort = 80;
+    private int NginxHttpsPort = 443;
+    private int MihomoMixedPort = 7880;
 
-    private static int GameClickTime = 0;
-    private static int GameFlashInterval = 1000;
+    private int GameClickTime = 0;
+    private int GameFlashInterval = 1000;
 
     internal MainWin(string[] args)
     {
@@ -64,12 +64,10 @@ public partial class MainWin : Window
     protected override void OnSourceInitialized(EventArgs e)
     {
         IconRemover.RemoveIcon(this);
-        BorderThemeSetter.SetBorderTheme(this, MainPres!.IsLightTheme);
+        BorderThemeSetter.SetBorderTheme(this, MainPres.IsLightTheme);
     }
     private async void MainWin_Loaded(object sender, RoutedEventArgs e)
     {
-        SettingsBox.Focus();
-
         await Task.Run(() =>
         {
             ProxyTimer.Tick += ProxyTimer_Tick;
@@ -95,12 +93,12 @@ public partial class MainWin : Window
     private void MainWin_Drop(object sender, DragEventArgs e)
     {
         if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            MainPres!.BrowserPath = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+            MainPres.BrowserPath = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
     }
 
     private void SettingsBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        switch (MainPres!.SettingsMode)
+        switch (MainPres.SettingsMode)
         {
             case MainConst.SettingsMode.BrowserPathMode:
                 MainPres.BrowserPath = SettingsBox.Text;
@@ -115,7 +113,7 @@ public partial class MainWin : Window
     }
     private void SettingsModeButton_Click(object sender, RoutedEventArgs e)
     {
-        MainPres!.SettingsMode = MainPres.SettingsMode switch
+        MainPres.SettingsMode = MainPres.SettingsMode switch
         {
             MainConst.SettingsMode.BrowserPathMode => MainConst.SettingsMode.UpstreamUrlMode,
             MainConst.SettingsMode.UpstreamUrlMode => MainConst.SettingsMode.ExtraArgsMode,
@@ -127,7 +125,7 @@ public partial class MainWin : Window
     {
         OpenFileDialog browserPathDialog = new() { Filter = $"{MainConst._BrowserPathDialogFilterFileType} (*.exe)|*.exe" };
 
-        switch (MainPres!.SettingsMode)
+        switch (MainPres.SettingsMode)
         {
             case MainConst.SettingsMode.BrowserPathMode when browserPathDialog.ShowDialog().GetValueOrDefault():
                 SettingsBox.Focus();
@@ -161,7 +159,7 @@ public partial class MainWin : Window
             (MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
             return;
 
-        foreach (Process browserProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainPres!.BrowserPath)))
+        foreach (Process browserProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainPres.BrowserPath)))
         {
             browserProcess.Kill();
             await browserProcess.WaitForExitAsync();
@@ -187,7 +185,7 @@ public partial class MainWin : Window
     {
         HoldButtonTimer?.Stop();
 
-        if (!MainPres!.IsNginxRunning)
+        if (!MainPres.IsNginxRunning)
         {
             if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._CealHostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                 (NginxHttpsPort != 443 && MessageBox.Show(MainConst._NginxHttpsPortOccupiedPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
@@ -311,7 +309,7 @@ public partial class MainWin : Window
     {
         HoldButtonTimer?.Stop();
 
-        if (!MainPres!.IsMihomoRunning)
+        if (!MainPres.IsMihomoRunning)
         {
             if (string.IsNullOrWhiteSpace(MihomoConfs))
                 throw new Exception(MainConst._MihomoConfErrorMsg);
@@ -401,7 +399,7 @@ public partial class MainWin : Window
         if (!File.Exists(MainConst.UpstreamHostPath))
             File.Create(MainConst.UpstreamHostPath).Dispose();
 
-        string upstreamUpstreamHostUrl = (MainPres!.UpstreamUrl.StartsWith("http://") || MainPres.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres.UpstreamUrl;
+        string upstreamUpstreamHostUrl = (MainPres.UpstreamUrl.StartsWith("http://") || MainPres.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres.UpstreamUrl;
         string upstreamUpstreamHostString = await Http.GetAsync<string>(upstreamUpstreamHostUrl, MainClient);
         string localUpstreamHostString = File.ReadAllText(MainConst.UpstreamHostPath);
 
@@ -446,7 +444,7 @@ public partial class MainWin : Window
                 return;
         }
 
-        if (!MainPres!.IsFlashing)
+        if (!MainPres.IsFlashing)
         {
             MessageBox.Show(MainConst._GameStartMsg);
             MainPres.IsFlashing = true;
@@ -461,20 +459,20 @@ public partial class MainWin : Window
 
                 PaletteHelper paletteHelper = new();
                 Theme newTheme = paletteHelper.GetTheme();
-                Color newColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+                Color newPrimaryColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
                 bool isLightTheme = random.Next(2) == 0;
 
-                newTheme.SetPrimaryColor(newColor);
+                newTheme.SetPrimaryColor(newPrimaryColor);
                 newTheme.SetBaseTheme(isLightTheme ? BaseTheme.Light : BaseTheme.Dark);
                 paletteHelper.SetTheme(newTheme);
 
                 foreach (Window currentWindow in Application.Current.Windows)
                     BorderThemeSetter.SetBorderTheme(currentWindow, isLightTheme);
 
-                Color? foregroundColor = ForegroundGenerator.GetForeground(newColor.R, newColor.G, newColor.B);
+                Color? newForegroundColor = ForegroundGenerator.GetForeground(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
 
                 Style newButtonStyle = new(typeof(Button), Application.Current.Resources[typeof(Button)] as Style);
-                newButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, foregroundColor.HasValue ? new SolidColorBrush(foregroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
+                newButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
                 Application.Current.Resources[typeof(Button)] = newButtonStyle;
 
                 if (GameFlashInterval > 100)
@@ -510,7 +508,7 @@ public partial class MainWin : Window
 
     private void ProxyTimer_Tick(object? sender, EventArgs e)
     {
-        MainPres!.IsNginxExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, Path.GetFileName(MainConst.NginxPath)));
+        MainPres.IsNginxExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, Path.GetFileName(MainConst.NginxPath)));
         MainPres.IsNginxRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.NginxPath)).Length != 0;
         MainPres.IsMihomoExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, Path.GetFileName(MainConst.MihomoPath)));
         MainPres.IsMihomoRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)).Length != 0;
@@ -585,7 +583,7 @@ public partial class MainWin : Window
     }
     private void NginxConfWatcher_Changed(object sender, FileSystemEventArgs e)
     {
-        if (MainConst.IsAdmin && MainPres!.IsNginxExist)
+        if (MainConst.IsAdmin && MainPres.IsNginxExist)
         {
             if (!File.Exists(MainConst.NginxConfPath))
                 File.Create(MainConst.NginxConfPath).Dispose();
@@ -661,7 +659,7 @@ public partial class MainWin : Window
     }
     private void MihomoConfWatcher_Changed(object sender, FileSystemEventArgs e)
     {
-        if (MainConst.IsAdmin && MainPres!.IsMihomoExist)
+        if (MainConst.IsAdmin && MainPres.IsMihomoExist)
         {
             try
             {
