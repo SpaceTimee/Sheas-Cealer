@@ -33,7 +33,9 @@ public partial class AboutWin : Window
             MessageBox.Show($"{AboutConst._ReleasePagePasswordLabel} 3wnj");
 
         ProcessStartInfo processStartInfo = new(senderButton == EmailButton ? "mailto:" : string.Empty + senderButton!.ToolTip) { UseShellExecute = true };
-        Process.Start(processStartInfo);
+
+        try { Process.Start(processStartInfo); }
+        catch (UnauthorizedAccessException) { Process.Start(processStartInfo.Verb = "RunAs"); }
     }
 
     private void AboutWin_KeyDown(object sender, KeyEventArgs e)

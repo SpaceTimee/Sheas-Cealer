@@ -372,7 +372,8 @@ public partial class MainWin : Window
         if (!File.Exists(cealHostPath))
             File.Create(cealHostPath).Dispose();
 
-        Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true });
+        try { Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true }); }
+        catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true, Verb = "RunAs" }); }
     }
     private void EditConfButton_Click(object sender, RoutedEventArgs e)
     {
@@ -418,7 +419,8 @@ public partial class MainWin : Window
                 MessageBox.Show(MainConst._UpdateUpstreamHostSuccessMsg);
             }
             else if (overrideOptionResult == MessageBoxResult.No)
-                Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true });
+                try { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true }); }
+                catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true, Verb = "RunAs" }); }
         }
     }
 
