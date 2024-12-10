@@ -35,7 +35,12 @@ public partial class AboutWin : Window
         ProcessStartInfo processStartInfo = new(senderButton == EmailButton ? "mailto:" : string.Empty + senderButton!.ToolTip) { UseShellExecute = true };
 
         try { Process.Start(processStartInfo); }
-        catch (UnauthorizedAccessException) { Process.Start(processStartInfo.Verb = "RunAs"); }
+        catch (UnauthorizedAccessException)
+        {
+            processStartInfo.Verb = "RunAs";
+
+            Process.Start(processStartInfo);
+        }
     }
 
     private void AboutWin_KeyDown(object sender, KeyEventArgs e)
