@@ -363,7 +363,7 @@ public partial class MainWin : Window
 
     private void EditHostButton_Click(object sender, RoutedEventArgs e)
     {
-        Button? senderButton = sender as Button;
+        Button senderButton = (Button)sender;
 
         string cealHostPath = senderButton == EditLocalHostButton ? MainConst.LocalHostPath : MainConst.UpstreamHostPath;
 
@@ -375,7 +375,7 @@ public partial class MainWin : Window
     }
     private void EditConfButton_Click(object sender, RoutedEventArgs e)
     {
-        Button? senderButton = sender as Button;
+        Button senderButton = (Button)sender;
         string confPath;
 
         if (senderButton == EditHostsConfButton)
