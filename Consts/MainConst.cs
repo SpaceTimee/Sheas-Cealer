@@ -38,6 +38,7 @@ internal partial class MainConst : MainMultilangConst
 
     internal static string MihomoPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Mihomo.exe");
     internal static string MihomoConfPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "config.yaml");
+    internal static string[] MihomoNameServers => ["https://doh.apad.pro/dns-query", "https://ns.net.kg/dns-query"];
 
     [GeneratedRegex(@"^(https?:\/\/)?[a-zA-Z0-9](-*[a-zA-Z0-9])*(\.[a-zA-Z0-9](-*[a-zA-Z0-9])*)*(:\d{1,5})?(\/[a-zA-Z0-9.\-_\~\!\$\&\'\(\)\*\+\,\;\=\:\@\%]*)*$")]
     internal static partial Regex UpstreamUrlRegex();

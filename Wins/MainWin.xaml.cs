@@ -203,14 +203,19 @@ public partial class MainWin : Window
 
             RSA certKey = RSA.Create(2048);
 
+            #region Root Cert
             CertificateRequest rootCertRequest = new(MainConst.NginxRootCertSubjectName, certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
             rootCertRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, false));
+
             using X509Certificate2 rootCert = rootCertRequest.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(100));
             using X509Store certStore = new(StoreName.Root, StoreLocation.CurrentUser, OpenFlags.ReadWrite);
 
             certStore.Add(rootCert);
             certStore.Close();
+            #endregion Root Cert
 
+            #region Child Cert & Hosts
             CertificateRequest childCertRequest = new(MainConst.NginxChildCertSubjectName, certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
             SubjectAlternativeNameBuilder childCertSanBuilder = new();
             string hostsConfAppendContent = MainConst.HostsConfStartMarker;
@@ -238,6 +243,7 @@ public partial class MainWin : Window
                     }
 
             childCertRequest.CertificateExtensions.Add(childCertSanBuilder.Build());
+
             using X509Certificate2 childCert = childCertRequest.Create(rootCert, rootCert.NotBefore, rootCert.NotAfter, Guid.NewGuid().ToByteArray());
 
             File.WriteAllText(MainConst.NginxCertPath, childCert.ExportCertificatePem());
@@ -247,6 +253,7 @@ public partial class MainWin : Window
 
             File.SetAttributes(MainConst.HostsConfPath, File.GetAttributes(MainConst.HostsConfPath) & ~FileAttributes.ReadOnly);
             File.AppendAllText(MainConst.HostsConfPath, hostsConfAppendContent);
+            #endregion Child Cert & Hosts
 
             MainPres.IsNginxIniting = true;
             NginxConfWatcher.EnableRaisingEvents = false;
@@ -262,6 +269,7 @@ public partial class MainWin : Window
                 try
                 {
                     await Http.GetAsync<HttpResponseMessage>($"https://localhost:{NginxHttpsPort}", MainClient);
+
                     break;
                 }
                 catch (HttpRequestException ex) when (ex.InnerException is SocketException innerEx)
@@ -333,6 +341,7 @@ public partial class MainWin : Window
                 try
                 {
                     await Http.GetAsync<HttpResponseMessage>($"http://localhost:{MihomoMixedPort}", MainClient);
+
                     break;
                 }
                 catch (HttpRequestException ex) when (ex.InnerException is SocketException innerEx)
@@ -364,7 +373,6 @@ public partial class MainWin : Window
     private void EditHostButton_Click(object sender, RoutedEventArgs e)
     {
         Button senderButton = (Button)sender;
-
         string cealHostPath = senderButton == EditLocalHostButton ? MainConst.LocalHostPath : MainConst.UpstreamHostPath;
 
         if (!File.Exists(cealHostPath))
@@ -411,6 +419,7 @@ public partial class MainWin : Window
         else
         {
             MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideUpstreamHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
+
             if (overrideOptionResult == MessageBoxResult.Yes)
             {
                 File.WriteAllText(MainConst.UpstreamHostPath, upstreamUpstreamHostString);
@@ -428,6 +437,7 @@ public partial class MainWin : Window
         if (GameFlashInterval <= 10)
         {
             MessageBox.Show(MainConst._GameReviewEndingMsg);
+
             return;
         }
 
@@ -469,9 +479,9 @@ public partial class MainWin : Window
                 foreach (Window currentWindow in Application.Current.Windows)
                     BorderThemeSetter.SetBorderTheme(currentWindow, isLightTheme);
 
+                Style newButtonStyle = new(typeof(Button), Application.Current.Resources[typeof(Button)] as Style);
                 Color? newForegroundColor = ForegroundGenerator.GetForeground(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
 
-                Style newButtonStyle = new(typeof(Button), Application.Current.Resources[typeof(Button)] as Style);
                 newButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
                 Application.Current.Resources[typeof(Button)] = newButtonStyle;
 
@@ -601,9 +611,7 @@ public partial class MainWin : Window
                     break;
 
             using FileStream nginxConfStream = new(MainConst.NginxConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-            ExtraNginxConfs = new StreamReader(nginxConfStream).ReadToEnd();
-
-            NginxConfig extraNginxConfig = NginxConfig.Load(ExtraNginxConfs);
+            NginxConfig extraNginxConfig = NginxConfig.Load(ExtraNginxConfs = new StreamReader(nginxConfStream).ReadToEnd());
             int serverIndex = 0;
 
             foreach (IToken extraNginxConfigToken in extraNginxConfig.GetTokens())
@@ -673,13 +681,11 @@ public partial class MainWin : Window
                         break;
 
                 using FileStream mihomoConfStream = new(MainConst.MihomoConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-                ExtraMihomoConfs = new StreamReader(mihomoConfStream).ReadToEnd();
-
                 Dictionary<string, object> mihomoConfDict = new DeserializerBuilder()
                     .WithNamingConvention(HyphenatedNamingConvention.Instance)
                     .IgnoreUnmatchedProperties()
                     .Build()
-                    .Deserialize<Dictionary<string, object>>(ExtraMihomoConfs) ?? [];
+                    .Deserialize<Dictionary<string, object>>(ExtraMihomoConfs = new StreamReader(mihomoConfStream).ReadToEnd()) ?? [];
 
                 mihomoConfDict["mixed-port"] = MihomoMixedPort;
                 mihomoConfDict["dns"] = new
@@ -687,7 +693,7 @@ public partial class MainWin : Window
                     enable = true,
                     listen = ":53",
                     enhancedMode = "redir-host",
-                    nameserver = new[] { "https://doh.apad.pro/dns-query", "https://ns.net.kg/dns-query" }
+                    nameserver = MainConst.MihomoNameServers
                 };
                 mihomoConfDict["tun"] = new
                 {
