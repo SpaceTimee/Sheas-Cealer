@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MaterialDesignThemes.Wpf;
 using Sheas_Cealer.Props;
@@ -36,4 +37,7 @@ internal partial class GlobalPres : ObservableObject
         Settings.Default.IsLightTheme = (sbyte)(value.HasValue ? value.Value ? 1 : 0 : -1);
         Settings.Default.Save();
     }
+
+    [ObservableProperty]
+    private static Color accentForegroundColor = (Color)ColorConverter.ConvertFromString("#2196f3");
 }

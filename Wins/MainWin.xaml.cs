@@ -480,10 +480,12 @@ public partial class MainWin : Window
                     BorderThemeSetter.SetBorderTheme(currentWindow, isLightTheme);
 
                 Style newButtonStyle = new(typeof(Button), Application.Current.Resources[typeof(Button)] as Style);
-                Color? newForegroundColor = ForegroundGenerator.GetForeground(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
+                (Color? newForegroundColor, Color newAccentForegroundColor) = ForegroundGenerator.GetForeground(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
 
                 newButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
                 Application.Current.Resources[typeof(Button)] = newButtonStyle;
+
+                new GlobalPres().AccentForegroundColor = newAccentForegroundColor;
 
                 if (GameFlashInterval > 100)
                     GameFlashInterval += random.Next(1, 4);

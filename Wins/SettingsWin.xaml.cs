@@ -45,10 +45,12 @@ public partial class SettingsWin : Window
         paletteHelper.SetTheme(newTheme);
 
         Style newButtonStyle = new(typeof(Button), Application.Current.Resources[typeof(Button)] as Style);
-        Color? newForegroundColor = ForegroundGenerator.GetForeground(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
+        (Color? newForegroundColor, Color newAccentForegroundColor) = ForegroundGenerator.GetForeground(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
 
         newButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
         Application.Current.Resources[typeof(Button)] = newButtonStyle;
+
+        new GlobalPres().AccentForegroundColor = newAccentForegroundColor;
 
         Settings.Default.PrimaryColor = System.Drawing.Color.FromArgb(newPrimaryColor.A, newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
         Settings.Default.Save();

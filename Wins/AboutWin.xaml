@@ -22,11 +22,26 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Foreground="#2196F3" Content="{Binding Source={x:Static consts:AboutConst.DeveloperButtonContent}, Mode=OneTime}" ToolTip="{Binding Source={x:Static consts:AboutConst.DeveloperButtonUrl}, Mode=OneTime}"
-                Click="AboutButton_Click" />
-        <Button x:Name="VersionButton"
-                Grid.Row="1" Grid.Column="0" Margin="5" Foreground="#2196F3" ToolTip="{Binding Source={x:Static consts:AboutConst.VersionButtonUrl}, Mode=OneTime}"
+        <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" d:Foreground="#2196F3" Content="{Binding Source={x:Static consts:AboutConst.DeveloperButtonContent}, Mode=OneTime}" ToolTip="{Binding Source={x:Static consts:AboutConst.DeveloperButtonUrl}, Mode=OneTime}"
                 Click="AboutButton_Click">
+            <Button.Foreground>
+                <Binding Path="AccentForegroundColor">
+                    <Binding.Converter>
+                        <convs:AboutAccentButtonForegroundConv />
+                    </Binding.Converter>
+                </Binding>
+            </Button.Foreground>
+        </Button>
+        <Button x:Name="VersionButton"
+                Grid.Row="1" Grid.Column="0" Margin="5" d:Foreground="#2196F3" ToolTip="{Binding Source={x:Static consts:AboutConst.VersionButtonUrl}, Mode=OneTime}"
+                Click="AboutButton_Click">
+            <Button.Foreground>
+                <Binding Path="AccentForegroundColor">
+                    <Binding.Converter>
+                        <convs:AboutAccentButtonForegroundConv />
+                    </Binding.Converter>
+                </Binding>
+            </Button.Foreground>
             <Button.Content>
                 <MultiBinding Mode="OneTime">
                     <MultiBinding.Converter>
