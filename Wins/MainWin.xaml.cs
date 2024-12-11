@@ -485,7 +485,7 @@ public partial class MainWin : Window
                 newButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
                 Application.Current.Resources[typeof(Button)] = newButtonStyle;
 
-                new GlobalPres().AccentForegroundColor = newAccentForegroundColor;
+                MainPres.AccentForegroundColor = newAccentForegroundColor;
 
                 if (GameFlashInterval > 100)
                     GameFlashInterval += random.Next(1, 4);

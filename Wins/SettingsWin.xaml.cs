@@ -50,7 +50,7 @@ public partial class SettingsWin : Window
         newButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
         Application.Current.Resources[typeof(Button)] = newButtonStyle;
 
-        new GlobalPres().AccentForegroundColor = newAccentForegroundColor;
+        SettingsPres.AccentForegroundColor = newAccentForegroundColor;
 
         Settings.Default.PrimaryColor = System.Drawing.Color.FromArgb(newPrimaryColor.A, newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
         Settings.Default.Save();
