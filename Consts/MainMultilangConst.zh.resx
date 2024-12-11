@@ -253,16 +253,16 @@
     <value>伪造规则含有语法错误，部分规则无法识别，是否仍然继续?</value>
   </data>
   <data name="_GameClickOnceMsg" xml:space="preserve">
-    <value>就知道你会点，但其实什么事情都不会发生的。嘻嘻</value>
+    <value>就知道你会点，但其实什么事情都不会发生的。嘻嘻~</value>
   </data>
   <data name="_GameClickThreeMsg" xml:space="preserve">
     <value>呜，你在做什么。求求你不要再继续点了，我不想伤害大家。快停下，这是最后一次机会。呃，我快要控制不住了</value>
   </data>
   <data name="_GameClickTwiceMsg" xml:space="preserve">
-    <value>不不不，不要点我。对不起，我不该骗你的，我是一个受诅咒的按钮，继续点我会给整个 Sheas Cealer 带来灾难的。请相信我，这不是游戏，这里也没有新功能。听我的，去用正常的功能好吗</value>
+    <value>不不不，不要点我。对不起，我不该骗你的，我是一个受诅咒的按钮，继续点我会给整个 Sheas Cealer 带来灾难的。请相信我，这不是游戏，这里也没有新功能。听我的，去用正常的功能好吗，求求你了</value>
   </data>
   <data name="_GameEndingMsg" xml:space="preserve">
-    <value>你击败了邪恶的按钮，拯救了 Sheas Cealer，你是英雄</value>
+    <value>你击败了邪恶的按钮，拯救了 Sheas Cealer，你是英雄!</value>
   </data>
   <data name="_GameGradeMsg" xml:space="preserve">
     <value>按钮剩余血量:</value>
@@ -271,7 +271,7 @@
     <value>它死了，你是 Sheas Cealer 的英雄</value>
   </data>
   <data name="_GameStartMsg" xml:space="preserve">
-    <value>不，求你杀了我，我...控制不住了...</value>
+    <value>不，求你杀了我，我... 控制不住了...</value>
   </data>
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>启动前将关闭所选浏览器的所有进程，是否继续？</value>
@@ -280,7 +280,7 @@
     <value>Mihomo 启动失败</value>
   </data>
   <data name="_LaunchNginxErrorPrompt" xml:space="preserve">
-    <value>Nginx 启动失败，是否打开错误日志</value>
+    <value>Nginx 启动失败，是否打开错误日志?</value>
   </data>
   <data name="_LaunchNginxFlashingPrompt" xml:space="preserve">
     <value>Warning: 代理核心正在遭受攻击，无法伪造 SNI，已紧急开启 SNI 拔除模式，是否继续?</value>
@@ -289,13 +289,13 @@
     <value>使用完请务必记得回来手动关闭代理，是否继续?</value>
   </data>
   <data name="_MihomoConfErrorMsg" xml:space="preserve">
-    <value>配置文件含有语法错误，部分配置无法识别</value>
+    <value>Mihomo 配置文件含有语法错误，部分配置无法识别</value>
   </data>
   <data name="_NginxHttpPortOccupiedPrompt" xml:space="preserve">
-    <value>本地 80 端口被占用，这可能导致 http 连接无法自动跳转到 https，是否继续?</value>
+    <value>本地 80 端口被占用，是否换用 {0} 端口继续? 这可能导致 http 连接无法自动跳转到 https</value>
   </data>
   <data name="_NginxHttpsPortOccupiedPrompt" xml:space="preserve">
-    <value>本地 443 端口被占用，这可能导致全局伪造无法正常工作，是否继续?</value>
+    <value>本地 443 端口被占用，是否换用 {0} 端口继续? 这可能导致全局伪造无法正常工作</value>
   </data>
   <data name="_OverrideUpstreamHostPrompt" xml:space="preserve">
     <value>上游规则有更新可用，需要更新吗？否则只为你打开上游规则网页</value>

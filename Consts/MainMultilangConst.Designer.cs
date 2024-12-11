@@ -79,7 +79,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 I know you would do it, but nothing will actually happen. Whee 的本地化字符串。
+        ///   查找类似 I know you would click me, but nothing will actually happen. Whee~ 的本地化字符串。
         /// </summary>
         public static string _GameClickOnceMsg {
             get {
@@ -97,7 +97,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 No no no, don&apos;t click me. Sorry, I shouldn&apos;t have lied to you, I am a cursed button, and continuing to click me will bring disaster to the entire Sheas Cealer. Please believe me, this is not a game, and there are no new features here. Listen to me and use the normal functions, okay? 的本地化字符串。
+        ///   查找类似 No no no, don&apos;t click me. Sorry, I shouldn&apos;t have lied to you, I am a cursed button, and continuing to click me will bring disaster to the entire Sheas Cealer. Please believe me. This is not a game, and there are no new features here. Listen to me and use the normal functions. Please 的本地化字符串。
         /// </summary>
         public static string _GameClickTwiceMsg {
             get {
@@ -106,7 +106,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 You defeated the evil button and saved Sheas Cealer, you are hero 的本地化字符串。
+        ///   查找类似 You defeated the evil button and saved Sheas Cealer. You are the HERO! 的本地化字符串。
         /// </summary>
         public static string _GameEndingMsg {
             get {
@@ -124,7 +124,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 It&apos;s dead, and you&apos;re the hero of Sheas Cealer 的本地化字符串。
+        ///   查找类似 It&apos;s dead. You&apos;re the HERO of Sheas Cealer 的本地化字符串。
         /// </summary>
         public static string _GameReviewEndingMsg {
             get {
@@ -133,7 +133,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 No, please kill me, I...can&apos;t control myself... 的本地化字符串。
+        ///   查找类似 No, please kill me. I... can&apos;t control it... 的本地化字符串。
         /// </summary>
         public static string _GameStartMsg {
             get {
@@ -151,7 +151,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Mihomo failed to start 的本地化字符串。
+        ///   查找类似 Mihomo failed to launch 的本地化字符串。
         /// </summary>
         public static string _LaunchMihomoErrorMsg {
             get {
@@ -160,7 +160,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Nginx failed to start, do you want to open the error log 的本地化字符串。
+        ///   查找类似 Nginx failed to launch. Do you want to open the error log? 的本地化字符串。
         /// </summary>
         public static string _LaunchNginxErrorPrompt {
             get {
@@ -169,7 +169,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Warning: The proxy core is under attack and cannot ceal SNI. The SNI removal mode has been turned on urgently. Do you want to continue? 的本地化字符串。
+        ///   查找类似 Warning: The proxy core is under attack and failes to conceal SNI. The SNI removal mode has been turned on urgently. Do you want to continue? 的本地化字符串。
         /// </summary>
         public static string _LaunchNginxFlashingPrompt {
             get {
@@ -196,7 +196,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 The local port 80 is occupied, which may cause the http connection to fail to automatically jump to https. Do you want to continue? 的本地化字符串。
+        ///   查找类似 The local port 80 is occupied. Do you want to use port {0} to continue? This may cause the http connection to fail to automatically jump to https 的本地化字符串。
         /// </summary>
         public static string _NginxHttpPortOccupiedPrompt {
             get {
@@ -205,7 +205,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 The local port 443 is occupied, which may cause the global cealing to not work properly. Do you want to continue? 的本地化字符串。
+        ///   查找类似 The local port 443 is occupied. Do you want to use port {0} to continue? This may cause the global cealing to not work properly 的本地化字符串。
         /// </summary>
         public static string _NginxHttpsPortOccupiedPrompt {
             get {
@@ -214,7 +214,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 There is an update available. Do you want to update upstream host? If No it will only open the upstream host page for you 的本地化字符串。
+        ///   查找类似 There is an update available. Do you want to update upstream host? If No it will only open the upstream host web page for you 的本地化字符串。
         /// </summary>
         public static string _OverrideUpstreamHostPrompt {
             get {
@@ -232,7 +232,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Upstream host has been updated to the latest 的本地化字符串。
+        ///   查找类似 Upstream host is already up to date 的本地化字符串。
         /// </summary>
         public static string _UpstreamHostUtdMsg {
             get {
@@ -250,7 +250,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Click to open an about window 的本地化字符串。
+        ///   查找类似 Click to open the about window 的本地化字符串。
         /// </summary>
         public static string AboutButtonToolTip {
             get {
@@ -376,7 +376,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Stop Global Purging 的本地化字符串。
+        ///   查找类似 Stop GLB. Purging 的本地化字符串。
         /// </summary>
         public static string MihomoButtonIsRunningContent {
             get {
@@ -394,7 +394,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Start Global Purging 的本地化字符串。
+        ///   查找类似 Start GLB. Purging 的本地化字符串。
         /// </summary>
         public static string MihomoButtonIsStoppedContent {
             get {
@@ -466,7 +466,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Click the button now 的本地化字符串。
+        ///   查找类似 Click this button now 的本地化字符串。
         /// </summary>
         public static string NoClickButtonIsFlashingToolTip {
             get {
@@ -484,7 +484,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Do not click the button 的本地化字符串。
+        ///   查找类似 Do not click this button 的本地化字符串。
         /// </summary>
         public static string NoClickButtonIsStoppedToolTip {
             get {
@@ -529,7 +529,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Click to open an settings window 的本地化字符串。
+        ///   查找类似 Click to open the settings window 的本地化字符串。
         /// </summary>
         public static string SettingsButtonToolTip {
             get {
@@ -592,7 +592,7 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Click to launch an injected browser 的本地化字符串。
+        ///   查找类似 Click to launch the injected browser 的本地化字符串。
         /// </summary>
         public static string StartButtonToolTip {
             get {

@@ -121,7 +121,7 @@
     <value>About Me</value>
   </data>
   <data name="AboutButtonToolTip" xml:space="preserve">
-    <value>Click to open an about window</value>
+    <value>Click to open the about window</value>
   </data>
   <data name="BrowserPathSettingsModeName" xml:space="preserve">
     <value>Browser Path</value>
@@ -193,13 +193,13 @@
     <value>Click Now</value>
   </data>
   <data name="NoClickButtonIsFlashingToolTip" xml:space="preserve">
-    <value>Click the button now</value>
+    <value>Click this button now</value>
   </data>
   <data name="NoClickButtonIsStoppedContent" xml:space="preserve">
     <value>No Clicking</value>
   </data>
   <data name="NoClickButtonIsStoppedToolTip" xml:space="preserve">
-    <value>Do not click the button</value>
+    <value>Do not click this button</value>
   </data>
   <data name="SettingsBoxBrowserPathToolTip" xml:space="preserve">
     <value>Fill in a Chromium-based browser path</value>
@@ -214,7 +214,7 @@
     <value>Appearance Settings</value>
   </data>
   <data name="SettingsButtonToolTip" xml:space="preserve">
-    <value>Click to open an settings window</value>
+    <value>Click to open the settings window</value>
   </data>
   <data name="SettingsFunctionButtonBrowserPathContent" xml:space="preserve">
     <value>Browse Path</value>
@@ -235,7 +235,7 @@
     <value>Start Cealing</value>
   </data>
   <data name="StartButtonToolTip" xml:space="preserve">
-    <value>Click to launch an injected browser</value>
+    <value>Click to launch the injected browser</value>
   </data>
   <data name="UpdateUpstreamHostButtonContent" xml:space="preserve">
     <value>Update Upstream Host</value>
@@ -253,37 +253,37 @@
     <value>Some cealing hosts contain syntax errors and cannot be recognized. Do you want to continue anyway?</value>
   </data>
   <data name="_GameClickOnceMsg" xml:space="preserve">
-    <value>I know you would do it, but nothing will actually happen. Whee</value>
+    <value>I know you would click me, but nothing will actually happen. Whee~</value>
   </data>
   <data name="_GameClickThreeMsg" xml:space="preserve">
     <value>Ugh, what are you doing. Please stop, I don't want to hurt anyone. Stop please, this is your last chance. Ugh, I can't control it anymore</value>
   </data>
   <data name="_GameClickTwiceMsg" xml:space="preserve">
-    <value>No no no, don't click me. Sorry, I shouldn't have lied to you, I am a cursed button, and continuing to click me will bring disaster to the entire Sheas Cealer. Please believe me, this is not a game, and there are no new features here. Listen to me and use the normal functions, okay?</value>
+    <value>No no no, don't click me. Sorry, I shouldn't have lied to you, I am a cursed button, and continuing to click me will bring disaster to the entire Sheas Cealer. Please believe me. This is not a game, and there are no new features here. Listen to me and use the normal functions. Please</value>
   </data>
   <data name="_GameEndingMsg" xml:space="preserve">
-    <value>You defeated the evil button and saved Sheas Cealer, you are hero</value>
+    <value>You defeated the evil button and saved Sheas Cealer. You are the HERO!</value>
   </data>
   <data name="_GameGradeMsg" xml:space="preserve">
     <value>Button Remaining HP.</value>
   </data>
   <data name="_GameReviewEndingMsg" xml:space="preserve">
-    <value>It's dead, and you're the hero of Sheas Cealer</value>
+    <value>It's dead. You're the HERO of Sheas Cealer</value>
   </data>
   <data name="_GameStartMsg" xml:space="preserve">
-    <value>No, please kill me, I...can't control myself...</value>
+    <value>No, please kill me. I... can't control it...</value>
   </data>
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>All processes of the selected browser will be closed before launching. Do you want to continue?</value>
   </data>
   <data name="_LaunchMihomoErrorMsg" xml:space="preserve">
-    <value>Mihomo failed to start</value>
+    <value>Mihomo failed to launch</value>
   </data>
   <data name="_LaunchNginxErrorPrompt" xml:space="preserve">
-    <value>Nginx failed to start, do you want to open the error log</value>
+    <value>Nginx failed to launch. Do you want to open the error log?</value>
   </data>
   <data name="_LaunchNginxFlashingPrompt" xml:space="preserve">
-    <value>Warning: The proxy core is under attack and cannot ceal SNI. The SNI removal mode has been turned on urgently. Do you want to continue?</value>
+    <value>Warning: The proxy core is under attack and failes to conceal SNI. The SNI removal mode has been turned on urgently. Do you want to continue?</value>
   </data>
   <data name="_LaunchProxyPrompt" xml:space="preserve">
     <value>Please remember to come back and stop the proxy manually after use. Do you want to continue?</value>
@@ -292,18 +292,18 @@
     <value>The mihomo conf contains syntax errors and cannot be recognized</value>
   </data>
   <data name="_NginxHttpPortOccupiedPrompt" xml:space="preserve">
-    <value>The local port 80 is occupied, which may cause the http connection to fail to automatically jump to https. Do you want to continue?</value>
+    <value>The local port 80 is occupied. Do you want to use port {0} to continue? This may cause the http connection to fail to automatically jump to https</value>
   </data>
   <data name="_NginxHttpsPortOccupiedPrompt" xml:space="preserve">
-    <value>The local port 443 is occupied, which may cause the global cealing to not work properly. Do you want to continue?</value>
+    <value>The local port 443 is occupied. Do you want to use port {0} to continue? This may cause the global cealing to not work properly</value>
   </data>
   <data name="_OverrideUpstreamHostPrompt" xml:space="preserve">
-    <value>There is an update available. Do you want to update upstream host? If No it will only open the upstream host page for you</value>
+    <value>There is an update available. Do you want to update upstream host? If No it will only open the upstream host web page for you</value>
   </data>
   <data name="_UpdateUpstreamHostSuccessMsg" xml:space="preserve">
     <value>Update successfully</value>
   </data>
   <data name="_UpstreamHostUtdMsg" xml:space="preserve">
-    <value>Upstream host has been updated to the latest</value>
+    <value>Upstream host is already up to date</value>
   </data>
 </root>
