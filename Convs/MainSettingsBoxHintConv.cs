@@ -14,9 +14,9 @@ internal class MainSettingsBoxHintConv : IValueConverter
 
         return settingsMode switch
         {
-            MainConst.SettingsMode.BrowserPathMode => MainConst.BrowserPathSettingsModeName,
-            MainConst.SettingsMode.UpstreamUrlMode => MainConst.UpstreamUrlSettingsModeName,
-            MainConst.SettingsMode.ExtraArgsMode => MainConst.ExtraArgsSettingsModeName,
+            MainConst.SettingsMode.BrowserPathMode => MainConst.SettingsModeButtonBrowserPathContent,
+            MainConst.SettingsMode.UpstreamUrlMode => MainConst.SettingsModeButtonUpstreamUrlContent,
+            MainConst.SettingsMode.ExtraArgsMode => MainConst.SettingsModeButtonExtraArgsContent,
             _ => throw new UnreachableException()
         };
     }

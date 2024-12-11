@@ -259,15 +259,6 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
-        ///   查找类似 Browser Path 的本地化字符串。
-        /// </summary>
-        public static string BrowserPathSettingsModeName {
-            get {
-                return ResourceManager.GetString("BrowserPathSettingsModeName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Edit Hosts Conf 的本地化字符串。
         /// </summary>
         public static string EditHostsConfButtonContent {
@@ -354,15 +345,6 @@ namespace Sheas_Cealer.Consts {
         public static string EditUpstreamHostButtonToolTip {
             get {
                 return ResourceManager.GetString("EditUpstreamHostButtonToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Extra Args 的本地化字符串。
-        /// </summary>
-        public static string ExtraArgsSettingsModeName {
-            get {
-                return ResourceManager.GetString("ExtraArgsSettingsModeName", resourceCulture);
             }
         }
         
@@ -574,11 +556,38 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Browser Path 的本地化字符串。
+        /// </summary>
+        public static string SettingsModeButtonBrowserPathContent {
+            get {
+                return ResourceManager.GetString("SettingsModeButtonBrowserPathContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Extra Args 的本地化字符串。
+        /// </summary>
+        public static string SettingsModeButtonExtraArgsContent {
+            get {
+                return ResourceManager.GetString("SettingsModeButtonExtraArgsContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Click to switch settings 的本地化字符串。
         /// </summary>
         public static string SettingsModeButtonToolTip {
             get {
                 return ResourceManager.GetString("SettingsModeButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Upstream URL 的本地化字符串。
+        /// </summary>
+        public static string SettingsModeButtonUpstreamUrlContent {
+            get {
+                return ResourceManager.GetString("SettingsModeButtonUpstreamUrlContent", resourceCulture);
             }
         }
         
@@ -615,15 +624,6 @@ namespace Sheas_Cealer.Consts {
         public static string UpdateUpstreamHostButtonToolTip {
             get {
                 return ResourceManager.GetString("UpdateUpstreamHostButtonToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Upstream URL 的本地化字符串。
-        /// </summary>
-        public static string UpstreamUrlSettingsModeName {
-            get {
-                return ResourceManager.GetString("UpstreamUrlSettingsModeName", resourceCulture);
             }
         }
     }
