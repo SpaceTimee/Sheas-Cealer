@@ -23,7 +23,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-	<WindowsSdkPackageVersion>10.0.26100.41</WindowsSdkPackageVersion>
+    <WindowsSdkPackageVersion>10.0.26100.41</WindowsSdkPackageVersion>
     <RootNamespace>Sheas_Cealer</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
@@ -61,18 +61,6 @@
     <None Remove="README.md" />
     <None Remove="README_EN.md" />
     <None Remove="Sheas-Cealer-Logo.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <COMReference Include="IWshRuntimeLibrary">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>0</VersionMinor>
-      <VersionMajor>1</VersionMajor>
-      <Guid>f935dc20-1cf0-11d0-adb9-00c04fd58a0b</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
 
   <ItemGroup>

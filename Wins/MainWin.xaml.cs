@@ -81,6 +81,9 @@ public partial class MainWin : Window
                 CealHostWatcher_Changed(null!, new(new(), Path.GetDirectoryName(cealHostPath)!, Path.GetFileName(cealHostPath)));
 
             MihomoConfWatcher_Changed(null!, null!);
+
+            if (!MainPres.IsNginxRunning)
+                NginxStoppedCleaner.Clean();
         });
     }
     private void MainWin_Closing(object sender, CancelEventArgs e) => Application.Current.Shutdown();
