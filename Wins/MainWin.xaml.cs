@@ -410,41 +410,45 @@ public partial class MainWin : Window
     }
     private async void UpdateUpstreamHostButton_Click(object sender, RoutedEventArgs e)
     {
-        if (!File.Exists(MainConst.UpstreamHostPath))
-            File.Create(MainConst.UpstreamHostPath).Dispose();
+        try
+        {
+            if (!File.Exists(MainConst.UpstreamHostPath))
+                File.Create(MainConst.UpstreamHostPath).Dispose();
 
-        string upstreamUpstreamHostUrl = (MainPres.UpstreamUrl.StartsWith("http://") || MainPres.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres.UpstreamUrl;
-        string upstreamUpstreamHostString = await Http.GetAsync<string>(upstreamUpstreamHostUrl, MainClient);
-        string localUpstreamHostString = File.ReadAllText(MainConst.UpstreamHostPath);
+            string upstreamUpstreamHostUrl = (MainPres.UpstreamUrl.StartsWith("http://") || MainPres.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres.UpstreamUrl;
+            string upstreamUpstreamHostString = await Http.GetAsync<string>(upstreamUpstreamHostUrl, MainClient);
+            string localUpstreamHostString = File.ReadAllText(MainConst.UpstreamHostPath);
 
-        try { upstreamUpstreamHostString = Encoding.UTF8.GetString(Convert.FromBase64String(upstreamUpstreamHostString)); }
-        catch { }
+            try { upstreamUpstreamHostString = Encoding.UTF8.GetString(Convert.FromBase64String(upstreamUpstreamHostString)); }
+            catch { }
 
-        if (sender == null && (localUpstreamHostString != upstreamUpstreamHostString && localUpstreamHostString.ReplaceLineEndings() != upstreamUpstreamHostString.ReplaceLineEndings()))
-            MainPres.IsUpstreamHostUtd = false;
-        else if (sender != null)
-            if (localUpstreamHostString == upstreamUpstreamHostString || localUpstreamHostString.ReplaceLineEndings() == upstreamUpstreamHostString.ReplaceLineEndings())
-            {
-                MainPres.IsUpstreamHostUtd = true;
-
-                MessageBox.Show(MainConst._UpstreamHostUtdMsg);
-            }
-            else
-            {
-                MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideUpstreamHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
-
-                if (overrideOptionResult == MessageBoxResult.Yes)
+            if (sender == null && (localUpstreamHostString != upstreamUpstreamHostString && localUpstreamHostString.ReplaceLineEndings() != upstreamUpstreamHostString.ReplaceLineEndings()))
+                MainPres.IsUpstreamHostUtd = false;
+            else if (sender != null)
+                if (localUpstreamHostString == upstreamUpstreamHostString || localUpstreamHostString.ReplaceLineEndings() == upstreamUpstreamHostString.ReplaceLineEndings())
                 {
-                    File.WriteAllText(MainConst.UpstreamHostPath, upstreamUpstreamHostString);
-
                     MainPres.IsUpstreamHostUtd = true;
 
-                    MessageBox.Show(MainConst._UpdateUpstreamHostSuccessMsg);
+                    MessageBox.Show(MainConst._UpstreamHostUtdMsg);
                 }
-                else if (overrideOptionResult == MessageBoxResult.No)
-                    try { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true }); }
-                    catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true, Verb = "RunAs" }); }
-            }
+                else
+                {
+                    MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideUpstreamHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
+
+                    if (overrideOptionResult == MessageBoxResult.Yes)
+                    {
+                        File.WriteAllText(MainConst.UpstreamHostPath, upstreamUpstreamHostString);
+
+                        MainPres.IsUpstreamHostUtd = true;
+
+                        MessageBox.Show(MainConst._UpdateUpstreamHostSuccessMsg);
+                    }
+                    else if (overrideOptionResult == MessageBoxResult.No)
+                        try { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true }); }
+                        catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true, Verb = "RunAs" }); }
+                }
+        }
+        catch { if (sender != null) throw; }
     }
 
     private void SettingsButton_Click(object sender, RoutedEventArgs e) => new SettingsWin().ShowDialog();
