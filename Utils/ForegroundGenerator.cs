@@ -17,7 +17,7 @@ internal static class ForegroundGenerator
         double blueContrast = Math.Min(Math.Abs(hue - 206.57), 360 - Math.Abs(hue - 206.57));
         double redContrast = Math.Min(Math.Abs(hue - 4.11), 360 - Math.Abs(hue - 4.11));
 
-        return (blackContrast >= 4 && whiteContrast >= 3 ? null :
+        return (blackContrast >= 5.5 && whiteContrast >= 2.5 ? null :
             blackContrast >= whiteContrast ? Colors.Black : Colors.White,
             (Color)ColorConverter.ConvertFromString(blueContrast >= redContrast ? "#2196f3" : "#f44336"));
     }
