@@ -420,26 +420,31 @@ public partial class MainWin : Window
         try { upstreamUpstreamHostString = Encoding.UTF8.GetString(Convert.FromBase64String(upstreamUpstreamHostString)); }
         catch { }
 
-        if (localUpstreamHostString == upstreamUpstreamHostString || localUpstreamHostString.ReplaceLineEndings() == upstreamUpstreamHostString.ReplaceLineEndings())
-            if (sender == null)
-                MainPres.IsUpstreamHostUtd = true;
-            else
-                MessageBox.Show(MainConst._UpstreamHostUtdMsg);
-        else if (sender == null)
+        if (sender == null && (localUpstreamHostString != upstreamUpstreamHostString && localUpstreamHostString.ReplaceLineEndings() != upstreamUpstreamHostString.ReplaceLineEndings()))
             MainPres.IsUpstreamHostUtd = false;
-        else
-        {
-            MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideUpstreamHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
-
-            if (overrideOptionResult == MessageBoxResult.Yes)
+        else if (sender != null)
+            if (localUpstreamHostString == upstreamUpstreamHostString || localUpstreamHostString.ReplaceLineEndings() == upstreamUpstreamHostString.ReplaceLineEndings())
             {
-                File.WriteAllText(MainConst.UpstreamHostPath, upstreamUpstreamHostString);
-                MessageBox.Show(MainConst._UpdateUpstreamHostSuccessMsg);
+                MainPres.IsUpstreamHostUtd = true;
+
+                MessageBox.Show(MainConst._UpstreamHostUtdMsg);
             }
-            else if (overrideOptionResult == MessageBoxResult.No)
-                try { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true }); }
-                catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true, Verb = "RunAs" }); }
-        }
+            else
+            {
+                MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideUpstreamHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
+
+                if (overrideOptionResult == MessageBoxResult.Yes)
+                {
+                    File.WriteAllText(MainConst.UpstreamHostPath, upstreamUpstreamHostString);
+
+                    MainPres.IsUpstreamHostUtd = true;
+
+                    MessageBox.Show(MainConst._UpdateUpstreamHostSuccessMsg);
+                }
+                else if (overrideOptionResult == MessageBoxResult.No)
+                    try { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true }); }
+                    catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true, Verb = "RunAs" }); }
+            }
     }
 
     private void SettingsButton_Click(object sender, RoutedEventArgs e) => new SettingsWin().ShowDialog();

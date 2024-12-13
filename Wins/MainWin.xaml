@@ -283,7 +283,7 @@
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:MainConst.UpdateUpstreamHostButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.UpdateUpstreamHostButtonToolTip}}"
+            <Button Grid.Column="0" Margin="5" d:Content="# # # # # #" ToolTip="{Binding Source={x:Static consts:MainConst.UpdateUpstreamHostButtonToolTip}}"
                     Click="UpdateUpstreamHostButton_Click">
                 <Button.IsEnabled>
                     <Binding Path="UpstreamUrl">
@@ -292,6 +292,13 @@
                         </Binding.Converter>
                     </Binding>
                 </Button.IsEnabled>
+                <Button.Content>
+                    <Binding Path="IsUpstreamHostUtd">
+                        <Binding.Converter>
+                            <convs:MainUpdateHostButtonContentConv />
+                        </Binding.Converter>
+                    </Binding>
+                </Button.Content>
             </Button>
             <Button x:Name="EditHostsConfButton"
                     Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditHostsConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditHostsConfButtonToolTip}}"
