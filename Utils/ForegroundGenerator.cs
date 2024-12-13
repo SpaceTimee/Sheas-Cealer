@@ -15,17 +15,17 @@ internal static class ForegroundGenerator
         double hue = GetHue(red / 255.0, green / 255.0, blue / 255.0);
 
         double blueContrast = Math.Min(Math.Abs(hue - 206.57), 360 - Math.Abs(hue - 206.57));
-        double redContrast = Math.Min(Math.Abs(hue), 360 - Math.Abs(hue));
+        double redContrast = Math.Min(Math.Abs(hue - 4.11), 360 - Math.Abs(hue - 4.11));
 
         return (blackContrast >= 4 && whiteContrast >= 3 ? null :
-            blackContrast >= whiteContrast ? Color.FromRgb(0, 0, 0) : Color.FromRgb(255, 255, 255),
-            blueContrast >= redContrast ? (Color)ColorConverter.ConvertFromString("#2196f3") : Color.FromRgb(255, 0, 0));
+            blackContrast >= whiteContrast ? Colors.Black : Colors.White,
+            (Color)ColorConverter.ConvertFromString(blueContrast >= redContrast ? "#2196f3" : "#f44336"));
     }
 
     private static double GammaCorrect(double component) => component <= 0.03928 ? component / 12.92 : Math.Pow((component + 0.055) / 1.055, 2.4);
 
     private static double GetHue(double redComponent, double greenComponent, double blueComponent) =>
-        redComponent > greenComponent && redComponent > blueComponent ? 60 * ((greenComponent - blueComponent) / redComponent - Math.Min(greenComponent, blueComponent) + (greenComponent < blueComponent ? 6 : 0)) :
-        greenComponent > blueComponent && greenComponent > redComponent ? 60 * ((blueComponent - redComponent) / greenComponent - Math.Min(blueComponent, redComponent) + 2) :
-        blueComponent > redComponent && blueComponent > greenComponent ? 60 * ((redComponent - greenComponent) / blueComponent - Math.Min(redComponent, greenComponent) + 4) : 0;
+        redComponent > greenComponent && redComponent > blueComponent ? 60 * ((greenComponent - blueComponent) / (redComponent - Math.Min(greenComponent, blueComponent)) + (greenComponent < blueComponent ? 6 : 0)) :
+        greenComponent > blueComponent && greenComponent > redComponent ? 60 * ((blueComponent - redComponent) / (greenComponent - Math.Min(blueComponent, redComponent)) + 2) :
+        blueComponent > redComponent && blueComponent > greenComponent ? 60 * ((redComponent - greenComponent) / (blueComponent - Math.Min(redComponent, greenComponent)) + 4) : 0;
 }

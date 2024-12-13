@@ -18,7 +18,7 @@
       <Value Profile="(Default)">-1</Value>
     </Setting>
     <Setting Name="PrimaryColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Red</Value>
+      <Value Profile="(Default)">244, 67, 54</Value>
     </Setting>
     <Setting Name="IsLightWeight" Type="System.SByte" Scope="User">
       <Value Profile="(Default)">-1</Value>

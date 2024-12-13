@@ -72,6 +72,9 @@ internal partial class MainPres : GlobalPres
     }
 
     [ObservableProperty]
+    private bool isUpstreamHostUtd = true;
+
+    [ObservableProperty]
     private bool isNginxExist = File.Exists(MainConst.NginxPath);
 
     [ObservableProperty]

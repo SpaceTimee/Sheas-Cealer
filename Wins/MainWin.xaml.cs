@@ -84,6 +84,9 @@ public partial class MainWin : Window
 
             if (!MainPres.IsNginxRunning)
                 NginxStoppedCleaner.Clean();
+
+            try { UpdateUpstreamHostButton_Click(null!, null!); }
+            catch { }
         });
     }
     private void MainWin_Closing(object sender, CancelEventArgs e) => Application.Current.Shutdown();
@@ -418,7 +421,12 @@ public partial class MainWin : Window
         catch { }
 
         if (localUpstreamHostString == upstreamUpstreamHostString || localUpstreamHostString.ReplaceLineEndings() == upstreamUpstreamHostString.ReplaceLineEndings())
-            MessageBox.Show(MainConst._UpstreamHostUtdMsg);
+            if (sender == null)
+                MainPres.IsUpstreamHostUtd = true;
+            else
+                MessageBox.Show(MainConst._UpstreamHostUtdMsg);
+        else if (sender == null)
+            MainPres.IsUpstreamHostUtd = false;
         else
         {
             MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideUpstreamHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
@@ -473,9 +481,12 @@ public partial class MainWin : Window
                 PaletteHelper paletteHelper = new();
                 Theme newTheme = paletteHelper.GetTheme();
                 Color newPrimaryColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+                Color newSecondaryColor = random.Next(3) == 0 ? newPrimaryColor with { R = (byte)((newPrimaryColor.R + 109) % 256) } :
+                    random.Next(2) == 0 ? newPrimaryColor with { G = (byte)((newPrimaryColor.G + 109) % 256) } : newPrimaryColor with { B = (byte)((newPrimaryColor.B + 109) % 256) };
                 bool isLightTheme = random.Next(2) == 0;
 
                 newTheme.SetPrimaryColor(newPrimaryColor);
+                newTheme.SetSecondaryColor(newSecondaryColor);
                 newTheme.SetBaseTheme(isLightTheme ? BaseTheme.Light : BaseTheme.Dark);
                 paletteHelper.SetTheme(newTheme);
 
