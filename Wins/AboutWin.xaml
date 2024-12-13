@@ -16,7 +16,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.1*" />
+            <ColumnDefinition Width="1.16*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -33,7 +33,7 @@
             </Button.Foreground>
         </Button>
         <Button x:Name="VersionButton"
-                Grid.Row="1" Grid.Column="0" Margin="5" d:Foreground="#2196F3" ToolTip="{Binding Source={x:Static consts:AboutConst.VersionButtonUrl}, Mode=OneTime}"
+                Grid.Row="1" Grid.Column="0" Margin="5" d:Foreground="#2196F3" d:Content="# # #: #.#.#" ToolTip="{Binding Source={x:Static consts:AboutConst.VersionButtonUrl}, Mode=OneTime}"
                 Click="AboutButton_Click">
             <Button.Foreground>
                 <Binding Path="AccentForegroundColor">
@@ -43,13 +43,14 @@
                 </Binding>
             </Button.Foreground>
             <Button.Content>
-                <MultiBinding Mode="OneTime">
+                <MultiBinding>
                     <MultiBinding.Converter>
                         <convs:AboutVersionButtonContentConv />
                     </MultiBinding.Converter>
 
-                    <Binding Source="{x:Static consts:AboutConst.VersionButtonLabelContent}" />
-                    <Binding Source="{x:Static consts:AboutConst.VersionButtonVersionContent}" />
+                    <Binding Source="{x:Static consts:AboutConst.VersionButtonLabelContent}" Mode="OneTime" />
+                    <Binding Source="{x:Static consts:AboutConst.VersionButtonVersionContent}" Mode="OneTime" />
+                    <Binding Path="IsSheasCealerUtd" />
                 </MultiBinding>
             </Button.Content>
         </Button>

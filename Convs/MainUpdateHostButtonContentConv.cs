@@ -11,7 +11,7 @@ internal class MainUpdateHostButtonContentConv : IValueConverter
     {
         bool isUpstreamHostUtd = (bool)value;
 
-        return isUpstreamHostUtd ? MainConst.UpdateUpstreamHostButtonContent : $"{MainConst.UpdateUpstreamHostButtonContent} *";
+        return MainConst.UpdateUpstreamHostButtonContent + (isUpstreamHostUtd ? string.Empty : " *");
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();

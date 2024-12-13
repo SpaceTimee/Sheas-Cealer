@@ -1,3 +1,9 @@
-﻿namespace Sheas_Cealer.Preses;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-internal partial class AboutPres : GlobalPres;
+namespace Sheas_Cealer.Preses;
+
+internal partial class AboutPres : GlobalPres
+{
+    [ObservableProperty]
+    private bool isSheasCealerUtd = true;
+}
