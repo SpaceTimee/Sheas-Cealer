@@ -85,8 +85,7 @@ public partial class MainWin : Window
             if (!MainPres.IsNginxRunning)
                 NginxStoppedCleaner.Clean();
 
-            try { UpdateUpstreamHostButton_Click(null!, null!); }
-            catch { }
+            UpdateUpstreamHostButton_Click(null!, null!);
         });
     }
     private void MainWin_Closing(object sender, CancelEventArgs e) => Application.Current.Shutdown();
@@ -448,7 +447,7 @@ public partial class MainWin : Window
                         catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true, Verb = "RunAs" }); }
                 }
         }
-        catch { if (sender != null) throw; }
+        catch when (sender == null) { }
     }
 
     private void SettingsButton_Click(object sender, RoutedEventArgs e) => new SettingsWin().ShowDialog();
