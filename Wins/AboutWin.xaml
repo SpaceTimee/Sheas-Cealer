@@ -9,14 +9,14 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance preses:AboutPres}"
         Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="500"
-        KeyDown="AboutWin_KeyDown">
+        Loaded="AboutWin_Loaded"  KeyDown="AboutWin_KeyDown">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.16*" />
+            <ColumnDefinition Width="1.2*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
