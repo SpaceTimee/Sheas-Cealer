@@ -35,7 +35,7 @@ public partial class AboutWin : Window
         {
             try
             {
-                AboutClient.DefaultRequestHeaders.Add("User-Agent", "Sheas-Cealer");
+                AboutClient.DefaultRequestHeaders.Add("User-Agent", AboutConst.ReleaseApiUserAgent);
 
                 JsonElement releaseInfoObject = JsonDocument.Parse(await Http.GetAsync<string>(AboutConst.ReleaseApiUrl, AboutClient)).RootElement;
 

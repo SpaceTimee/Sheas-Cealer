@@ -489,12 +489,9 @@ public partial class MainWin : Window
                 PaletteHelper paletteHelper = new();
                 Theme newTheme = paletteHelper.GetTheme();
                 Color newPrimaryColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
-                Color newSecondaryColor = random.Next(3) == 0 ? newPrimaryColor with { R = (byte)((newPrimaryColor.R + 109) % 256) } :
-                    random.Next(2) == 0 ? newPrimaryColor with { G = (byte)((newPrimaryColor.G + 109) % 256) } : newPrimaryColor with { B = (byte)((newPrimaryColor.B + 109) % 256) };
                 bool isLightTheme = random.Next(2) == 0;
 
                 newTheme.SetPrimaryColor(newPrimaryColor);
-                newTheme.SetSecondaryColor(newSecondaryColor);
                 newTheme.SetBaseTheme(isLightTheme ? BaseTheme.Light : BaseTheme.Dark);
                 paletteHelper.SetTheme(newTheme);
 

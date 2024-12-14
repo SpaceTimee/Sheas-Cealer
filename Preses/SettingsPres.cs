@@ -49,8 +49,8 @@ internal partial class SettingsPres : GlobalPres
     private static bool? isLightWeight = null;
     partial void OnIsLightWeightChanged(bool? value)
     {
-        Style newWindowStyle = new(typeof(Window), Application.Current.Resources["CommonWindow"] as Style);
         FontWeight newWeight = value.HasValue ? value.Value ? FontWeights.Light : FontWeights.Bold : FontWeights.Regular;
+        Style newWindowStyle = new(typeof(Window), Application.Current.Resources["CommonWindow"] as Style);
 
         newWindowStyle.Setters.Add(new Setter(Window.FontWeightProperty, newWeight));
         Application.Current.Resources["CommonWindow"] = newWindowStyle;

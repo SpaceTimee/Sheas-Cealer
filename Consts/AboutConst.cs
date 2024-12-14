@@ -16,4 +16,5 @@ internal class AboutConst : AboutMultilangConst
     public static string AgreementButtonUrl => "https://thoughts.teambition.com/share/6264edd78adeb10041b92fdb#title=Sheas_Cealer_使用协议";
 
     internal static string ReleaseApiUrl => "https://api.github.com/repos/SpaceTimee/Sheas-Cealer/releases/latest";
+    internal static string ReleaseApiUserAgent => "Sheas-Cealer";
 }

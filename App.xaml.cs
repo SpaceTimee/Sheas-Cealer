@@ -18,9 +18,9 @@ public partial class App : Application
         #region Primary Color
         PaletteHelper paletteHelper = new();
         Theme newTheme = paletteHelper.GetTheme();
-        System.Drawing.Color newPrimaryColor = Settings.Default.PrimaryColor;
+        Color newPrimaryColor = Color.FromRgb(Settings.Default.PrimaryColor.R, Settings.Default.PrimaryColor.G, Settings.Default.PrimaryColor.B);
 
-        newTheme.SetPrimaryColor(Color.FromRgb(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B));
+        newTheme.SetPrimaryColor(newPrimaryColor);
         paletteHelper.SetTheme(newTheme);
         #endregion Primary Color
 
