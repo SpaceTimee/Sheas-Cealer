@@ -12,7 +12,7 @@
         Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" SizeToContent="Height"
         Loaded="MainWin_Loaded" Closing="MainWin_Closing" DragEnter="MainWin_DragEnter" Drop="MainWin_Drop" KeyDown="MainWin_KeyDown">
     <Window.Width>
-        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+        <Binding Source="{x:Static consts:MainConst.IsAdmin}">
             <Binding.Converter>
                 <convs:MainWinWidthConv />
             </Binding.Converter>
@@ -91,7 +91,7 @@
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition>
                     <ColumnDefinition.Width>
-                        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                        <Binding Source="{x:Static consts:MainConst.IsAdmin}">
                             <Binding.Converter>
                                 <convs:MainProxyColumnWidthConv />
                             </Binding.Converter>
@@ -100,7 +100,7 @@
                 </ColumnDefinition>
                 <ColumnDefinition>
                     <ColumnDefinition.Width>
-                        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                        <Binding Source="{x:Static consts:MainConst.IsAdmin}">
                             <Binding.Converter>
                                 <convs:MainProxyColumnWidthConv />
                             </Binding.Converter>
@@ -126,7 +126,7 @@
             <Button Grid.Column="1" Margin="5" d:Content="# # # #"
                 Click="NginxButton_Click" PreviewMouseDown="NginxButton_PreviewMouseDown">
                 <Button.Visibility>
-                    <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                    <Binding Source="{x:Static consts:MainConst.IsAdmin}">
                         <Binding.Converter>
                             <convs:MainAdminControlVisibilityConv />
                         </Binding.Converter>
@@ -163,7 +163,7 @@
             <Button Grid.Column="2" Margin="5" d:Content="# # # #"
                 Click="MihomoButton_Click" PreviewMouseDown="MihomoButton_PreviewMouseDown">
                 <Button.Visibility>
-                    <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                    <Binding Source="{x:Static consts:MainConst.IsAdmin}">
                         <Binding.Converter>
                             <convs:MainAdminControlVisibilityConv />
                         </Binding.Converter>
@@ -204,7 +204,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition>
                     <ColumnDefinition.Width>
-                        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                        <Binding Source="{x:Static consts:MainConst.IsAdmin}">
                             <Binding.Converter>
                                 <convs:MainProxyColumnWidthConv />
                             </Binding.Converter>
@@ -213,7 +213,7 @@
                 </ColumnDefinition>
                 <ColumnDefinition>
                     <ColumnDefinition.Width>
-                        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                        <Binding Source="{x:Static consts:MainConst.IsAdmin}">
                             <Binding.Converter>
                                 <convs:MainProxyColumnWidthConv />
                             </Binding.Converter>
@@ -241,7 +241,7 @@
                     </MultiBinding>
                 </Button.IsEnabled>
                 <Button.Visibility>
-                    <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                    <Binding Source="{x:Static consts:MainConst.IsAdmin}">
                         <Binding.Converter>
                             <convs:MainAdminControlVisibilityConv />
                         </Binding.Converter>
@@ -261,7 +261,7 @@
                     </MultiBinding>
                 </Button.IsEnabled>
                 <Button.Visibility>
-                    <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                    <Binding Source="{x:Static consts:MainConst.IsAdmin}">
                         <Binding.Converter>
                             <convs:MainAdminControlVisibilityConv />
                         </Binding.Converter>
@@ -274,7 +274,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition>
                     <ColumnDefinition.Width>
-                        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                        <Binding Source="{x:Static consts:MainConst.IsAdmin}">
                             <Binding.Converter>
                                 <convs:MainProxyColumnWidthConv />
                             </Binding.Converter>
@@ -304,7 +304,7 @@
                     Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:MainConst.EditHostsConfButtonContent}}" ToolTip="{Binding Source={x:Static consts:MainConst.EditHostsConfButtonToolTip}}"
                     Click="EditConfButton_Click">
                 <Button.Visibility>
-                    <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                    <Binding Source="{x:Static consts:MainConst.IsAdmin}">
                         <Binding.Converter>
                             <convs:MainAdminControlVisibilityConv />
                         </Binding.Converter>
@@ -317,7 +317,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition>
                     <ColumnDefinition.Width>
-                        <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                        <Binding Source="{x:Static consts:MainConst.IsAdmin}">
                             <Binding.Converter>
                                 <convs:MainProxyColumnWidthConv />
                             </Binding.Converter>
@@ -333,7 +333,7 @@
                     Grid.Column="1" Margin="5" d:Content="# # # #"
                     Click="NoClickButton_Click">
                 <Button.Visibility>
-                    <Binding Source="{x:Static consts:MainConst.IsAdmin}" Mode="OneTime">
+                    <Binding Source="{x:Static consts:MainConst.IsAdmin}">
                         <Binding.Converter>
                             <convs:MainAdminControlVisibilityConv />
                         </Binding.Converter>
