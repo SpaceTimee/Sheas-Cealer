@@ -1,5 +1,5 @@
 ﻿using Sheas_Cealer.Consts;
-using SheasCore;
+using Sheas_Core;
 
 namespace Sheas_Cealer.Proces;
 

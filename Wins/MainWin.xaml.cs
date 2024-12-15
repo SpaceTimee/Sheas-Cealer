@@ -20,7 +20,7 @@ using System.Windows.Threading;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using NginxConfigParser;
-using OnaCore;
+using Ona_Core;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Preses;
 using Sheas_Cealer.Proces;
@@ -83,7 +83,7 @@ public partial class MainWin : Window
             MihomoConfWatcher_Changed(null!, null!);
 
             if (!MainPres.IsNginxRunning)
-                NginxStoppedCleaner.Clean();
+                NginxCleaner.Clean();
 
             UpdateUpstreamHostButton_Click(null!, null!);
         });
@@ -172,7 +172,7 @@ public partial class MainWin : Window
 
         await Task.Run(() =>
         {
-            new BrowserProc(MainPres.BrowserPath, sender == null).ShellRun(Path.GetDirectoryName(MainPres.BrowserPath), ($"{CealArgs} {MainPres.ExtraArgs.Trim()}"));
+            new BrowserProc(MainPres.BrowserPath, sender == null).Run(Path.GetDirectoryName(MainPres.BrowserPath), ($"{CealArgs} {MainPres.ExtraArgs.Trim()}"));
         });
     }
     private void NginxButton_Click(object sender, RoutedEventArgs e)
@@ -266,7 +266,7 @@ public partial class MainWin : Window
 
             await Task.Run(() =>
             {
-                new NginxProc().ShellRun(Path.GetDirectoryName(MainConst.NginxPath), @$"-c ""{Path.GetRelativePath(Path.GetDirectoryName(MainConst.NginxPath)!, MainConst.NginxConfPath)}""");
+                new NginxProc().Run(Path.GetDirectoryName(MainConst.NginxPath), @$"-c ""{Path.GetRelativePath(Path.GetDirectoryName(MainConst.NginxPath)!, MainConst.NginxConfPath)}""");
             });
 
             while (true)
@@ -304,7 +304,7 @@ public partial class MainWin : Window
                 await nginxProcess.WaitForExitAsync();
             }
 
-            NginxStoppedCleaner.Clean();
+            NginxCleaner.Clean();
         }
     }
     private void MihomoButton_Click(object sender, RoutedEventArgs e)
@@ -338,7 +338,7 @@ public partial class MainWin : Window
 
             await Task.Run(() =>
             {
-                new MihomoProc().ShellRun(Path.GetDirectoryName(MainConst.MihomoPath), @$"-d ""{Path.GetDirectoryName(MainConst.MihomoConfPath)}""");
+                new MihomoProc().Run(Path.GetDirectoryName(MainConst.MihomoPath), @$"-d ""{Path.GetDirectoryName(MainConst.MihomoConfPath)}""");
             });
 
             while (true)

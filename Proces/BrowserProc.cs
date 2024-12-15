@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using SheasCore;
+using Sheas_Core;
 
 namespace Sheas_Cealer.Proces;
 

@@ -5,7 +5,7 @@ using Sheas_Cealer.Consts;
 
 namespace Sheas_Cealer.Utils
 {
-    internal static class NginxStoppedCleaner
+    internal static class NginxCleaner
     {
         private static readonly object IsCleaningLock = new();
 
