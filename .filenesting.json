@@ -1,0 +1,17 @@
+{
+    "root": true,
+    "dependentFileProviders": {
+        "add": {
+            "fileToFile": {
+                "add": {
+                    "AboutMultilangConst.resx": [ "AboutConst.cs" ],
+                    "AboutMultilangConst.zh.resx": [ "AboutConst.cs" ],
+                    "MainMultilangConst.resx": [ "MainConst.cs" ],
+                    "MainMultilangConst.zh.resx": [ "MainConst.cs" ],
+                    "SettingsMultilangConst.resx": [ "SettingsConst.cs" ],
+                    "SettingsMultilangConst.zh.resx": [ "SettingsConst.cs" ]
+                }
+            }
+        }
+    }
+}
