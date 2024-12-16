@@ -82,6 +82,10 @@ public partial class MainWin : Window
 
             MihomoConfWatcher_Changed(null!, null!);
         });
+        //这是一个检查更新的示例，后续可以将其放置在检查更新按钮的点击事件内，或者放在窗口加载事件内
+        AutoCheckUpdate acu = new();
+        //当isAuto参数为false时，检查完更新后会进行一个反馈弹窗，为true则不会
+        acu.ProgramUpdateAsync(false);
     }
     private void MainWin_Closing(object sender, CancelEventArgs e) => Application.Current.Shutdown();
 
