@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sheas-Cealer", "Sheas-Cealer.csproj", "{662F787A-474F-41FD-B813-645CAA89E531}"
+	ProjectSection(ProjectDependencies) = postProject
+		{42491572-0050-4CDA-9189-DFC98BDBBF73} = {42491572-0050-4CDA-9189-DFC98BDBBF73}
+		{76263DF7-E4E4-4846-8604-8CFCA7125E2F} = {76263DF7-E4E4-4846-8604-8CFCA7125E2F}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sheas-Core", "..\Sheas-Core\Sheas-Core.csproj", "{42491572-0050-4CDA-9189-DFC98BDBBF73}"
 EndProject
@@ -32,12 +36,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_DuplicateKeyHandling = Fail
-		RESX_AutoCreateNewLanguageFiles = True
-		RESX_ConfirmAddLanguageFile = True
-		RESX_NeutralResourcesLanguage = en-US
-		SolutionGuid = {33005A8D-2D3D-4101-AFF0-F68B29FE9B28}
-		RESX_SortFileContentOnSave = True
 		RESX_Rules = {"EnabledRules":["StringFormat","WhiteSpaceLead","WhiteSpaceTail","PunctuationLead"]}
+		RESX_SortFileContentOnSave = True
+		SolutionGuid = {33005A8D-2D3D-4101-AFF0-F68B29FE9B28}
+		RESX_NeutralResourcesLanguage = en-US
+		RESX_ConfirmAddLanguageFile = True
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_DuplicateKeyHandling = Fail
 	EndGlobalSection
 EndGlobal
