@@ -39,5 +39,5 @@ internal partial class GlobalPres : ObservableObject
     }
 
     [ObservableProperty]
-    private static Color accentForegroundColor = (Color)ColorConverter.ConvertFromString("#2196f3");
+    private static Color accentForegroundColor = (Color)ColorConverter.ConvertFromString("#2196F3");
 }

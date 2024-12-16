@@ -23,7 +23,7 @@ internal static class ForegroundGenerator
 
         return (blackContrast >= 5.5 && whiteContrast >= 2.5 ? null :
             blackContrast >= whiteContrast ? Colors.Black : Colors.White,
-            (Color)ColorConverter.ConvertFromString(blueContrast >= redContrast ? "#2196f3" : "#f44336"));
+            (Color)ColorConverter.ConvertFromString(blueContrast >= redContrast ? "#2196F3" : "#F44336"));
     }
 
     private static double GammaCorrect(double component) => component <= 0.03928 ? component / 12.92 : Math.Pow((component + 0.055) / 1.055, 2.4);

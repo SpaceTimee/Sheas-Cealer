@@ -7,9 +7,10 @@
         xmlns:convs="clr-namespace:Sheas_Cealer.Convs"
         xmlns:preses="clr-namespace:Sheas_Cealer.Preses"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="500"
         d:DataContext="{d:DesignInstance preses:AboutPres}"
-        Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="500"
-        Loaded="AboutWin_Loaded"  KeyDown="AboutWin_KeyDown">
+        Style="{DynamicResource CommonWindow}"
+        Loaded="AboutWin_Loaded" KeyDown="AboutWin_KeyDown">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -22,32 +23,18 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" d:Foreground="#2196F3" Content="{Binding Source={x:Static consts:AboutConst.DeveloperButtonContent}}" ToolTip="{Binding Source={x:Static consts:AboutConst.DeveloperButtonUrl}}"
-                Click="AboutButton_Click">
-            <Button.Foreground>
-                <Binding Path="AccentForegroundColor">
-                    <Binding.Converter>
-                        <convs:AboutAccentButtonForegroundConv />
-                    </Binding.Converter>
-                </Binding>
-            </Button.Foreground>
-        </Button>
+        <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" d:Foreground="#2196F3"
+                Foreground="{Binding AccentForegroundColor, Converter={x:Static convs:AboutConv.AboutAccentButtonForegroundConv}}"
+                Content="{x:Static consts:AboutConst.DeveloperButtonContent}"
+                ToolTip="{x:Static consts:AboutConst.DeveloperButtonUrl}"
+                Click="AboutButton_Click" />
         <Button x:Name="VersionButton"
-                Grid.Row="1" Grid.Column="0" Margin="5" d:Foreground="#2196F3" d:Content="# # #: #.#.#" ToolTip="{Binding Source={x:Static consts:AboutConst.VersionButtonUrl}}"
+                Grid.Row="1" Grid.Column="0" Margin="5" d:Foreground="#2196F3" d:Content="# # #: #.#.#"
+                Foreground="{Binding AccentForegroundColor, Converter={x:Static convs:AboutConv.AboutAccentButtonForegroundConv}}"
+                ToolTip="{x:Static consts:AboutConst.VersionButtonUrl}"
                 Click="AboutButton_Click">
-            <Button.Foreground>
-                <Binding Path="AccentForegroundColor">
-                    <Binding.Converter>
-                        <convs:AboutAccentButtonForegroundConv />
-                    </Binding.Converter>
-                </Binding>
-            </Button.Foreground>
             <Button.Content>
-                <MultiBinding>
-                    <MultiBinding.Converter>
-                        <convs:AboutVersionButtonContentConv />
-                    </MultiBinding.Converter>
-
+                <MultiBinding Converter="{x:Static convs:AboutConv.AboutVersionButtonContentConv}">
                     <Binding Source="{x:Static consts:AboutConst.VersionButtonLabelContent}" />
                     <Binding Source="{x:Static consts:AboutConst.VersionButtonVersionContent}" />
                     <Binding Path="IsSheasCealerUtd" />
@@ -55,17 +42,27 @@
             </Button.Content>
         </Button>
         <Button x:Name="EmailButton"
-                Grid.Row="1" Grid.Column="1" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.EmailButtonContent}}" ToolTip="{Binding Source={x:Static consts:AboutConst.EmailButtonUrl}}"
+                Grid.Row="1" Grid.Column="1" Margin="5"
+                Content="{x:Static consts:AboutConst.EmailButtonContent}"
+                ToolTip="{x:Static consts:AboutConst.EmailButtonUrl}"
                 Click="AboutButton_Click" />
 
-        <Button Grid.Row="0" Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.DocumentationButtonContent}}" ToolTip="{Binding Source={x:Static consts:AboutConst.DocumentationButtonUrl}}"
+        <Button Grid.Row="0" Grid.Column="2" Margin="5"
+                Content="{x:Static consts:AboutConst.DocumentationButtonContent}"
+                ToolTip="{x:Static consts:AboutConst.DocumentationButtonUrl}"
                 Click="AboutButton_Click" />
-        <Button Grid.Row="1" Grid.Column="2" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.RepositoryButtonContent}}" ToolTip="{Binding Source={x:Static consts:AboutConst.RepositoryButtonUrl}}"
+        <Button Grid.Row="1" Grid.Column="2" Margin="5"
+                Content="{x:Static consts:AboutConst.RepositoryButtonContent}"
+                ToolTip="{x:Static consts:AboutConst.RepositoryButtonUrl}"
                 Click="AboutButton_Click" />
 
-        <Button Grid.Row="0" Grid.Column="3" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.PolicyButtonContent}}" ToolTip="{Binding Source={x:Static consts:AboutConst.PolicyButtonUrl}}"
+        <Button Grid.Row="0" Grid.Column="3" Margin="5"
+                Content="{x:Static consts:AboutConst.PolicyButtonContent}"
+                ToolTip="{x:Static consts:AboutConst.PolicyButtonUrl}"
                 Click="AboutButton_Click" />
-        <Button Grid.Row="1" Grid.Column="3" Margin="5" Content="{Binding Source={x:Static consts:AboutConst.AgreementButtonContent}}" ToolTip="{Binding Source={x:Static consts:AboutConst.AgreementButtonUrl}}"
+        <Button Grid.Row="1" Grid.Column="3" Margin="5"
+                Content="{x:Static consts:AboutConst.AgreementButtonContent}"
+                ToolTip="{x:Static consts:AboutConst.AgreementButtonUrl}"
                 Click="AboutButton_Click" />
     </Grid>
 </Window>

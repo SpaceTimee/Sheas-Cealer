@@ -9,7 +9,31 @@
                     "MainMultilangConst.resx": [ "MainConst.cs" ],
                     "MainMultilangConst.zh.resx": [ "MainConst.cs" ],
                     "SettingsMultilangConst.resx": [ "SettingsConst.cs" ],
-                    "SettingsMultilangConst.zh.resx": [ "SettingsConst.cs" ]
+                    "SettingsMultilangConst.zh.resx": [ "SettingsConst.cs" ],
+
+                    "AboutAccentButtonForegroundConv.cs": [ "AboutConv.cs" ],
+                    "AboutVersionButtonContentConv.cs": [ "AboutConv.cs" ],
+                    "MainAdminControlVisibilityConv.cs": [ "MainConv.cs" ],
+                    "MainMihomoButtonContentConv.cs": [ "MainConv.cs" ],
+                    "MainMihomoButtonToolTipConv.cs": [ "MainConv.cs" ],
+                    "MainNginxButtonContentConv.cs": [ "MainConv.cs" ],
+                    "MainNginxButtonToolTipConv.cs": [ "MainConv.cs" ],
+                    "MainNoClickButtonContentConv.cs": [ "MainConv.cs" ],
+                    "MainNoClickButtonToolTipConv.cs": [ "MainConv.cs" ],
+                    "MainProxyButtonIsEnabledConv.cs": [ "MainConv.cs" ],
+                    "MainProxyColumnWidthConv.cs": [ "MainConv.cs" ],
+                    "MainSettingsBoxHintConv.cs": [ "MainConv.cs" ],
+                    "MainSettingsBoxTextConv.cs": [ "MainConv.cs" ],
+                    "MainSettingsBoxToolTipConv.cs": [ "MainConv.cs" ],
+                    "MainSettingsFunctionButtonContentConv.cs": [ "MainConv.cs" ],
+                    "MainSettingsModeButtonContentConv.cs": [ "MainConv.cs" ],
+                    "MainStartButtonIsEnabledConv.cs": [ "MainConv.cs" ],
+                    "MainUpdateHostButtonContentConv.cs": [ "MainConv.cs" ],
+                    "MainUpdateHostButtonIsEnabledConv.cs": [ "MainConv.cs" ],
+                    "MainWinWidthConv.cs": [ "MainConv.cs" ],
+                    "SettingsLangsButtonContentConv.cs": [ "SettingsConv.cs" ],
+                    "SettingsThemesButtonContentConv.cs": [ "SettingsConv.cs" ],
+                    "SettingsWeightsButtonContentConv.cs": [ "SettingsConv.cs" ]
                 }
             }
         }

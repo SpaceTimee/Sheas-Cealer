@@ -7,8 +7,9 @@
         xmlns:convs="clr-namespace:Sheas_Cealer.Convs"
         xmlns:preses="clr-namespace:Sheas_Cealer.Preses"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="500"
         d:DataContext="{d:DesignInstance preses:SettingsPres}"
-        Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="500"
+        Style="{DynamicResource CommonWindow}"
         KeyDown="SettingsWin_KeyDown">
     <Grid Margin="5">
         <Grid.RowDefinitions>
@@ -20,40 +21,21 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:SettingsConst.ThemesButtonToolTip}}"
-                Click="ThemesButton_Click">
-            <Button.Content>
-                <Binding Path="IsLightTheme">
-                    <Binding.Converter>
-                        <convs:SettingsThemesButtonContentConv />
-                    </Binding.Converter>
-                </Binding>
-            </Button.Content>
-        </Button>
-
-        <Button Grid.Row="0" Grid.Column="1" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:SettingsConst.LangsButtonToolTip}}"
-                Click="LangsButton_Click">
-            <Button.Content>
-                <Binding Path="IsEnglishLang">
-                    <Binding.Converter>
-                        <convs:SettingsLangsButtonContentConv />
-                    </Binding.Converter>
-                </Binding>
-            </Button.Content>
-        </Button>
-
-        <Button Grid.Row="1" Grid.Column="0" Margin="5" Content="{Binding Source={x:Static consts:SettingsConst.ColorsButtonContent}}" ToolTip="{Binding Source={x:Static consts:SettingsConst.ColorsButtonToolTip}}"
+        <Button Grid.Row="0" Grid.Column="0" Margin="5" d:Content="# # # #"
+                Content="{Binding IsLightTheme, Converter={x:Static convs:SettingsConv.SettingsThemesButtonContentConv}}"
+                ToolTip="{x:Static consts:SettingsConst.ThemesButtonToolTip}"
+                Click="ThemesButton_Click" />
+        <Button Grid.Row="0" Grid.Column="1" Margin="5" d:Content="# # # #"
+                Content="{Binding IsEnglishLang, Converter={x:Static convs:SettingsConv.SettingsLangsButtonContentConv}}"
+                ToolTip="{x:Static consts:SettingsConst.LangsButtonToolTip}"
+                Click="LangsButton_Click" />
+        <Button Grid.Row="1" Grid.Column="0" Margin="5"
+                Content="{x:Static consts:SettingsConst.ColorsButtonContent}"
+                ToolTip="{x:Static consts:SettingsConst.ColorsButtonToolTip}"
                 Click="ColorsButton_Click" />
-
-        <Button Grid.Row="1" Grid.Column="1" Margin="5" d:Content="# # # #" ToolTip="{Binding Source={x:Static consts:SettingsConst.WeightsButtonToolTip}}"
-                Click="WeightsButton_Click">
-            <Button.Content>
-                <Binding Path="IsLightWeight">
-                    <Binding.Converter>
-                        <convs:SettingsWeightsButtonContentConv />
-                    </Binding.Converter>
-                </Binding>
-            </Button.Content>
-        </Button>
+        <Button Grid.Row="1" Grid.Column="1" Margin="5" d:Content="# # # #"
+                Content="{Binding IsLightWeight, Converter={x:Static convs:SettingsConv.SettingsWeightsButtonContentConv}}"
+                ToolTip="{x:Static consts:SettingsConst.WeightsButtonToolTip}"
+                Click="WeightsButton_Click" />
     </Grid>
 </Window>
