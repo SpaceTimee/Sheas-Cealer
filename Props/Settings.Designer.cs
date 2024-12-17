@@ -61,6 +61,18 @@ namespace Sheas_Cealer.Props {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("244, 67, 54")]
+        public global::System.Drawing.Color PrimaryColor {
+            get {
+                return ((global::System.Drawing.Color)(this["PrimaryColor"]));
+            }
+            set {
+                this["PrimaryColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("-1")]
         public sbyte IsLightTheme {
             get {
@@ -85,18 +97,6 @@ namespace Sheas_Cealer.Props {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("244, 67, 54")]
-        public global::System.Drawing.Color PrimaryColor {
-            get {
-                return ((global::System.Drawing.Color)(this["PrimaryColor"]));
-            }
-            set {
-                this["PrimaryColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("-1")]
         public sbyte IsLightWeight {
             get {
@@ -104,6 +104,18 @@ namespace Sheas_Cealer.Props {
             }
             set {
                 this["IsLightWeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsUpgradeRequired {
+            get {
+                return ((bool)(this["IsUpgradeRequired"]));
+            }
+            set {
+                this["IsUpgradeRequired"] = value;
             }
         }
     }

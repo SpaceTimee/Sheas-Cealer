@@ -11,17 +11,20 @@
     <Setting Name="ExtraArgs" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="PrimaryColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">244, 67, 54</Value>
+    </Setting>
     <Setting Name="IsLightTheme" Type="System.SByte" Scope="User">
       <Value Profile="(Default)">-1</Value>
     </Setting>
     <Setting Name="IsEnglishLang" Type="System.SByte" Scope="User">
       <Value Profile="(Default)">-1</Value>
     </Setting>
-    <Setting Name="PrimaryColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">244, 67, 54</Value>
-    </Setting>
     <Setting Name="IsLightWeight" Type="System.SByte" Scope="User">
       <Value Profile="(Default)">-1</Value>
+    </Setting>
+    <Setting Name="IsUpgradeRequired" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

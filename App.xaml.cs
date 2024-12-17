@@ -15,6 +15,15 @@ public partial class App : Application
 {
     protected override void OnStartup(StartupEventArgs e)
     {
+        #region Upgrade Settings
+        if (Settings.Default.IsUpgradeRequired)
+        {
+            Settings.Default.Upgrade();
+            Settings.Default.IsUpgradeRequired = false;
+            Settings.Default.Save();
+        }
+        #endregion Upgrade Settings
+
         #region Primary Color
         PaletteHelper paletteHelper = new();
         Theme newTheme = paletteHelper.GetTheme();
