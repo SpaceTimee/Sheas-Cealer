@@ -36,6 +36,7 @@
                     Click="SettingsModeButton_Click" />
             <TextBox x:Name="SettingsBox"
                      Grid.Column="1" Margin="5" VerticalContentAlignment="Center" md:HintAssist.IsFloating="True"
+                     AutomationProperties.Name="{Binding SettingsMode, Converter={x:Static convs:MainConv.MainSettingsBoxHintConv}}"
                      md:HintAssist.Hint="{Binding SettingsMode, Converter={x:Static convs:MainConv.MainSettingsBoxHintConv}}"
                      ToolTip="{Binding SettingsMode, Converter={x:Static convs:MainConv.MainSettingsBoxToolTipConv}}"
                      TextChanged="SettingsBox_TextChanged" PreviewDragOver="MainWin_DragEnter">
