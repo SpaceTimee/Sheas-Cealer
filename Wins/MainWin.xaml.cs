@@ -280,9 +280,9 @@ public partial class MainWin : Window
 
                     break;
                 }
-                catch (HttpRequestException ex) when (ex.InnerException is SocketException innerEx)
+                catch (HttpRequestException ex)
                 {
-                    if (innerEx.SocketErrorCode != SocketError.ConnectionRefused)
+                    if (ex.InnerException is SocketException innerEx && innerEx.SocketErrorCode != SocketError.ConnectionRefused)
                         break;
                 }
 
@@ -356,9 +356,9 @@ public partial class MainWin : Window
 
                     break;
                 }
-                catch (HttpRequestException ex) when (ex.InnerException is SocketException innerEx)
+                catch (HttpRequestException ex)
                 {
-                    if (innerEx.SocketErrorCode != SocketError.ConnectionRefused)
+                    if (ex.InnerException is SocketException innerEx && innerEx.SocketErrorCode != SocketError.ConnectionRefused)
                         break;
                 }
 
