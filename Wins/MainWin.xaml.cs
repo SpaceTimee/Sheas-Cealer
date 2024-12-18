@@ -87,18 +87,14 @@ public partial class MainWin : Window
             if (!MainPres.IsNginxRunning)
                 NginxCleaner.Clean();
 
-            IsSilent = true;
+            if (Array.Exists(Environment.GetCommandLineArgs(), arg => arg.Equals("-s", StringComparison.OrdinalIgnoreCase)))
+            {
+                IsSilent = true;
 
-            string[] args = Environment.GetCommandLineArgs();
-
-            if (MainConst.IsAdmin && MainPres.IsMihomoExist && Array.Exists(args, arg => arg.Equals("-m", StringComparison.OrdinalIgnoreCase)))
-                MihomoButton_Click(null!, null!);
-            if (MainConst.IsAdmin && MainPres.IsNginxExist && Array.Exists(args, arg => arg.Equals("-n", StringComparison.OrdinalIgnoreCase)))
-                NginxButton_Click(null!, null!);
-            if (Array.Exists(args, arg => arg.Equals("-s", StringComparison.OrdinalIgnoreCase)))
                 StartButton_Click(null!, null!);
 
-            IsSilent = false;
+                IsSilent = false;
+            }
 
             UpdateUpstreamHostButton_Click(null!, null!);
         });
