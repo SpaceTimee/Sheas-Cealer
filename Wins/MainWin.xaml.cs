@@ -309,6 +309,8 @@ public partial class MainWin : Window
 
             NginxCleaner.Clean();
 
+            NginxHttpPort = 80;
+            NginxHttpsPort = 443;
             NginxConfWatcher_Changed(null!, null!);
         }
     }
@@ -373,13 +375,16 @@ public partial class MainWin : Window
             MainPres.IsMihomoIniting = false;
         }
         else
+        {
             foreach (Process mihomoProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)))
             {
                 mihomoProcess.Kill();
                 await mihomoProcess.WaitForExitAsync();
-
-                MihomoConfWatcher_Changed(null!, null!);
             }
+
+            MihomoMixedPort = 7880;
+            MihomoConfWatcher_Changed(null!, null!);
+        }
     }
 
     private void EditHostButton_Click(object sender, RoutedEventArgs e)
