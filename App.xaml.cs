@@ -53,7 +53,7 @@ public partial class App : Application
         new SettingsPres().AccentForegroundColor = newAccentForegroundColor;
         #endregion Foreground Color
 
-        new MainWin(e.Args).Show();
+        new MainWin().Show();
     }
 
     private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
