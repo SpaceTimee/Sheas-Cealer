@@ -308,6 +308,8 @@ public partial class MainWin : Window
             }
 
             NginxCleaner.Clean();
+
+            NginxConfWatcher_Changed(null!, null!);
         }
     }
     private void MihomoButton_Click(object sender, RoutedEventArgs e)
@@ -375,6 +377,8 @@ public partial class MainWin : Window
             {
                 mihomoProcess.Kill();
                 await mihomoProcess.WaitForExitAsync();
+
+                MihomoConfWatcher_Changed(null!, null!);
             }
     }
 
