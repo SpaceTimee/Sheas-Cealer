@@ -175,7 +175,7 @@ public partial class MainWin : Window
 
         await Task.Run(() =>
         {
-            new BrowserProc(MainPres.BrowserPath, sender == null).Run(Path.GetDirectoryName(MainPres.BrowserPath), $"{CealArgs} {MainPres.ExtraArgs.Trim()}");
+            new BrowserProc(MainPres.BrowserPath, sender is bool).Run(Path.GetDirectoryName(MainPres.BrowserPath), $"{CealArgs} {MainPres.ExtraArgs.Trim()}");
         });
     }
     private void NginxButton_Click(object sender, RoutedEventArgs e)
