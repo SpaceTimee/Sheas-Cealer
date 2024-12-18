@@ -13,7 +13,7 @@
         d:DataContext="{d:DesignInstance preses:MainPres}"
         Style="{DynamicResource CommonWindow}"
         Width="{Binding Source={x:Static consts:MainConst.IsAdmin}, Converter={x:Static convs:MainConv.MainWinWidthConv}}"
-        Loaded="MainWin_Loaded" Closing="MainWin_Closing" DragEnter="MainWin_DragEnter" Drop="MainWin_Drop" KeyDown="MainWin_KeyDown">
+        SourceInitialized="MainWin_SourceInitialized" Loaded="MainWin_Loaded" Closing="MainWin_Closing" DragEnter="MainWin_DragEnter" Drop="MainWin_Drop" KeyDown="MainWin_KeyDown">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

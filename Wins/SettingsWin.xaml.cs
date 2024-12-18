@@ -21,7 +21,7 @@ public partial class SettingsWin : Window
 
         DataContext = SettingsPres = new();
     }
-    protected override void OnSourceInitialized(EventArgs e)
+    private void SettingsWin_SourceInitialized(object sender, EventArgs e)
     {
         IconRemover.RemoveIcon(this);
         BorderThemeSetter.SetBorderTheme(this, SettingsPres.IsLightTheme);

@@ -61,7 +61,7 @@ public partial class MainWin : Window
 
         DataContext = MainPres = new(args);
     }
-    protected override void OnSourceInitialized(EventArgs e)
+    private void MainWin_SourceInitialized(object sender, EventArgs e)
     {
         IconRemover.RemoveIcon(this);
         BorderThemeSetter.SetBorderTheme(this, MainPres.IsLightTheme);

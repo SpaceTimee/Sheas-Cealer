@@ -10,7 +10,7 @@
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="500"
         d:DataContext="{d:DesignInstance preses:SettingsPres}"
         Style="{DynamicResource CommonWindow}"
-        KeyDown="SettingsWin_KeyDown">
+        SourceInitialized="SettingsWin_SourceInitialized" KeyDown="SettingsWin_KeyDown">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
