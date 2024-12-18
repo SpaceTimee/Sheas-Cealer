@@ -55,8 +55,6 @@ public partial class MainWin : Window
     private int GameClickTime = 0;
     private int GameFlashInterval = 1000;
 
-    private bool IsSilent = false;
-
     internal MainWin()
     {
         InitializeComponent();
@@ -88,13 +86,7 @@ public partial class MainWin : Window
                 NginxCleaner.Clean();
 
             if (Array.Exists(Environment.GetCommandLineArgs(), arg => arg.Equals("-s", StringComparison.OrdinalIgnoreCase)))
-            {
-                IsSilent = true;
-
                 StartButton_Click(null!, null!);
-
-                IsSilent = false;
-            }
 
             UpdateUpstreamHostButton_Click(null!, null!);
         });
@@ -159,7 +151,7 @@ public partial class MainWin : Window
     private void StartButton_Click(object sender, RoutedEventArgs e)
     {
         if (HoldButtonTimer == null || HoldButtonTimer.IsEnabled)
-            StartButtonHoldTimer_Tick(null, null!);
+            StartButtonHoldTimer_Tick(sender == null, null!);
     }
     private void StartButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
@@ -172,7 +164,7 @@ public partial class MainWin : Window
         HoldButtonTimer?.Stop();
 
         if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._CealHostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-            (!IsSilent && MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
+            (!(sender is bool isSilent && isSilent) && MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
             return;
 
         foreach (Process browserProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainPres.BrowserPath)))
@@ -206,7 +198,7 @@ public partial class MainWin : Window
             if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._CealHostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                 (NginxHttpsPort != 443 && MessageBox.Show(string.Format(MainConst._NginxHttpsPortOccupiedPrompt, NginxHttpsPort), string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                 (NginxHttpPort != 80 && MessageBox.Show(string.Format(MainConst._NginxHttpPortOccupiedPrompt, NginxHttpPort), string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-                (!IsSilent && MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+                (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                 (MainPres.IsFlashing && MessageBox.Show(MainConst._LaunchNginxFlashingPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
                 return;
 
@@ -337,7 +329,7 @@ public partial class MainWin : Window
         {
             if (string.IsNullOrWhiteSpace(MihomoConfs))
                 throw new Exception(MainConst._MihomoConfErrorMsg);
-            if (!IsSilent && MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+            if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;
 
             if (!File.Exists(MainConst.MihomoConfPath))
