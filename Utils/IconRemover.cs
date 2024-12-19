@@ -17,18 +17,18 @@ internal static partial class IconRemover
     [LibraryImport("user32.dll", EntryPoint = "GetWindowLongW")]
     private static partial int GetWindowLong(nint hwnd, int index);
     [LibraryImport("user32.dll", EntryPoint = "SetWindowLongW")]
-    private static partial int SetWindowLong(nint hwnd, int index, nint newStyle);
+    private static partial void SetWindowLong(nint hwnd, int index, nint newStyle);
     [LibraryImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool SetWindowPos(nint hwnd, nint hwndInsertAfter, int x, int y, int width, int height, uint flags);
+    private static partial void SetWindowPos(nint hwnd, nint hwndInsertAfter, int x, int y, int width, int height, uint flags);
     [LibraryImport("user32.dll", EntryPoint = "SendMessageW")]
-    private static partial nint SendMessage(nint hwnd, uint msg, nint wParam, nint lParam);
+    private static partial void SendMessage(nint hwnd, uint msg, nint wParam, nint lParam);
 
     internal static void RemoveIcon(Window window)
     {
         nint hwnd = new WindowInteropHelper(window).Handle;
 
-        _ = SetWindowLong(hwnd, GwlExStyle, GetWindowLong(hwnd, GwlExStyle) | WsExDlgModalFrame);
+        SetWindowLong(hwnd, GwlExStyle, GetWindowLong(hwnd, GwlExStyle) | WsExDlgModalFrame);
 
         SetWindowPos(hwnd, nint.Zero, 0, 0, 0, 0, SwpNoMove | SwpNoSize | SwpNoZOrder | SwpFrameChanged);
 

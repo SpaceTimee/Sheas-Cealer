@@ -1,4 +1,12 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
+using NginxConfigParser;
+using Ona_Core;
+using Sheas_Cealer.Consts;
+using Sheas_Cealer.Preses;
+using Sheas_Cealer.Proces;
+using Sheas_Cealer.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -17,14 +25,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using MaterialDesignThemes.Wpf;
-using Microsoft.Win32;
-using NginxConfigParser;
-using Ona_Core;
-using Sheas_Cealer.Consts;
-using Sheas_Cealer.Preses;
-using Sheas_Cealer.Proces;
-using Sheas_Cealer.Utils;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using File = System.IO.File;
@@ -41,7 +41,7 @@ public partial class MainWin : Window
     private readonly FileSystemWatcher NginxConfWatcher = new(Path.GetDirectoryName(MainConst.NginxConfPath)!, Path.GetFileName(MainConst.NginxConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private readonly FileSystemWatcher MihomoConfWatcher = new(Path.GetDirectoryName(MainConst.MihomoConfPath)!, Path.GetFileName(MainConst.MihomoConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
 
-    private readonly SortedDictionary<string, List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>> CealHostRulesDict = [];
+    private readonly SortedDictionary<string, List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>?> CealHostRulesDict = [];
     private string CealArgs = string.Empty;
     private NginxConfig? NginxConfs;
     private string? ExtraNginxConfs;
@@ -68,7 +68,7 @@ public partial class MainWin : Window
     }
     private async void MainWin_Loaded(object sender, RoutedEventArgs e)
     {
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
             ProxyTimer.Tick += ProxyTimer_Tick;
             CealHostWatcher.Changed += CealHostWatcher_Changed;
@@ -83,7 +83,7 @@ public partial class MainWin : Window
             MihomoConfWatcher_Changed(null!, null!);
 
             if (!MainPres.IsNginxRunning)
-                NginxCleaner.Clean();
+                await NginxCleaner.Clean();
 
             if (Array.Exists(Environment.GetCommandLineArgs(), arg => arg.Equals("-s", StringComparison.OrdinalIgnoreCase)))
                 StartButton_Click(null!, null!);
@@ -91,12 +91,12 @@ public partial class MainWin : Window
             UpdateUpstreamHostButton_Click(null!, null!);
         });
     }
-    private void MainWin_Closing(object sender, CancelEventArgs e)
+    private async void MainWin_Closing(object sender, CancelEventArgs e)
     {
         if (MainPres.IsNginxIniting)
-            File.WriteAllText(MainConst.NginxConfPath, ExtraNginxConfs);
+            await File.WriteAllTextAsync(MainConst.NginxConfPath, ExtraNginxConfs);
         if (MainPres.IsMihomoIniting)
-            File.WriteAllText(MainConst.MihomoConfPath, ExtraMihomoConfs);
+            await File.WriteAllTextAsync(MainConst.MihomoConfPath, ExtraMihomoConfs);
 
         Application.Current.Shutdown();
     }
@@ -109,7 +109,7 @@ public partial class MainWin : Window
     private void MainWin_Drop(object sender, DragEventArgs e)
     {
         if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            MainPres.BrowserPath = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+            MainPres.BrowserPath = (e.Data.GetData(DataFormats.FileDrop) as string[])?[0] ?? string.Empty;
     }
 
     private void SettingsBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -156,7 +156,7 @@ public partial class MainWin : Window
         }
     }
 
-    private void StartButton_Click(object sender, RoutedEventArgs e)
+    private void StartButton_Click(object? sender, RoutedEventArgs e)
     {
         if (HoldButtonTimer == null || HoldButtonTimer.IsEnabled)
             StartButtonHoldTimer_Tick(sender == null, null!);
@@ -172,7 +172,7 @@ public partial class MainWin : Window
         HoldButtonTimer?.Stop();
 
         if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._CealHostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-            (!(sender is bool isSilent && isSilent) && MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
+            (sender is not true && MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
             return;
 
         foreach (Process browserProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainPres.BrowserPath)))
@@ -211,7 +211,7 @@ public partial class MainWin : Window
                 return;
 
             if (!File.Exists(MainConst.NginxConfPath))
-                File.Create(MainConst.NginxConfPath).Dispose();
+                await File.Create(MainConst.NginxConfPath).DisposeAsync();
             if (!Directory.Exists(MainConst.NginxLogsPath))
                 Directory.CreateDirectory(MainConst.NginxLogsPath);
             if (!Directory.Exists(MainConst.NginxTempPath))
@@ -236,7 +236,7 @@ public partial class MainWin : Window
             SubjectAlternativeNameBuilder childCertSanBuilder = new();
             string hostsConfAppendContent = MainConst.HostsConfStartMarker;
 
-            foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
+            foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>? cealHostRules in CealHostRulesDict.Values)
                 foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, _, _) in cealHostRules ?? [])
                     foreach ((string cealHostIncludeDomain, _) in cealHostDomainPairs)
                     {
@@ -262,13 +262,13 @@ public partial class MainWin : Window
 
             using X509Certificate2 childCert = childCertRequest.Create(rootCert, rootCert.NotBefore, rootCert.NotAfter, Guid.NewGuid().ToByteArray());
 
-            File.WriteAllText(MainConst.NginxCertPath, childCert.ExportCertificatePem());
-            File.WriteAllText(MainConst.NginxKeyPath, certKey.ExportPkcs8PrivateKeyPem());
+            await File.WriteAllTextAsync(MainConst.NginxCertPath, childCert.ExportCertificatePem());
+            await File.WriteAllTextAsync(MainConst.NginxKeyPath, certKey.ExportPkcs8PrivateKeyPem());
 
             hostsConfAppendContent += MainConst.HostsConfEndMarker;
 
             File.SetAttributes(MainConst.HostsConfPath, File.GetAttributes(MainConst.HostsConfPath) & ~FileAttributes.ReadOnly);
-            File.AppendAllText(MainConst.HostsConfPath, hostsConfAppendContent);
+            await File.AppendAllTextAsync(MainConst.HostsConfPath, hostsConfAppendContent);
             #endregion Child Cert & Hosts
 
             try
@@ -296,18 +296,18 @@ public partial class MainWin : Window
                             break;
                     }
 
-                    if (!MainPres.IsNginxRunning)
-                    {
-                        if (MessageBox.Show(MainConst._LaunchNginxErrorPrompt, string.Empty, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                            Process.Start(new ProcessStartInfo(MainConst.NginxErrorLogsPath) { UseShellExecute = true });
+                    if (MainPres.IsNginxRunning)
+                        continue;
 
-                        break;
-                    }
+                    if (MessageBox.Show(MainConst._LaunchNginxErrorPrompt, string.Empty, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        Process.Start(new ProcessStartInfo(MainConst.NginxErrorLogsPath) { UseShellExecute = true });
+
+                    break;
                 }
             }
             finally
             {
-                File.WriteAllText(MainConst.NginxConfPath, ExtraNginxConfs);
+                await File.WriteAllTextAsync(MainConst.NginxConfPath, ExtraNginxConfs);
                 NginxConfWatcher.EnableRaisingEvents = true;
                 MainPres.IsNginxIniting = false;
             }
@@ -320,7 +320,7 @@ public partial class MainWin : Window
                 nginxProcess.WaitForExit();
             }
 
-            NginxCleaner.Clean();
+            await NginxCleaner.Clean();
 
             NginxHttpPort = 80;
             NginxHttpsPort = 443;
@@ -350,13 +350,13 @@ public partial class MainWin : Window
                 return;
 
             if (!File.Exists(MainConst.MihomoConfPath))
-                File.Create(MainConst.MihomoConfPath).Dispose();
+                await File.Create(MainConst.MihomoConfPath).DisposeAsync();
 
             try
             {
                 MainPres.IsMihomoIniting = true;
                 MihomoConfWatcher.EnableRaisingEvents = false;
-                File.WriteAllText(MainConst.MihomoConfPath, MihomoConfs);
+                await File.WriteAllTextAsync(MainConst.MihomoConfPath, MihomoConfs);
 
                 await Task.Run(() =>
                 {
@@ -377,17 +377,17 @@ public partial class MainWin : Window
                             break;
                     }
 
-                    if (!MainPres.IsMihomoRunning)
-                    {
-                        MessageBox.Show(MainConst._LaunchMihomoErrorMsg);
+                    if (MainPres.IsMihomoRunning)
+                        continue;
 
-                        break;
-                    }
+                    MessageBox.Show(MainConst._LaunchMihomoErrorMsg);
+
+                    break;
                 }
             }
             finally
             {
-                File.WriteAllText(MainConst.MihomoConfPath, ExtraMihomoConfs);
+                await File.WriteAllTextAsync(MainConst.MihomoConfPath, ExtraMihomoConfs);
                 MihomoConfWatcher.EnableRaisingEvents = true;
                 MainPres.IsMihomoIniting = false;
             }
@@ -405,18 +405,18 @@ public partial class MainWin : Window
         }
     }
 
-    private void EditHostButton_Click(object sender, RoutedEventArgs e)
+    private async void EditHostButton_Click(object sender, RoutedEventArgs e)
     {
         Button senderButton = (Button)sender;
         string cealHostPath = senderButton == EditLocalHostButton ? MainConst.LocalHostPath : MainConst.UpstreamHostPath;
 
         if (!File.Exists(cealHostPath))
-            File.Create(cealHostPath).Dispose();
+            await File.Create(cealHostPath).DisposeAsync();
 
         try { Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true }); }
         catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true, Verb = "RunAs" }); }
     }
-    private void EditConfButton_Click(object sender, RoutedEventArgs e)
+    private async void EditConfButton_Click(object sender, RoutedEventArgs e)
     {
         Button senderButton = (Button)sender;
         string confPath;
@@ -432,21 +432,21 @@ public partial class MainWin : Window
             confPath = senderButton == EditNginxConfButton ? MainConst.NginxConfPath : MainConst.MihomoConfPath;
 
             if (!File.Exists(confPath))
-                File.Create(confPath).Dispose();
+                await File.Create(confPath).DisposeAsync();
         }
 
         Process.Start(new ProcessStartInfo(confPath) { UseShellExecute = true });
     }
-    private async void UpdateUpstreamHostButton_Click(object sender, RoutedEventArgs e)
+    private async void UpdateUpstreamHostButton_Click(object? sender, RoutedEventArgs e)
     {
         try
         {
             if (!File.Exists(MainConst.UpstreamHostPath))
-                File.Create(MainConst.UpstreamHostPath).Dispose();
+                await File.Create(MainConst.UpstreamHostPath).DisposeAsync();
 
             string upstreamUpstreamHostUrl = (MainPres.UpstreamUrl.StartsWith("http://") || MainPres.UpstreamUrl.StartsWith("https://") ? string.Empty : "https://") + MainPres.UpstreamUrl;
             string upstreamUpstreamHostString = await Http.GetAsync<string>(upstreamUpstreamHostUrl, MainClient);
-            string localUpstreamHostString = File.ReadAllText(MainConst.UpstreamHostPath);
+            string localUpstreamHostString = await File.ReadAllTextAsync(MainConst.UpstreamHostPath);
 
             try { upstreamUpstreamHostString = Encoding.UTF8.GetString(Convert.FromBase64String(upstreamUpstreamHostString)); }
             catch { }
@@ -466,7 +466,7 @@ public partial class MainWin : Window
 
                     if (overrideOptionResult == MessageBoxResult.Yes)
                     {
-                        File.WriteAllText(MainConst.UpstreamHostPath, upstreamUpstreamHostString);
+                        await File.WriteAllTextAsync(MainConst.UpstreamHostPath, upstreamUpstreamHostString);
 
                         MainPres.IsUpstreamHostUtd = true;
 
@@ -574,7 +574,7 @@ public partial class MainWin : Window
         MainPres.IsMihomoExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, Path.GetFileName(MainConst.MihomoPath)));
         MainPres.IsMihomoRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)).Length != 0;
     }
-    private void CealHostWatcher_Changed(object sender, FileSystemEventArgs e)
+    private async void CealHostWatcher_Changed(object sender, FileSystemEventArgs e)
     {
         string cealHostName = e.Name!.TrimStart("Cealing-Host-".ToCharArray()).TrimEnd(".json".ToCharArray());
 
@@ -582,19 +582,19 @@ public partial class MainWin : Window
         {
             CealHostRulesDict[cealHostName] = [];
 
-            using FileStream cealHostStream = new(e.FullPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+            await using FileStream cealHostStream = new(e.FullPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
 
             if (cealHostStream.Length == 0)
                 return;
 
             JsonDocumentOptions cealHostOptions = new() { AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip };
-            JsonElement cealHostArray = JsonDocument.Parse(cealHostStream, cealHostOptions).RootElement;
+            JsonElement cealHostArray = (await JsonDocument.ParseAsync(cealHostStream, cealHostOptions)).RootElement;
 
             foreach (JsonElement cealHostRule in cealHostArray.EnumerateArray())
             {
                 List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs = [];
                 string? cealHostSni = cealHostRule[1].ValueKind == JsonValueKind.Null ? null :
-                    string.IsNullOrWhiteSpace(cealHostRule[1].ToString()) ? $"{cealHostName}{CealHostRulesDict[cealHostName].Count}" : cealHostRule[1].ToString().Trim();
+                    string.IsNullOrWhiteSpace(cealHostRule[1].ToString()) ? $"{cealHostName}{CealHostRulesDict[cealHostName]!.Count}" : cealHostRule[1].ToString().Trim();
                 string cealHostIp = string.IsNullOrWhiteSpace(cealHostRule[2].ToString()) ? "127.0.0.1" : cealHostRule[2].ToString().Trim();
 
                 foreach (JsonElement cealHostDomain in cealHostRule[0].EnumerateArray())
@@ -608,17 +608,17 @@ public partial class MainWin : Window
                 }
 
                 if (cealHostDomainPairs.Count != 0)
-                    CealHostRulesDict[cealHostName].Add((cealHostDomainPairs, cealHostSni, cealHostIp));
+                    CealHostRulesDict[cealHostName]!.Add((cealHostDomainPairs, cealHostSni, cealHostIp));
             }
         }
-        catch { CealHostRulesDict[cealHostName] = null!; }
+        catch { CealHostRulesDict[cealHostName] = null; }
         finally
         {
             string hostRules = string.Empty;
             string hostResolverRules = string.Empty;
             int nullSniNum = 0;
 
-            foreach (KeyValuePair<string, List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>> cealHostRulesPair in CealHostRulesDict)
+            foreach (KeyValuePair<string, List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>?> cealHostRulesPair in CealHostRulesDict)
                 foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp) in cealHostRulesPair.Value ?? [])
                 {
                     string cealHostSniWithoutNull = cealHostSni ?? $"{cealHostRulesPair.Key}{(cealHostRulesPair.Value ?? []).Count + ++nullSniNum}";
@@ -642,123 +642,123 @@ public partial class MainWin : Window
             NginxConfWatcher_Changed(null!, null!);
         }
     }
-    private void NginxConfWatcher_Changed(object sender, FileSystemEventArgs e)
+    private async void NginxConfWatcher_Changed(object sender, FileSystemEventArgs e)
     {
-        if (MainConst.IsAdmin && MainPres.IsNginxExist)
-        {
-            if (!File.Exists(MainConst.NginxConfPath))
-                File.Create(MainConst.NginxConfPath).Dispose();
-            if (!Directory.Exists(MainConst.NginxLogsPath))
-                Directory.CreateDirectory(MainConst.NginxLogsPath);
-            if (!Directory.Exists(MainConst.NginxTempPath))
-                Directory.CreateDirectory(MainConst.NginxTempPath);
+        if (!MainConst.IsAdmin || !MainPres.IsNginxExist)
+            return;
 
-            foreach (IPEndPoint activeTcpListener in IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners())
-                if (activeTcpListener.Port == NginxHttpPort)
-                    NginxHttpPort++;
-                else if (activeTcpListener.Port == NginxHttpsPort)
-                    NginxHttpsPort++;
-                else if (activeTcpListener.Port > NginxHttpsPort)
-                    break;
+        if (!File.Exists(MainConst.NginxConfPath))
+            await File.Create(MainConst.NginxConfPath).DisposeAsync();
+        if (!Directory.Exists(MainConst.NginxLogsPath))
+            Directory.CreateDirectory(MainConst.NginxLogsPath);
+        if (!Directory.Exists(MainConst.NginxTempPath))
+            Directory.CreateDirectory(MainConst.NginxTempPath);
 
-            using FileStream nginxConfStream = new(MainConst.NginxConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-            NginxConfig extraNginxConfig = NginxConfig.Load(ExtraNginxConfs = new StreamReader(nginxConfStream).ReadToEnd());
-            int serverIndex = 0;
+        foreach (IPEndPoint activeTcpListener in IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners())
+            if (activeTcpListener.Port == NginxHttpPort)
+                NginxHttpPort++;
+            else if (activeTcpListener.Port == NginxHttpsPort)
+                NginxHttpsPort++;
+            else if (activeTcpListener.Port > NginxHttpsPort)
+                break;
 
-            foreach (IToken extraNginxConfigToken in extraNginxConfig.GetTokens())
-                if (extraNginxConfigToken is GroupToken extraNginxConfigGroupToken && extraNginxConfigGroupToken.Key.Equals("http", StringComparison.InvariantCultureIgnoreCase))
+        await using FileStream nginxConfStream = new(MainConst.NginxConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+        NginxConfig extraNginxConfig = NginxConfig.Load(ExtraNginxConfs = await new StreamReader(nginxConfStream).ReadToEndAsync());
+        int serverIndex = 0;
+
+        foreach (IToken extraNginxConfigToken in extraNginxConfig.GetTokens())
+            if (extraNginxConfigToken is GroupToken extraNginxConfigGroupToken && extraNginxConfigGroupToken.Key.Equals("http", StringComparison.InvariantCultureIgnoreCase))
+            {
+                foreach (IToken serverToken in extraNginxConfigGroupToken.Tokens)
+                    if (serverToken is GroupToken serverGroupToken && serverGroupToken.Key.Equals("server", StringComparison.InvariantCultureIgnoreCase))
+                        ++serverIndex;
+
+                break;
+            }
+
+        NginxConfs = extraNginxConfig
+            .AddOrUpdate("worker_processes", "auto")
+            .AddOrUpdate("events:worker_connections", "65536")
+            .AddOrUpdate("http:proxy_set_header", "Host $http_host")
+            .AddOrUpdate("http:proxy_ssl_server_name", !MainPres.IsFlashing ? "on" : "off")
+            .AddOrUpdate($"http:server[{serverIndex}]:listen", $"{NginxHttpPort} default_server")
+            .AddOrUpdate($"http:server[{serverIndex}]:return", "https://$host$request_uri");
+
+        foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>? cealHostRules in CealHostRulesDict.Values)
+            foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp) in cealHostRules ?? [])
+            {
+                string serverName = "~";
+
+                foreach ((string cealHostIncludeDomain, string cealHostExcludeDomain) in cealHostDomainPairs)
                 {
-                    foreach (IToken serverToken in extraNginxConfigGroupToken.Tokens)
-                        if (serverToken is GroupToken serverGroupToken && serverGroupToken.Key.Equals("server", StringComparison.InvariantCultureIgnoreCase))
-                            ++serverIndex;
-
-                    break;
-                }
-
-            NginxConfs = extraNginxConfig
-                .AddOrUpdate("worker_processes", "auto")
-                .AddOrUpdate("events:worker_connections", "65536")
-                .AddOrUpdate("http:proxy_set_header", "Host $http_host")
-                .AddOrUpdate("http:proxy_ssl_server_name", !MainPres.IsFlashing ? "on" : "off")
-                .AddOrUpdate($"http:server[{serverIndex}]:listen", $"{NginxHttpPort} default_server")
-                .AddOrUpdate($"http:server[{serverIndex}]:return", "https://$host$request_uri");
-
-            foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)> cealHostRules in CealHostRulesDict.Values)
-                foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp) in cealHostRules ?? [])
-                {
-                    string serverName = "~";
-
-                    foreach ((string cealHostIncludeDomain, string cealHostExcludeDomain) in cealHostDomainPairs)
-                    {
-                        if (cealHostIncludeDomain.StartsWith('#'))
-                            continue;
-
-                        serverName += "^" + (!string.IsNullOrWhiteSpace(cealHostExcludeDomain) ? $"(?!{cealHostExcludeDomain.Replace(".", "\\.").Replace("*", ".*")})" : string.Empty) +
-                            cealHostIncludeDomain.TrimStart('$').Replace(".", "\\.").Replace("*", ".*") + "$|";
-                    }
-
-                    if (serverName == "~")
+                    if (cealHostIncludeDomain.StartsWith('#'))
                         continue;
 
-                    ++serverIndex;
-
-                    NginxConfs = NginxConfs
-                        .AddOrUpdate($"http:server[{serverIndex}]:server_name", serverName.TrimEnd('|'))
-                        .AddOrUpdate($"http:server[{serverIndex}]:listen", $"{NginxHttpsPort} ssl")
-                        .AddOrUpdate($"http:server[{serverIndex}]:ssl_certificate", Path.GetFileName(MainConst.NginxCertPath))
-                        .AddOrUpdate($"http:server[{serverIndex}]:ssl_certificate_key", Path.GetFileName(MainConst.NginxKeyPath))
-                        .AddOrUpdate($"http:server[{serverIndex}]:location", "/", true)
-                        .AddOrUpdate($"http:server[{serverIndex}]:location:proxy_pass", $"https://{cealHostIp}");
-
-                    NginxConfs = cealHostSni == null ?
-                        NginxConfs.AddOrUpdate($"http:server[{serverIndex}]:proxy_ssl_server_name", "off") :
-                        NginxConfs.AddOrUpdate($"http:server[{serverIndex}]:proxy_ssl_name", cealHostSni);
+                    serverName += "^" + (!string.IsNullOrWhiteSpace(cealHostExcludeDomain) ? $"(?!{cealHostExcludeDomain.Replace(".", "\\.").Replace("*", ".*")})" : string.Empty) +
+                                  cealHostIncludeDomain.TrimStart('$').Replace(".", "\\.").Replace("*", ".*") + "$|";
                 }
-        }
-    }
-    private void MihomoConfWatcher_Changed(object sender, FileSystemEventArgs e)
-    {
-        if (MainConst.IsAdmin && MainPres.IsMihomoExist)
-        {
-            try
-            {
-                if (!File.Exists(MainConst.MihomoConfPath))
-                    File.Create(MainConst.MihomoConfPath).Dispose();
 
-                foreach (IPEndPoint activeTcpListener in IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners())
-                    if (activeTcpListener.Port == MihomoMixedPort)
-                        MihomoMixedPort++;
-                    else if (activeTcpListener.Port > MihomoMixedPort)
-                        break;
+                if (serverName == "~")
+                    continue;
 
-                using FileStream mihomoConfStream = new(MainConst.MihomoConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-                Dictionary<string, object> mihomoConfDict = new DeserializerBuilder()
-                    .WithNamingConvention(HyphenatedNamingConvention.Instance)
-                    .IgnoreUnmatchedProperties()
-                    .Build()
-                    .Deserialize<Dictionary<string, object>>(ExtraMihomoConfs = new StreamReader(mihomoConfStream).ReadToEnd()) ?? [];
+                ++serverIndex;
 
-                mihomoConfDict["mixed-port"] = MihomoMixedPort;
-                mihomoConfDict["dns"] = new
-                {
-                    enable = true,
-                    listen = ":53",
-                    enhancedMode = "redir-host",
-                    nameserver = MainConst.MihomoNameServers
-                };
-                mihomoConfDict["tun"] = new
-                {
-                    enable = true,
-                    stack = "system",
-                    autoRoute = true,
-                    autoDetectInterface = true,
-                    dnsHijack = new[] { "any:53", "tcp://any:53" }
-                };
+                NginxConfs = NginxConfs
+                    .AddOrUpdate($"http:server[{serverIndex}]:server_name", serverName.TrimEnd('|'))
+                    .AddOrUpdate($"http:server[{serverIndex}]:listen", $"{NginxHttpsPort} ssl")
+                    .AddOrUpdate($"http:server[{serverIndex}]:ssl_certificate", Path.GetFileName(MainConst.NginxCertPath))
+                    .AddOrUpdate($"http:server[{serverIndex}]:ssl_certificate_key", Path.GetFileName(MainConst.NginxKeyPath))
+                    .AddOrUpdate($"http:server[{serverIndex}]:location", "/", true)
+                    .AddOrUpdate($"http:server[{serverIndex}]:location:proxy_pass", $"https://{cealHostIp}");
 
-                MihomoConfs = new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfDict);
+                NginxConfs = cealHostSni == null ?
+                    NginxConfs.AddOrUpdate($"http:server[{serverIndex}]:proxy_ssl_server_name", "off") :
+                    NginxConfs.AddOrUpdate($"http:server[{serverIndex}]:proxy_ssl_name", cealHostSni);
             }
-            catch { MihomoConfs = string.Empty; }
+    }
+    private async void MihomoConfWatcher_Changed(object sender, FileSystemEventArgs e)
+    {
+        if (!MainConst.IsAdmin || !MainPres.IsMihomoExist)
+            return;
+
+        try
+        {
+            if (!File.Exists(MainConst.MihomoConfPath))
+                await File.Create(MainConst.MihomoConfPath).DisposeAsync();
+
+            foreach (IPEndPoint activeTcpListener in IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners())
+                if (activeTcpListener.Port == MihomoMixedPort)
+                    MihomoMixedPort++;
+                else if (activeTcpListener.Port > MihomoMixedPort)
+                    break;
+
+            await using FileStream mihomoConfStream = new(MainConst.MihomoConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+            Dictionary<string, object> mihomoConfDict = new DeserializerBuilder()
+                .WithNamingConvention(HyphenatedNamingConvention.Instance)
+                .IgnoreUnmatchedProperties()
+                .Build()
+                .Deserialize<Dictionary<string, object>>(ExtraMihomoConfs = await new StreamReader(mihomoConfStream).ReadToEndAsync()) ?? [];
+
+            mihomoConfDict["mixed-port"] = MihomoMixedPort;
+            mihomoConfDict["dns"] = new
+            {
+                enable = true,
+                listen = ":53",
+                enhancedMode = "redir-host",
+                nameserver = MainConst.MihomoNameServers
+            };
+            mihomoConfDict["tun"] = new
+            {
+                enable = true,
+                stack = "system",
+                autoRoute = true,
+                autoDetectInterface = true,
+                dnsHijack = new[] { "any:53", "tcp://any:53" }
+            };
+
+            MihomoConfs = new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfDict);
         }
+        catch { MihomoConfs = string.Empty; }
     }
     private void MainWin_KeyDown(object sender, KeyEventArgs e)
     {

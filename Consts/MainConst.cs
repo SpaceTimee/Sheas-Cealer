@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
-using Microsoft.Win32;
 
 namespace Sheas_Cealer.Consts;
 
-internal partial class MainConst : MainMultilangConst
+internal abstract partial class MainConst : MainMultilangConst
 {
     internal enum SettingsMode
     { BrowserPathMode, UpstreamUrlMode, ExtraArgsMode };

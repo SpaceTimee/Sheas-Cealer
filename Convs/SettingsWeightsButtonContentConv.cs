@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Sheas_Cealer.Consts;
+using System;
 using System.Globalization;
 using System.Windows.Data;
-using Sheas_Cealer.Consts;
 
 namespace Sheas_Cealer.Convs;
 
 internal class SettingsWeightsButtonContentConv : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {
         bool? isLightWeight = value as bool?;
 

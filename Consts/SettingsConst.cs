@@ -1,3 +1,3 @@
 ﻿namespace Sheas_Cealer.Consts;
 
-internal class SettingsConst : SettingsMultilangConst;
+internal abstract class SettingsConst : SettingsMultilangConst;

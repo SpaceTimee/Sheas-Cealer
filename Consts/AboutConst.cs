@@ -2,7 +2,7 @@
 
 namespace Sheas_Cealer.Consts;
 
-internal class AboutConst : AboutMultilangConst
+internal abstract class AboutConst : AboutMultilangConst
 {
     public static string DeveloperButtonUrl => "https://www.spacetimee.xyz";
     public static string VersionButtonVersionContent => Assembly.GetExecutingAssembly().GetName().Version!.ToString()[..^2];

@@ -1,11 +1,11 @@
-﻿using System.Diagnostics;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Sheas_Cealer.Props;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Sheas_Cealer.Props;
 
 namespace Sheas_Cealer.Preses;
 

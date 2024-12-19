@@ -10,9 +10,9 @@ internal static partial class BorderThemeSetter
     private const int DwmwaUseImmersiveDarkMode = 20;
 
     [LibraryImport("dwmapi.dll")]
-    private static partial int DwmGetWindowAttribute(nint hwnd, uint attr, out nint attrValue, uint attrSize);
+    private static partial void DwmGetWindowAttribute(nint hwnd, uint attr, out nint attrValue, uint attrSize);
     [LibraryImport("dwmapi.dll")]
-    private static partial int DwmSetWindowAttribute(nint hwnd, uint attr, ref nint attrValue, uint attrSize);
+    private static partial void DwmSetWindowAttribute(nint hwnd, uint attr, ref nint attrValue, uint attrSize);
 
     internal static void SetBorderTheme(Window window, bool? isLightTheme)
     {
@@ -25,7 +25,7 @@ internal static partial class BorderThemeSetter
         else
             DwmGetWindowAttribute(desktopHwnd, DwmwaUseImmersiveDarkMode, out isDarkTheme, (uint)Marshal.SizeOf(typeof(nint)));
 
-        _ = DwmSetWindowAttribute(windowHwnd, DwmwaUseImmersiveDarkModeOld, ref isDarkTheme, (uint)Marshal.SizeOf(typeof(nint)));
-        _ = DwmSetWindowAttribute(windowHwnd, DwmwaUseImmersiveDarkMode, ref isDarkTheme, (uint)Marshal.SizeOf(typeof(nint)));
+        DwmSetWindowAttribute(windowHwnd, DwmwaUseImmersiveDarkModeOld, ref isDarkTheme, (uint)Marshal.SizeOf(typeof(nint)));
+        DwmSetWindowAttribute(windowHwnd, DwmwaUseImmersiveDarkMode, ref isDarkTheme, (uint)Marshal.SizeOf(typeof(nint)));
     }
 }

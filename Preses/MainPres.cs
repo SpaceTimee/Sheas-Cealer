@@ -1,10 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Win32;
 using Sheas_Cealer.Consts;
 using Sheas_Cealer.Props;
+using System;
+using System.Diagnostics;
+using System.IO;
 using File = System.IO.File;
 
 namespace Sheas_Cealer.Preses;
@@ -42,33 +42,33 @@ internal partial class MainPres : GlobalPres
     private string browserPath;
     partial void OnBrowserPathChanged(string value)
     {
-        if (File.Exists(value) && Path.GetFileName(value).ToLowerInvariant().EndsWith(".exe"))
-        {
-            Settings.Default.BrowserPath = value;
-            Settings.Default.Save();
-        }
+        if (!File.Exists(value) || !Path.GetFileName(value).ToLowerInvariant().EndsWith(".exe"))
+            return;
+
+        Settings.Default.BrowserPath = value;
+        Settings.Default.Save();
     }
 
     [ObservableProperty]
     private string upstreamUrl;
     partial void OnUpstreamUrlChanged(string value)
     {
-        if (MainConst.UpstreamUrlRegex().IsMatch(value))
-        {
-            Settings.Default.UpstreamUrl = value;
-            Settings.Default.Save();
-        }
+        if (!MainConst.UpstreamUrlRegex().IsMatch(value))
+            return;
+
+        Settings.Default.UpstreamUrl = value;
+        Settings.Default.Save();
     }
 
     [ObservableProperty]
     private string extraArgs;
     partial void OnExtraArgsChanged(string value)
     {
-        if (MainConst.ExtraArgsRegex().IsMatch(value))
-        {
-            Settings.Default.ExtraArgs = value;
-            Settings.Default.Save();
-        }
+        if (!MainConst.ExtraArgsRegex().IsMatch(value))
+            return;
+
+        Settings.Default.ExtraArgs = value;
+        Settings.Default.Save();
     }
 
     [ObservableProperty]

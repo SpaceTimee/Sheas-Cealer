@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Sheas_Core;
+using System;
 using System.Windows;
-using Sheas_Core;
 
 namespace Sheas_Cealer.Proces;
 
@@ -15,7 +15,7 @@ internal class BrowserProc : Proc
         Process_Exited(null!, null!);
     }
 
-    public override void Process_Exited(object sender, EventArgs e)
+    protected sealed override void Process_Exited(object sender, EventArgs e)
     {
         if (ShutDownAppOnProcessExit)
             Application.Current.Dispatcher.InvokeShutdown();
