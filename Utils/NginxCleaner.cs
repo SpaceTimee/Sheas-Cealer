@@ -9,11 +9,11 @@ namespace Sheas_Cealer.Utils
 {
     internal static class NginxCleaner
     {
-        private static readonly object IsCleaningLock = new();
+        private static readonly SemaphoreSlim IsCleaningSemaphore = new(1);
 
         internal static async Task Clean()
         {
-            if (!Monitor.TryEnter(IsCleaningLock))
+            if (!await IsCleaningSemaphore.WaitAsync(0))
                 return;
 
             try
@@ -40,7 +40,7 @@ namespace Sheas_Cealer.Utils
 
                 certStore.Close();
             }
-            finally { Monitor.Exit(IsCleaningLock); }
+            finally { IsCleaningSemaphore.Release(); }
         }
     }
 }
