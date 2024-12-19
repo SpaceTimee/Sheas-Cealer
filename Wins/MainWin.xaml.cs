@@ -304,7 +304,7 @@ public partial class MainWin : Window
             foreach (Process nginxProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.NginxPath)))
             {
                 nginxProcess.Kill();
-                await nginxProcess.WaitForExitAsync();
+                nginxProcess.WaitForExit();
             }
 
             NginxCleaner.Clean();
@@ -379,7 +379,7 @@ public partial class MainWin : Window
             foreach (Process mihomoProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)))
             {
                 mihomoProcess.Kill();
-                await mihomoProcess.WaitForExitAsync();
+                mihomoProcess.WaitForExit();
             }
 
             MihomoMixedPort = 7880;
