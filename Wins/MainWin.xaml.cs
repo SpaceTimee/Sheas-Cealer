@@ -91,7 +91,15 @@ public partial class MainWin : Window
             UpdateUpstreamHostButton_Click(null!, null!);
         });
     }
-    private void MainWin_Closing(object sender, CancelEventArgs e) => Application.Current.Shutdown();
+    private void MainWin_Closing(object sender, CancelEventArgs e)
+    {
+        if (MainPres.IsNginxIniting)
+            File.WriteAllText(MainConst.NginxConfPath, ExtraNginxConfs);
+        if (MainPres.IsMihomoIniting)
+            File.WriteAllText(MainConst.MihomoConfPath, ExtraMihomoConfs);
+
+        Application.Current.Shutdown();
+    }
 
     private void MainWin_DragEnter(object sender, DragEventArgs e)
     {
@@ -263,41 +271,46 @@ public partial class MainWin : Window
             File.AppendAllText(MainConst.HostsConfPath, hostsConfAppendContent);
             #endregion Child Cert & Hosts
 
-            MainPres.IsNginxIniting = true;
-            NginxConfWatcher.EnableRaisingEvents = false;
-            NginxConfs!.Save(MainConst.NginxConfPath);
-
-            await Task.Run(() =>
+            try
             {
-                new NginxProc().Run(Path.GetDirectoryName(MainConst.NginxPath), @$"-c ""{Path.GetRelativePath(Path.GetDirectoryName(MainConst.NginxPath)!, MainConst.NginxConfPath)}""");
-            });
+                MainPres.IsNginxIniting = true;
+                NginxConfWatcher.EnableRaisingEvents = false;
+                NginxConfs!.Save(MainConst.NginxConfPath);
 
-            while (true)
-            {
-                try
+                await Task.Run(() =>
                 {
-                    await Http.GetAsync<HttpResponseMessage>($"https://localhost:{NginxHttpsPort}", MainClient);
+                    new NginxProc().Run(Path.GetDirectoryName(MainConst.NginxPath), @$"-c ""{Path.GetRelativePath(Path.GetDirectoryName(MainConst.NginxPath)!, MainConst.NginxConfPath)}""");
+                });
 
-                    break;
-                }
-                catch (HttpRequestException ex)
+                while (true)
                 {
-                    if (ex.InnerException is SocketException innerEx && innerEx.SocketErrorCode != SocketError.ConnectionRefused)
+                    try
+                    {
+                        await Http.GetAsync<HttpResponseMessage>($"https://localhost:{NginxHttpsPort}", MainClient);
+
                         break;
-                }
+                    }
+                    catch (HttpRequestException ex)
+                    {
+                        if (ex.InnerException is SocketException innerEx && innerEx.SocketErrorCode != SocketError.ConnectionRefused)
+                            break;
+                    }
 
-                if (!MainPres.IsNginxRunning)
-                {
-                    if (MessageBox.Show(MainConst._LaunchNginxErrorPrompt, string.Empty, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                        Process.Start(new ProcessStartInfo(MainConst.NginxErrorLogsPath) { UseShellExecute = true });
+                    if (!MainPres.IsNginxRunning)
+                    {
+                        if (MessageBox.Show(MainConst._LaunchNginxErrorPrompt, string.Empty, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                            Process.Start(new ProcessStartInfo(MainConst.NginxErrorLogsPath) { UseShellExecute = true });
 
-                    break;
+                        break;
+                    }
                 }
             }
-
-            File.WriteAllText(MainConst.NginxConfPath, ExtraNginxConfs);
-            NginxConfWatcher.EnableRaisingEvents = true;
-            MainPres.IsNginxIniting = false;
+            finally
+            {
+                File.WriteAllText(MainConst.NginxConfPath, ExtraNginxConfs);
+                NginxConfWatcher.EnableRaisingEvents = true;
+                MainPres.IsNginxIniting = false;
+            }
         }
         else
         {
@@ -339,40 +352,45 @@ public partial class MainWin : Window
             if (!File.Exists(MainConst.MihomoConfPath))
                 File.Create(MainConst.MihomoConfPath).Dispose();
 
-            MainPres.IsMihomoIniting = true;
-            MihomoConfWatcher.EnableRaisingEvents = false;
-            File.WriteAllText(MainConst.MihomoConfPath, MihomoConfs);
-
-            await Task.Run(() =>
+            try
             {
-                new MihomoProc().Run(Path.GetDirectoryName(MainConst.MihomoPath), @$"-d ""{Path.GetDirectoryName(MainConst.MihomoConfPath)}""");
-            });
+                MainPres.IsMihomoIniting = true;
+                MihomoConfWatcher.EnableRaisingEvents = false;
+                File.WriteAllText(MainConst.MihomoConfPath, MihomoConfs);
 
-            while (true)
-            {
-                try
+                await Task.Run(() =>
                 {
-                    await Http.GetAsync<HttpResponseMessage>($"http://localhost:{MihomoMixedPort}", MainClient);
+                    new MihomoProc().Run(Path.GetDirectoryName(MainConst.MihomoPath), @$"-d ""{Path.GetDirectoryName(MainConst.MihomoConfPath)}""");
+                });
 
-                    break;
-                }
-                catch (HttpRequestException ex)
+                while (true)
                 {
-                    if (ex.InnerException is SocketException innerEx && innerEx.SocketErrorCode != SocketError.ConnectionRefused)
+                    try
+                    {
+                        await Http.GetAsync<HttpResponseMessage>($"http://localhost:{MihomoMixedPort}", MainClient);
+
                         break;
-                }
+                    }
+                    catch (HttpRequestException ex)
+                    {
+                        if (ex.InnerException is SocketException innerEx && innerEx.SocketErrorCode != SocketError.ConnectionRefused)
+                            break;
+                    }
 
-                if (!MainPres.IsMihomoRunning)
-                {
-                    MessageBox.Show(MainConst._LaunchMihomoErrorMsg);
+                    if (!MainPres.IsMihomoRunning)
+                    {
+                        MessageBox.Show(MainConst._LaunchMihomoErrorMsg);
 
-                    break;
+                        break;
+                    }
                 }
             }
-
-            File.WriteAllText(MainConst.MihomoConfPath, ExtraMihomoConfs);
-            MihomoConfWatcher.EnableRaisingEvents = true;
-            MainPres.IsMihomoIniting = false;
+            finally
+            {
+                File.WriteAllText(MainConst.MihomoConfPath, ExtraMihomoConfs);
+                MihomoConfWatcher.EnableRaisingEvents = true;
+                MainPres.IsMihomoIniting = false;
+            }
         }
         else
         {
