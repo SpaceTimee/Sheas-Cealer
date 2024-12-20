@@ -23,13 +23,15 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" d:Foreground="{x:Static consts:AboutConst.AccentBlueColor}"
+        <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5"
+                d:Foreground="{Binding Source={x:Static consts:AboutConst.AccentBlueColor}, Converter={x:Static convs:AboutConv.AboutAccentButtonForegroundConv}}"
                 Foreground="{Binding AccentForegroundColor, Converter={x:Static convs:AboutConv.AboutAccentButtonForegroundConv}}"
                 Content="{x:Static consts:AboutConst.DeveloperButtonContent}"
                 ToolTip="{x:Static consts:AboutConst.DeveloperButtonUrl}"
                 Click="AboutButton_Click" />
         <Button x:Name="VersionButton"
-                Grid.Row="1" Grid.Column="0" Margin="5" d:Foreground="{x:Static consts:AboutConst.AccentBlueColor}" d:Content="# # #: #.#.#"
+                Grid.Row="1" Grid.Column="0" Margin="5" d:Content="# # #: #.#.#"
+                d:Foreground="{Binding Source={x:Static consts:AboutConst.AccentBlueColor}, Converter={x:Static convs:AboutConv.AboutAccentButtonForegroundConv}}"
                 Foreground="{Binding AccentForegroundColor, Converter={x:Static convs:AboutConv.AboutAccentButtonForegroundConv}}"
                 ToolTip="{x:Static consts:AboutConst.VersionButtonUrl}"
                 Click="AboutButton_Click">

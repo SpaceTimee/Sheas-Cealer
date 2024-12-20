@@ -13,7 +13,7 @@ namespace Sheas_Cealer;
 
 public partial class App : Application
 {
-    protected override void OnStartup(StartupEventArgs e)
+    private void App_OnStartup(object sender, StartupEventArgs e)
     {
         #region Upgrade Settings
         if (Settings.Default.IsUpgradeRequired)

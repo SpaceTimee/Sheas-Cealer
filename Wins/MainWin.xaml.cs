@@ -89,9 +89,9 @@ public partial class MainWin : Window
                 await NginxCleaner.Clean();
 
             if (Array.Exists(Environment.GetCommandLineArgs(), arg => arg.Equals("-s", StringComparison.OrdinalIgnoreCase)))
-                LaunchButton_Click(null!, null!);
+                LaunchButton_Click(null, null!);
 
-            UpdateUpstreamHostButton_Click(null!, null!);
+            UpdateUpstreamHostButton_Click(null, null!);
         });
     }
     private async void MainWin_Closing(object sender, CancelEventArgs e)

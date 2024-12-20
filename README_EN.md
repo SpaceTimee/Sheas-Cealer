@@ -8,7 +8,7 @@
 ## About
 **Sheas Cealer**: A SNI concealing tool based on **WPF(.Net8)**
 
-* Applicable platform: Windows x64
+* Applicable platform: Windows
 
 ## Vocabulary
 **[Sheas Cealer Dictionary](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Dictionary)**
@@ -29,6 +29,8 @@
 ## Download
 1. Github (preferred): [https://github.com/SpaceTimee/Sheas-Cealer/releases](https://github.com/SpaceTimee/Sheas-Cealer/releases)
 2. Lanzou (password 3wnj) (recommended in mainland China): [https://spacetime.lanzouu.com/b017hp0lc](https://spacetime.lanzouu.com/b017hp0lc)
+
+> Scd version: The Scd version has a built-in .Net runtime and can run in an environment without a .Net runtime, but the cost is a larger file size and worse cross-platform capabilities. If there is no special reason, it is not recommended to use the Scd version
 
 ## Installation
 1. Setup Installer (preferred): Download Sheas Cealer Setup.exe and run -> Then follow the prompts to install
