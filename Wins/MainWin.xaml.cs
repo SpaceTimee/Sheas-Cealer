@@ -599,7 +599,7 @@ public partial class MainWin : Window
                 return;
 
             JsonDocumentOptions cealHostOptions = new() { AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip };
-            JsonElement cealHostArray = (await JsonDocument.ParseAsync(cealHostStream, cealHostOptions)).RootElement;
+            JsonElement cealHostArray = JsonDocument.Parse(cealHostStream, cealHostOptions).RootElement;
 
             foreach (JsonElement cealHostRule in cealHostArray.EnumerateArray())
             {
@@ -674,7 +674,7 @@ public partial class MainWin : Window
                 break;
 
         await using FileStream nginxConfStream = new(MainConst.NginxConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-        NginxConfig extraNginxConfig = NginxConfig.Load(ExtraNginxConfs = await new StreamReader(nginxConfStream).ReadToEndAsync());
+        NginxConfig extraNginxConfig = NginxConfig.Load(ExtraNginxConfs = new StreamReader(nginxConfStream).ReadToEnd());
         int serverIndex = 0;
 
         foreach (IToken extraNginxConfigToken in extraNginxConfig.GetTokens())
