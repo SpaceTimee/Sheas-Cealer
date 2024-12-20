@@ -89,7 +89,7 @@ public partial class MainWin : Window
                 await NginxCleaner.Clean();
 
             if (Array.Exists(Environment.GetCommandLineArgs(), arg => arg.Equals("-s", StringComparison.OrdinalIgnoreCase)))
-                StartButton_Click(null!, null!);
+                BrowserButton_Click(null!, null!);
 
             UpdateUpstreamHostButton_Click(null!, null!);
         });
@@ -159,18 +159,18 @@ public partial class MainWin : Window
         }
     }
 
-    private void StartButton_Click(object? sender, RoutedEventArgs e)
+    private void BrowserButton_Click(object? sender, RoutedEventArgs e)
     {
         if (HoldButtonTimer == null || HoldButtonTimer.IsEnabled)
-            StartButtonHoldTimer_Tick(sender == null, null!);
+            BrowserButtonHoldTimer_Tick(sender == null, null!);
     }
-    private void StartButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    private void BrowserButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
         HoldButtonTimer = new() { Interval = TimeSpan.FromSeconds(1) };
-        HoldButtonTimer.Tick += StartButtonHoldTimer_Tick;
+        HoldButtonTimer.Tick += BrowserButtonHoldTimer_Tick;
         HoldButtonTimer.Start();
     }
-    private async void StartButtonHoldTimer_Tick(object? sender, EventArgs e)
+    private async void BrowserButtonHoldTimer_Tick(object? sender, EventArgs e)
     {
         HoldButtonTimer?.Stop();
 

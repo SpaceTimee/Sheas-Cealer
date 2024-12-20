@@ -123,9 +123,6 @@
   <data name="AboutButtonToolTip" xml:space="preserve">
     <value>点击打开关于窗口</value>
   </data>
-  <data name="SettingsModeButtonBrowserPathContent" xml:space="preserve">
-    <value>文件路径</value>
-  </data>
   <data name="EditHostsConfButtonContent" xml:space="preserve">
     <value>编辑 Hosts 配置</value>
   </data>
@@ -155,9 +152,6 @@
   </data>
   <data name="EditUpstreamHostButtonToolTip" xml:space="preserve">
     <value>点击编辑上游规则</value>
-  </data>
-  <data name="SettingsModeButtonExtraArgsContent" xml:space="preserve">
-    <value>额外参数</value>
   </data>
   <data name="MihomoButtonIsInitingContent" xml:space="preserve">
     <value>全局净化启动中</value>
@@ -228,13 +222,22 @@
   <data name="SettingsFunctionButtonUpstreamUrlContent" xml:space="preserve">
     <value>重置链接</value>
   </data>
+  <data name="SettingsModeButtonBrowserPathContent" xml:space="preserve">
+    <value>文件路径</value>
+  </data>
+  <data name="SettingsModeButtonExtraArgsContent" xml:space="preserve">
+    <value>额外参数</value>
+  </data>
   <data name="SettingsModeButtonToolTip" xml:space="preserve">
     <value>点击切换设置模式</value>
   </data>
-  <data name="StartButtonContent" xml:space="preserve">
+  <data name="SettingsModeButtonUpstreamUrlContent" xml:space="preserve">
+    <value>上游链接</value>
+  </data>
+  <data name="BrowserButtonContent" xml:space="preserve">
     <value>启动伪造</value>
   </data>
-  <data name="StartButtonToolTip" xml:space="preserve">
+  <data name="BrowserButtonToolTip" xml:space="preserve">
     <value>点击启动参数注入完成的浏览器</value>
   </data>
   <data name="UpdateUpstreamHostButtonContent" xml:space="preserve">
@@ -242,9 +245,6 @@
   </data>
   <data name="UpdateUpstreamHostButtonToolTip" xml:space="preserve">
     <value>点击更新上游规则</value>
-  </data>
-  <data name="SettingsModeButtonUpstreamUrlContent" xml:space="preserve">
-    <value>上游链接</value>
   </data>
   <data name="_BrowserPathDialogFilterFileType" xml:space="preserve">
     <value>浏览器</value>

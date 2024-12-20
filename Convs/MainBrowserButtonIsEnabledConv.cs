@@ -6,7 +6,7 @@ using System.Windows.Data;
 
 namespace Sheas_Cealer.Convs;
 
-internal class MainStartButtonIsEnabledConv : IMultiValueConverter
+internal class MainBrowserButtonIsEnabledConv : IMultiValueConverter
 {
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {

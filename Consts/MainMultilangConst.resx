@@ -123,9 +123,6 @@
   <data name="AboutButtonToolTip" xml:space="preserve">
     <value>Click to open the about window</value>
   </data>
-  <data name="SettingsModeButtonBrowserPathContent" xml:space="preserve">
-    <value>Browser Path</value>
-  </data>
   <data name="EditHostsConfButtonContent" xml:space="preserve">
     <value>Edit Hosts Conf</value>
   </data>
@@ -155,9 +152,6 @@
   </data>
   <data name="EditUpstreamHostButtonToolTip" xml:space="preserve">
     <value>Click to edit upstream host</value>
-  </data>
-  <data name="SettingsModeButtonExtraArgsContent" xml:space="preserve">
-    <value>Extra Args</value>
   </data>
   <data name="MihomoButtonIsInitingContent" xml:space="preserve">
     <value>GLB. Purging INIT.</value>
@@ -228,13 +222,22 @@
   <data name="SettingsFunctionButtonUpstreamUrlContent" xml:space="preserve">
     <value>Reset URL</value>
   </data>
+  <data name="SettingsModeButtonBrowserPathContent" xml:space="preserve">
+    <value>Browser Path</value>
+  </data>
+  <data name="SettingsModeButtonExtraArgsContent" xml:space="preserve">
+    <value>Extra Args</value>
+  </data>
   <data name="SettingsModeButtonToolTip" xml:space="preserve">
     <value>Click to switch settings</value>
   </data>
-  <data name="StartButtonContent" xml:space="preserve">
+  <data name="SettingsModeButtonUpstreamUrlContent" xml:space="preserve">
+    <value>Upstream URL</value>
+  </data>
+  <data name="BrowserButtonContent" xml:space="preserve">
     <value>Start Cealing</value>
   </data>
-  <data name="StartButtonToolTip" xml:space="preserve">
+  <data name="BrowserButtonToolTip" xml:space="preserve">
     <value>Click to launch the injected browser</value>
   </data>
   <data name="UpdateUpstreamHostButtonContent" xml:space="preserve">
@@ -242,9 +245,6 @@
   </data>
   <data name="UpdateUpstreamHostButtonToolTip" xml:space="preserve">
     <value>Click to update upstream host</value>
-  </data>
-  <data name="SettingsModeButtonUpstreamUrlContent" xml:space="preserve">
-    <value>Upstream URL</value>
   </data>
   <data name="_BrowserPathDialogFilterFileType" xml:space="preserve">
     <value>Browser</value>

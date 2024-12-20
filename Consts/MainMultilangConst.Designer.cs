@@ -259,6 +259,24 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 Start Cealing 的本地化字符串。
+        /// </summary>
+        public static string BrowserButtonContent {
+            get {
+                return ResourceManager.GetString("BrowserButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Click to launch the injected browser 的本地化字符串。
+        /// </summary>
+        public static string BrowserButtonToolTip {
+            get {
+                return ResourceManager.GetString("BrowserButtonToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Edit Hosts Conf 的本地化字符串。
         /// </summary>
         public static string EditHostsConfButtonContent {
@@ -588,24 +606,6 @@ namespace Sheas_Cealer.Consts {
         public static string SettingsModeButtonUpstreamUrlContent {
             get {
                 return ResourceManager.GetString("SettingsModeButtonUpstreamUrlContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Start Cealing 的本地化字符串。
-        /// </summary>
-        public static string StartButtonContent {
-            get {
-                return ResourceManager.GetString("StartButtonContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Click to launch the injected browser 的本地化字符串。
-        /// </summary>
-        public static string StartButtonToolTip {
-            get {
-                return ResourceManager.GetString("StartButtonToolTip", resourceCulture);
             }
         }
         

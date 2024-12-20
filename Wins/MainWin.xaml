@@ -64,11 +64,11 @@
 
             <Button IsDefault="True"
                     Grid.Column="0" Margin="5"
-                    Content="{x:Static consts:MainConst.StartButtonContent}"
-                    ToolTip="{x:Static consts:MainConst.StartButtonToolTip}"
-                    Click="StartButton_Click" PreviewMouseDown="StartButton_PreviewMouseDown">
+                    Content="{x:Static consts:MainConst.BrowserButtonContent}"
+                    ToolTip="{x:Static consts:MainConst.BrowserButtonToolTip}"
+                    Click="BrowserButton_Click" PreviewMouseDown="BrowserButton_PreviewMouseDown">
                 <Button.IsEnabled>
-                    <MultiBinding Converter="{x:Static convs:MainConv.MainStartButtonIsEnabledConv}">
+                    <MultiBinding Converter="{x:Static convs:MainConv.MainBrowserButtonIsEnabledConv}">
                         <Binding Path="BrowserPath" />
                         <Binding Path="ExtraArgs" />
                     </MultiBinding>

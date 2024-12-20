@@ -27,7 +27,7 @@
                     "MainSettingsBoxToolTipConv.cs": [ "MainConv.cs" ],
                     "MainSettingsFunctionButtonContentConv.cs": [ "MainConv.cs" ],
                     "MainSettingsModeButtonContentConv.cs": [ "MainConv.cs" ],
-                    "MainStartButtonIsEnabledConv.cs": [ "MainConv.cs" ],
+                    "MainBrowserButtonIsEnabledConv.cs": [ "MainConv.cs" ],
                     "MainUpdateHostButtonContentConv.cs": [ "MainConv.cs" ],
                     "MainUpdateHostButtonIsEnabledConv.cs": [ "MainConv.cs" ],
                     "MainWinWidthConv.cs": [ "MainConv.cs" ],

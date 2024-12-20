@@ -16,7 +16,7 @@ internal static class MainConv
     public static MainSettingsBoxToolTipConv MainSettingsBoxToolTipConv => new();
     public static MainSettingsFunctionButtonContentConv MainSettingsFunctionButtonContentConv => new();
     public static MainSettingsModeButtonContentConv MainSettingsModeButtonContentConv => new();
-    public static MainStartButtonIsEnabledConv MainStartButtonIsEnabledConv => new();
+    public static MainBrowserButtonIsEnabledConv MainBrowserButtonIsEnabledConv => new();
     public static MainUpdateHostButtonContentConv MainUpdateHostButtonContentConv => new();
     public static MainUpdateHostButtonIsEnabledConv MainUpdateHostButtonIsEnabledConv => new();
     public static MainWinWidthConv MainWinWidthConv => new();
