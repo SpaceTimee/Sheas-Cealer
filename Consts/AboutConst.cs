@@ -1,9 +1,13 @@
 ﻿using System.Reflection;
+using System.Windows.Media;
 
 namespace Sheas_Cealer.Consts;
 
 internal abstract class AboutConst : AboutMultilangConst
 {
+    public static Color AccentBlueColor => (Color)ColorConverter.ConvertFromString("#2196F3");
+    public static Color AccentRedColor => (Color)ColorConverter.ConvertFromString("#F44336");
+
     public static string DeveloperButtonUrl => "https://www.spacetimee.xyz";
     public static string VersionButtonVersionContent => Assembly.GetExecutingAssembly().GetName().Version!.ToString()[..^2];
     public static string VersionButtonUrl => "https://spacetime.lanzouu.com/b017hp0lc";
