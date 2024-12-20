@@ -313,20 +313,21 @@ public partial class MainWin : Window
             }
         }
         else
-        {
             foreach (Process nginxProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.NginxPath)))
             {
+                nginxProcess.Exited += async (_, _) =>
+                {
+                    await NginxCleaner.Clean();
+
+                    NginxHttpPort = 80;
+                    NginxHttpsPort = 443;
+                    NginxConfWatcher_Changed(null!, null!);
+                };
+
                 nginxProcess.Kill();
-                nginxProcess.WaitForExit();
             }
-
-            await NginxCleaner.Clean();
-
-            NginxHttpPort = 80;
-            NginxHttpsPort = 443;
-            NginxConfWatcher_Changed(null!, null!);
-        }
     }
+
     private void MihomoButton_Click(object sender, RoutedEventArgs e)
     {
         if (HoldButtonTimer == null || HoldButtonTimer.IsEnabled)
@@ -393,16 +394,16 @@ public partial class MainWin : Window
             }
         }
         else
-        {
             foreach (Process mihomoProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)))
             {
-                mihomoProcess.Kill();
-                mihomoProcess.WaitForExit();
-            }
+                mihomoProcess.Exited += (_, _) =>
+                {
+                    MihomoMixedPort = 7880;
+                    MihomoConfWatcher_Changed(null!, null!);
+                };
 
-            MihomoMixedPort = 7880;
-            MihomoConfWatcher_Changed(null!, null!);
-        }
+                mihomoProcess.Kill();
+            }
     }
 
     private async void EditHostButton_Click(object sender, RoutedEventArgs e)
