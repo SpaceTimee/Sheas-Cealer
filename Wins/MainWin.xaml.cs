@@ -19,6 +19,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,6 +55,8 @@ public partial class MainWin : Window
 
     private int GameClickTime = 0;
     private int GameFlashInterval = 1000;
+
+    private static readonly SemaphoreSlim IsNginxLaunchingSemaphore = new(1);
 
     internal MainWin()
     {
@@ -203,114 +206,121 @@ public partial class MainWin : Window
 
         if (!MainPres.IsNginxRunning)
         {
-            if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._CealHostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-                (NginxHttpsPort != 443 && MessageBox.Show(string.Format(MainConst._NginxHttpsPortOccupiedPrompt, NginxHttpsPort), string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-                (NginxHttpPort != 80 && MessageBox.Show(string.Format(MainConst._NginxHttpPortOccupiedPrompt, NginxHttpPort), string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-                (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-                (MainPres.IsFlashing && MessageBox.Show(MainConst._LaunchNginxFlashingPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
+            if (NginxCleaner.IsNginxCleaningSemaphore.CurrentCount == 0 || !await IsNginxLaunchingSemaphore.WaitAsync(0))
                 return;
-
-            if (!File.Exists(MainConst.NginxConfPath))
-                await File.Create(MainConst.NginxConfPath).DisposeAsync();
-            if (!Directory.Exists(MainConst.NginxLogsPath))
-                Directory.CreateDirectory(MainConst.NginxLogsPath);
-            if (!Directory.Exists(MainConst.NginxTempPath))
-                Directory.CreateDirectory(MainConst.NginxTempPath);
-
-            RSA certKey = RSA.Create(2048);
-
-            #region Root Cert
-            CertificateRequest rootCertRequest = new(MainConst.NginxRootCertSubjectName, certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-
-            rootCertRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, false));
-
-            using X509Certificate2 rootCert = rootCertRequest.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(100));
-            using X509Store certStore = new(StoreName.Root, StoreLocation.CurrentUser, OpenFlags.ReadWrite);
-
-            certStore.Add(rootCert);
-            certStore.Close();
-            #endregion Root Cert
-
-            #region Child Cert & Hosts
-            CertificateRequest childCertRequest = new(MainConst.NginxChildCertSubjectName, certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-            SubjectAlternativeNameBuilder childCertSanBuilder = new();
-            string hostsConfAppendContent = MainConst.HostsConfStartMarker;
-
-            foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>? cealHostRules in CealHostRulesDict.Values)
-                foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, _, _) in cealHostRules ?? [])
-                    foreach ((string cealHostIncludeDomain, _) in cealHostDomainPairs)
-                    {
-                        string cealHostIncludeDomainWithoutWildcard = cealHostIncludeDomain.TrimStart('$').TrimStart('*').TrimStart('.');
-
-                        if (cealHostIncludeDomain.StartsWith('#') || cealHostIncludeDomainWithoutWildcard.Contains('*') || string.IsNullOrWhiteSpace(cealHostIncludeDomainWithoutWildcard))
-                            continue;
-
-                        if (cealHostIncludeDomain.TrimStart('$').StartsWith('*'))
-                        {
-                            childCertSanBuilder.AddDnsName($"*.{cealHostIncludeDomainWithoutWildcard}");
-                            hostsConfAppendContent += $"127.0.0.1 www.{cealHostIncludeDomainWithoutWildcard}{Environment.NewLine}";
-
-                            if (cealHostIncludeDomain.TrimStart('$').StartsWith("*."))
-                                continue;
-                        }
-
-                        childCertSanBuilder.AddDnsName(cealHostIncludeDomainWithoutWildcard);
-                        hostsConfAppendContent += $"127.0.0.1 {cealHostIncludeDomainWithoutWildcard}{Environment.NewLine}";
-                    }
-
-            childCertRequest.CertificateExtensions.Add(childCertSanBuilder.Build());
-
-            using X509Certificate2 childCert = childCertRequest.Create(rootCert, rootCert.NotBefore, rootCert.NotAfter, Guid.NewGuid().ToByteArray());
-
-            await File.WriteAllTextAsync(MainConst.NginxCertPath, childCert.ExportCertificatePem());
-            await File.WriteAllTextAsync(MainConst.NginxKeyPath, certKey.ExportPkcs8PrivateKeyPem());
-
-            hostsConfAppendContent += MainConst.HostsConfEndMarker;
-
-            File.SetAttributes(MainConst.HostsConfPath, File.GetAttributes(MainConst.HostsConfPath) & ~FileAttributes.ReadOnly);
-            await File.AppendAllTextAsync(MainConst.HostsConfPath, hostsConfAppendContent);
-            #endregion Child Cert & Hosts
 
             try
             {
-                MainPres.IsNginxIniting = true;
-                NginxConfWatcher.EnableRaisingEvents = false;
-                NginxConfs!.Save(MainConst.NginxConfPath);
+                if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._CealHostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+                    (NginxHttpsPort != 443 && MessageBox.Show(string.Format(MainConst._NginxHttpsPortOccupiedPrompt, NginxHttpsPort), string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+                    (NginxHttpPort != 80 && MessageBox.Show(string.Format(MainConst._NginxHttpPortOccupiedPrompt, NginxHttpPort), string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+                    (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+                    (MainPres.IsFlashing && MessageBox.Show(MainConst._LaunchNginxFlashingPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
+                    return;
 
-                await Task.Run(() =>
-                {
-                    new NginxProc().Run(Path.GetDirectoryName(MainConst.NginxPath), @$"-c ""{Path.GetRelativePath(Path.GetDirectoryName(MainConst.NginxPath)!, MainConst.NginxConfPath)}""");
-                });
+                if (!File.Exists(MainConst.NginxConfPath))
+                    await File.Create(MainConst.NginxConfPath).DisposeAsync();
+                if (!Directory.Exists(MainConst.NginxLogsPath))
+                    Directory.CreateDirectory(MainConst.NginxLogsPath);
+                if (!Directory.Exists(MainConst.NginxTempPath))
+                    Directory.CreateDirectory(MainConst.NginxTempPath);
 
-                while (true)
+                RSA certKey = RSA.Create(2048);
+
+                #region Root Cert
+                CertificateRequest rootCertRequest = new(MainConst.NginxRootCertSubjectName, certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
+                rootCertRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, false));
+
+                using X509Certificate2 rootCert = rootCertRequest.CreateSelfSigned(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(100));
+                using X509Store certStore = new(StoreName.Root, StoreLocation.CurrentUser, OpenFlags.ReadWrite);
+
+                certStore.Add(rootCert);
+                certStore.Close();
+                #endregion Root Cert
+
+                #region Child Cert & Hosts
+                CertificateRequest childCertRequest = new(MainConst.NginxChildCertSubjectName, certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                SubjectAlternativeNameBuilder childCertSanBuilder = new();
+                string hostsConfAppendContent = MainConst.HostsConfStartMarker;
+
+                foreach (List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>? cealHostRules in CealHostRulesDict.Values)
+                    foreach ((List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, _, _) in cealHostRules ?? [])
+                        foreach ((string cealHostIncludeDomain, _) in cealHostDomainPairs)
+                        {
+                            string cealHostIncludeDomainWithoutWildcard = cealHostIncludeDomain.TrimStart('$').TrimStart('*').TrimStart('.');
+
+                            if (cealHostIncludeDomain.StartsWith('#') || cealHostIncludeDomainWithoutWildcard.Contains('*') || string.IsNullOrWhiteSpace(cealHostIncludeDomainWithoutWildcard))
+                                continue;
+
+                            if (cealHostIncludeDomain.TrimStart('$').StartsWith('*'))
+                            {
+                                childCertSanBuilder.AddDnsName($"*.{cealHostIncludeDomainWithoutWildcard}");
+                                hostsConfAppendContent += $"127.0.0.1 www.{cealHostIncludeDomainWithoutWildcard}{Environment.NewLine}";
+
+                                if (cealHostIncludeDomain.TrimStart('$').StartsWith("*."))
+                                    continue;
+                            }
+
+                            childCertSanBuilder.AddDnsName(cealHostIncludeDomainWithoutWildcard);
+                            hostsConfAppendContent += $"127.0.0.1 {cealHostIncludeDomainWithoutWildcard}{Environment.NewLine}";
+                        }
+
+                childCertRequest.CertificateExtensions.Add(childCertSanBuilder.Build());
+
+                using X509Certificate2 childCert = childCertRequest.Create(rootCert, rootCert.NotBefore, rootCert.NotAfter, Guid.NewGuid().ToByteArray());
+
+                await File.WriteAllTextAsync(MainConst.NginxCertPath, childCert.ExportCertificatePem());
+                await File.WriteAllTextAsync(MainConst.NginxKeyPath, certKey.ExportPkcs8PrivateKeyPem());
+
+                hostsConfAppendContent += MainConst.HostsConfEndMarker;
+
+                File.SetAttributes(MainConst.HostsConfPath, File.GetAttributes(MainConst.HostsConfPath) & ~FileAttributes.ReadOnly);
+                await File.AppendAllTextAsync(MainConst.HostsConfPath, hostsConfAppendContent);
+                #endregion Child Cert & Hosts
+
+                try
                 {
-                    try
+                    MainPres.IsNginxIniting = true;
+                    NginxConfWatcher.EnableRaisingEvents = false;
+                    NginxConfs!.Save(MainConst.NginxConfPath);
+
+                    await Task.Run(() =>
                     {
-                        await Http.GetAsync<HttpResponseMessage>($"https://localhost:{NginxHttpsPort}", MainClient);
+                        new NginxProc().Run(Path.GetDirectoryName(MainConst.NginxPath), @$"-c ""{Path.GetRelativePath(Path.GetDirectoryName(MainConst.NginxPath)!, MainConst.NginxConfPath)}""");
+                    });
+
+                    while (true)
+                    {
+                        try
+                        {
+                            await Http.GetAsync<HttpResponseMessage>($"https://localhost:{NginxHttpsPort}", MainClient);
+
+                            break;
+                        }
+                        catch (HttpRequestException ex)
+                        {
+                            if (ex.InnerException is SocketException innerEx && innerEx.SocketErrorCode != SocketError.ConnectionRefused)
+                                break;
+                        }
+
+                        if (MainPres.IsNginxRunning)
+                            continue;
+
+                        if (MessageBox.Show(MainConst._LaunchNginxErrorPrompt, string.Empty, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                            Process.Start(new ProcessStartInfo(MainConst.NginxErrorLogsPath) { UseShellExecute = true });
 
                         break;
                     }
-                    catch (HttpRequestException ex)
-                    {
-                        if (ex.InnerException is SocketException innerEx && innerEx.SocketErrorCode != SocketError.ConnectionRefused)
-                            break;
-                    }
-
-                    if (MainPres.IsNginxRunning)
-                        continue;
-
-                    if (MessageBox.Show(MainConst._LaunchNginxErrorPrompt, string.Empty, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                        Process.Start(new ProcessStartInfo(MainConst.NginxErrorLogsPath) { UseShellExecute = true });
-
-                    break;
+                }
+                finally
+                {
+                    await File.WriteAllTextAsync(MainConst.NginxConfPath, ExtraNginxConfs);
+                    NginxConfWatcher.EnableRaisingEvents = true;
+                    MainPres.IsNginxIniting = false;
                 }
             }
-            finally
-            {
-                await File.WriteAllTextAsync(MainConst.NginxConfPath, ExtraNginxConfs);
-                NginxConfWatcher.EnableRaisingEvents = true;
-                MainPres.IsNginxIniting = false;
-            }
+            finally { IsNginxLaunchingSemaphore.Release(); }
         }
         else
             foreach (Process nginxProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.NginxPath)))
