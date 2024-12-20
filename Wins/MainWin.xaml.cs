@@ -89,7 +89,7 @@ public partial class MainWin : Window
                 await NginxCleaner.Clean();
 
             if (Array.Exists(Environment.GetCommandLineArgs(), arg => arg.Equals("-s", StringComparison.OrdinalIgnoreCase)))
-                BrowserButton_Click(null!, null!);
+                LaunchButton_Click(null!, null!);
 
             UpdateUpstreamHostButton_Click(null!, null!);
         });
@@ -159,17 +159,29 @@ public partial class MainWin : Window
         }
     }
 
-    private void BrowserButton_Click(object? sender, RoutedEventArgs e)
+    private void LaunchButton_Click(object? sender, RoutedEventArgs e)
     {
-        if (HoldButtonTimer == null || HoldButtonTimer.IsEnabled)
+        if (HoldButtonTimer != null && !HoldButtonTimer.IsEnabled)
+            return;
+
+        Button? senderButton = sender as Button;
+
+        if (senderButton == NginxButton)
+            NginxButtonHoldTimer_Tick(null, null!);
+        else if (senderButton == MihomoButton)
+            MihomoButtonHoldTimer_Tick(null, null!);
+        else
             BrowserButtonHoldTimer_Tick(sender == null, null!);
     }
-    private void BrowserButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    private void LaunchButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
+        Button senderButton = (Button)sender;
+
         HoldButtonTimer = new() { Interval = TimeSpan.FromSeconds(1) };
-        HoldButtonTimer.Tick += BrowserButtonHoldTimer_Tick;
+        HoldButtonTimer.Tick += senderButton == NginxButton ? NginxButtonHoldTimer_Tick : senderButton == MihomoButton ? MihomoButtonHoldTimer_Tick : BrowserButtonHoldTimer_Tick;
         HoldButtonTimer.Start();
     }
+
     private async void BrowserButtonHoldTimer_Tick(object? sender, EventArgs e)
     {
         HoldButtonTimer?.Stop();
@@ -188,17 +200,6 @@ public partial class MainWin : Window
         {
             new BrowserProc(MainPres.BrowserPath, sender is bool).Run(Path.GetDirectoryName(MainPres.BrowserPath), $"{CealArgs} {MainPres.ExtraArgs.Trim()}");
         });
-    }
-    private void NginxButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (HoldButtonTimer == null || HoldButtonTimer.IsEnabled)
-            NginxButtonHoldTimer_Tick(null, null!);
-    }
-    private void NginxButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-    {
-        HoldButtonTimer = new() { Interval = TimeSpan.FromSeconds(1) };
-        HoldButtonTimer.Tick += NginxButtonHoldTimer_Tick;
-        HoldButtonTimer.Start();
     }
     private async void NginxButtonHoldTimer_Tick(object? sender, EventArgs e)
     {
@@ -336,18 +337,6 @@ public partial class MainWin : Window
 
                 nginxProcess.Kill();
             }
-    }
-
-    private void MihomoButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (HoldButtonTimer == null || HoldButtonTimer.IsEnabled)
-            MihomoButtonHoldTimer_Tick(null, null!);
-    }
-    private void MihomoButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-    {
-        HoldButtonTimer = new() { Interval = TimeSpan.FromSeconds(1) };
-        HoldButtonTimer.Tick += MihomoButtonHoldTimer_Tick;
-        HoldButtonTimer.Start();
     }
     private async void MihomoButtonHoldTimer_Tick(object? sender, EventArgs e)
     {
