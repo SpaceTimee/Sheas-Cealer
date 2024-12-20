@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -760,7 +761,23 @@ public partial class MainWin : Window
     }
     private void MainWin_KeyDown(object sender, KeyEventArgs e)
     {
-        if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.W)
+        if (e.KeyboardDevice.Modifiers != ModifierKeys.Control)
+            return;
+
+        if (e.Key == Key.W)
             Application.Current.Shutdown();
+        else if (e.Key == Key.H)
+        {
+            System.Windows.Forms.NotifyIcon notifyIcon = new() { Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location), Text = MainConst.NotifyIconText, Visible = true };
+
+            notifyIcon.Click += (_, _) =>
+            {
+                Show();
+
+                notifyIcon.Dispose();
+            };
+
+            Hide();
+        }
     }
 }
