@@ -41,6 +41,7 @@ public partial class MainWin : Window
     private readonly FileSystemWatcher CealHostWatcher = new(Path.GetDirectoryName(MainConst.CealHostPath)!, Path.GetFileName(MainConst.CealHostPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private readonly FileSystemWatcher NginxConfWatcher = new(Path.GetDirectoryName(MainConst.NginxConfPath)!, Path.GetFileName(MainConst.NginxConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
     private readonly FileSystemWatcher MihomoConfWatcher = new(Path.GetDirectoryName(MainConst.MihomoConfPath)!, Path.GetFileName(MainConst.MihomoConfPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
+    private readonly SemaphoreSlim IsNginxLaunchingSemaphore = new(1);
 
     private readonly SortedDictionary<string, List<(List<(string cealHostIncludeDomain, string cealHostExcludeDomain)> cealHostDomainPairs, string? cealHostSni, string cealHostIp)>?> CealHostRulesDict = [];
     private string CealArgs = string.Empty;
@@ -55,8 +56,6 @@ public partial class MainWin : Window
 
     private int GameClickTime = 0;
     private int GameFlashInterval = 1000;
-
-    private static readonly SemaphoreSlim IsNginxLaunchingSemaphore = new(1);
 
     internal MainWin()
     {
