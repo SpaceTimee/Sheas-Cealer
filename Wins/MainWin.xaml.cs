@@ -161,7 +161,7 @@ public partial class MainWin : Window
 
     private void LaunchButton_Click(object? sender, RoutedEventArgs e)
     {
-        if (HoldButtonTimer != null && !HoldButtonTimer.IsEnabled)
+        if (HoldButtonTimer is { IsEnabled: false })
             return;
 
         Button? senderButton = sender as Button;
@@ -181,7 +181,6 @@ public partial class MainWin : Window
         HoldButtonTimer.Tick += senderButton == NginxButton ? NginxButtonHoldTimer_Tick : senderButton == MihomoButton ? MihomoButtonHoldTimer_Tick : BrowserButtonHoldTimer_Tick;
         HoldButtonTimer.Start();
     }
-
     private async void BrowserButtonHoldTimer_Tick(object? sender, EventArgs e)
     {
         HoldButtonTimer?.Stop();
