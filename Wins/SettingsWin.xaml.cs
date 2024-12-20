@@ -47,7 +47,7 @@ public partial class SettingsWin : Window
         Style newButtonStyle = new(typeof(Button), Application.Current.Resources[typeof(Button)] as Style);
         (Color? newForegroundColor, Color newAccentForegroundColor) = ForegroundGenerator.GetForeground(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
 
-        newButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
+        newButtonStyle.Setters.Add(new Setter(ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
         Application.Current.Resources[typeof(Button)] = newButtonStyle;
 
         SettingsPres.AccentForegroundColor = newAccentForegroundColor;

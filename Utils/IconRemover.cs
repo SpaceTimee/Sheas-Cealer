@@ -32,7 +32,7 @@ internal static partial class IconRemover
 
         SetWindowPos(hwnd, nint.Zero, 0, 0, 0, 0, SwpNoMove | SwpNoSize | SwpNoZOrder | SwpFrameChanged);
 
-        SendMessage(hwnd, WmSetIcon, new nint(1), nint.Zero);
+        SendMessage(hwnd, WmSetIcon, new(1), nint.Zero);
         SendMessage(hwnd, WmSetIcon, nint.Zero, nint.Zero);
     }
 }

@@ -9,7 +9,7 @@ namespace Sheas_Cealer.Consts;
 internal abstract partial class MainConst : MainMultilangConst
 {
     internal enum SettingsMode
-    { BrowserPathMode, UpstreamUrlMode, ExtraArgsMode };
+    { BrowserPathMode, UpstreamUrlMode, ExtraArgsMode }
 
     public static bool IsAdmin => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 

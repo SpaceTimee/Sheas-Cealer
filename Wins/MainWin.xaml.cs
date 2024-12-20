@@ -34,7 +34,7 @@ namespace Sheas_Cealer.Wins;
 public partial class MainWin : Window
 {
     private readonly MainPres MainPres;
-    private readonly HttpClient MainClient = new(new HttpClientHandler() { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator });
+    private readonly HttpClient MainClient = new(new HttpClientHandler { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator });
     private DispatcherTimer? HoldButtonTimer;
     private readonly DispatcherTimer ProxyTimer = new() { Interval = TimeSpan.FromSeconds(0.1) };
     private readonly FileSystemWatcher CealHostWatcher = new(Path.GetDirectoryName(MainConst.CealHostPath)!, Path.GetFileName(MainConst.CealHostPath)) { EnableRaisingEvents = true, NotifyFilter = NotifyFilters.LastWrite };
@@ -346,7 +346,7 @@ public partial class MainWin : Window
         if (!MainPres.IsMihomoRunning)
         {
             if (string.IsNullOrWhiteSpace(MihomoConfs))
-                throw new Exception(MainConst._MihomoConfErrorMsg);
+                throw new(MainConst._MihomoConfErrorMsg);
             if (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;
 
@@ -532,7 +532,7 @@ public partial class MainWin : Window
                 Style newButtonStyle = new(typeof(Button), Application.Current.Resources[typeof(Button)] as Style);
                 (Color? newForegroundColor, Color newAccentForegroundColor) = ForegroundGenerator.GetForeground(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
 
-                newButtonStyle.Setters.Add(new Setter(Button.ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
+                newButtonStyle.Setters.Add(new Setter(ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
                 Application.Current.Resources[typeof(Button)] = newButtonStyle;
 
                 MainPres.AccentForegroundColor = newAccentForegroundColor;

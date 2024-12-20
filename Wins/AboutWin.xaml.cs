@@ -16,7 +16,7 @@ namespace Sheas_Cealer.Wins;
 public partial class AboutWin : Window
 {
     private readonly AboutPres AboutPres;
-    private readonly HttpClient AboutClient = new(new HttpClientHandler() { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator });
+    private readonly HttpClient AboutClient = new(new HttpClientHandler { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator });
 
     internal AboutWin()
     {
