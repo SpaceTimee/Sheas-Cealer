@@ -677,6 +677,7 @@ public partial class MainWin : Window
             .AddOrUpdate("events:worker_connections", "65536")
             .AddOrUpdate("http:proxy_set_header", "Host $http_host")
             .AddOrUpdate("http:proxy_ssl_server_name", !MainPres.IsFlashing ? "on" : "off")
+            .AddOrUpdate("http:proxy_buffer_size", "8k")
             .AddOrUpdate($"http:server[{serverIndex}]:listen", $"{NginxHttpPort} default_server")
             .AddOrUpdate($"http:server[{serverIndex}]:return", "https://$host$request_uri");
 
