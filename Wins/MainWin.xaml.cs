@@ -329,8 +329,6 @@ public partial class MainWin : Window
                 {
                     await NginxCleaner.Clean();
 
-                    NginxHttpPort = 80;
-                    NginxHttpsPort = 443;
                     NginxConfWatcher_Changed(null!, null!);
                 };
 
@@ -394,11 +392,7 @@ public partial class MainWin : Window
         else
             foreach (Process mihomoProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)))
             {
-                mihomoProcess.Exited += (_, _) =>
-                {
-                    MihomoMixedPort = 7880;
-                    MihomoConfWatcher_Changed(null!, null!);
-                };
+                mihomoProcess.Exited += (_, _) => MihomoConfWatcher_Changed(null!, null!);
 
                 mihomoProcess.Kill();
             }
@@ -653,6 +647,9 @@ public partial class MainWin : Window
         if (!Directory.Exists(MainConst.NginxTempPath))
             Directory.CreateDirectory(MainConst.NginxTempPath);
 
+        NginxHttpPort = 80;
+        NginxHttpsPort = 443;
+
         foreach (IPEndPoint activeTcpListener in IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners())
             if (activeTcpListener.Port == NginxHttpPort)
                 NginxHttpPort++;
@@ -724,6 +721,8 @@ public partial class MainWin : Window
         {
             if (!File.Exists(MainConst.MihomoConfPath))
                 await File.Create(MainConst.MihomoConfPath).DisposeAsync();
+
+            MihomoMixedPort = 7880;
 
             foreach (IPEndPoint activeTcpListener in IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners())
                 if (activeTcpListener.Port == MihomoMixedPort)
