@@ -8,7 +8,7 @@
 ## 自我介绍
 **Sheas Cealer**: 一只基于 **WPF(.Net8)** 的 SNI 伪造工具
 
-* 适用平台: Windows
+* 适用平台: Windows (Win10 之前的系统版本请使用 [1.1.0](https://github.com/SpaceTimee/Sheas-Cealer/releases/tag/1.1.0))
 
 ## 词汇解释
 **[Sheas Cealer Dictionary](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Dictionary)**
