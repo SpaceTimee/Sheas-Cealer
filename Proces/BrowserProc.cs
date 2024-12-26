@@ -15,7 +15,7 @@ internal class BrowserProc : Proc
         Process_Exited(null!, null!);
     }
 
-    protected sealed override void Process_Exited(object sender, EventArgs e)
+    protected sealed override void Process_Exited(object? sender, EventArgs e)
     {
         if (ShutDownAppOnProcessExit)
             Application.Current.Dispatcher.InvokeShutdown();

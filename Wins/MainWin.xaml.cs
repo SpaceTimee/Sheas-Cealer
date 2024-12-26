@@ -197,7 +197,7 @@ public partial class MainWin : Window
 
         await Task.Run(() =>
         {
-            new BrowserProc(MainPres.BrowserPath, sender is bool).Run(Path.GetDirectoryName(MainPres.BrowserPath), $"{CealArgs} {MainPres.ExtraArgs.Trim()}");
+            new BrowserProc(MainPres.BrowserPath, sender is bool).Run(Path.GetDirectoryName(MainPres.BrowserPath)!, $"{CealArgs} {MainPres.ExtraArgs.Trim()}");
         });
     }
     private async void NginxButtonHoldTimer_Tick(object? sender, EventArgs e)
@@ -287,7 +287,7 @@ public partial class MainWin : Window
 
                     await Task.Run(() =>
                     {
-                        new NginxProc().Run(Path.GetDirectoryName(MainConst.NginxPath), @$"-c ""{Path.GetRelativePath(Path.GetDirectoryName(MainConst.NginxPath)!, MainConst.NginxConfPath)}""");
+                        new NginxProc().Run(Path.GetDirectoryName(MainConst.NginxPath)!, @$"-c ""{Path.GetRelativePath(Path.GetDirectoryName(MainConst.NginxPath)!, MainConst.NginxConfPath)}""");
                     });
 
                     while (true)
@@ -357,7 +357,7 @@ public partial class MainWin : Window
 
                 await Task.Run(() =>
                 {
-                    new MihomoProc().Run(Path.GetDirectoryName(MainConst.MihomoPath), @$"-d ""{Path.GetDirectoryName(MainConst.MihomoConfPath)}""");
+                    new MihomoProc().Run(Path.GetDirectoryName(MainConst.MihomoPath)!, @$"-d ""{Path.GetDirectoryName(MainConst.MihomoConfPath)}""");
                 });
 
                 while (true)

@@ -9,5 +9,5 @@ internal class NginxProc : Proc
 {
     internal NginxProc() : base(MainConst.NginxPath) { }
 
-    protected override async void Process_Exited(object sender, EventArgs e) => await NginxCleaner.Clean();
+    protected override async void Process_Exited(object? sender, EventArgs e) => await NginxCleaner.Clean();
 }
