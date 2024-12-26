@@ -83,15 +83,15 @@ public partial class MainWin : Window
             foreach (string cealHostPath in Directory.GetFiles(CealHostWatcher.Path, CealHostWatcher.Filter))
                 CealHostWatcher_Changed(null!, new(new(), Path.GetDirectoryName(cealHostPath)!, Path.GetFileName(cealHostPath)));
 
-            MihomoConfWatcher_Changed(null!, null!);
+            MihomoConfWatcher_Changed(null!, (FileSystemEventArgs)FileSystemEventArgs.Empty);
 
             if (!MainPres.IsNginxRunning)
                 await NginxCleaner.Clean();
 
             if (Array.Exists(Environment.GetCommandLineArgs(), arg => arg.Equals("-s", StringComparison.OrdinalIgnoreCase)))
-                LaunchButton_Click(null, null!);
+                LaunchButton_Click(null, (RoutedEventArgs)RoutedEventArgs.Empty);
 
-            UpdateUpstreamHostButton_Click(null, null!);
+            UpdateUpstreamHostButton_Click(null, (RoutedEventArgs)RoutedEventArgs.Empty);
         });
     }
     private async void MainWin_Closing(object sender, CancelEventArgs e)
@@ -167,11 +167,11 @@ public partial class MainWin : Window
         Button? senderButton = sender as Button;
 
         if (senderButton == NginxButton)
-            NginxButtonHoldTimer_Tick(null, null!);
+            NginxButtonHoldTimer_Tick(null, EventArgs.Empty);
         else if (senderButton == MihomoButton)
-            MihomoButtonHoldTimer_Tick(null, null!);
+            MihomoButtonHoldTimer_Tick(null, EventArgs.Empty);
         else
-            BrowserButtonHoldTimer_Tick(sender == null, null!);
+            BrowserButtonHoldTimer_Tick(sender == null, EventArgs.Empty);
     }
     private void LaunchButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
@@ -329,7 +329,7 @@ public partial class MainWin : Window
                 {
                     await NginxCleaner.Clean();
 
-                    NginxConfWatcher_Changed(null!, null!);
+                    NginxConfWatcher_Changed(null!, (FileSystemEventArgs)FileSystemEventArgs.Empty);
                 };
 
                 nginxProcess.Kill();
@@ -392,7 +392,7 @@ public partial class MainWin : Window
         else
             foreach (Process mihomoProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)))
             {
-                mihomoProcess.Exited += (_, _) => MihomoConfWatcher_Changed(null!, null!);
+                mihomoProcess.Exited += (_, _) => MihomoConfWatcher_Changed(null!, (FileSystemEventArgs)FileSystemEventArgs.Empty);
 
                 mihomoProcess.Kill();
             }
@@ -500,7 +500,7 @@ public partial class MainWin : Window
         {
             MessageBox.Show(MainConst._GameStartMsg);
             MainPres.IsFlashing = true;
-            NginxConfWatcher_Changed(null!, null!);
+            NginxConfWatcher_Changed(null!, (FileSystemEventArgs)FileSystemEventArgs.Empty);
 
             Random random = new();
 
@@ -536,7 +536,7 @@ public partial class MainWin : Window
             }
 
             MainPres.IsFlashing = false;
-            NginxConfWatcher_Changed(null!, null!);
+            NginxConfWatcher_Changed(null!, (FileSystemEventArgs)FileSystemEventArgs.Empty);
             MessageBox.Show(MainConst._GameEndingMsg);
         }
         else
@@ -632,7 +632,7 @@ public partial class MainWin : Window
 
             CealArgs = @$"--host-rules=""{hostRules.TrimEnd(',')}"" --host-resolver-rules=""{hostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
 
-            NginxConfWatcher_Changed(null!, null!);
+            NginxConfWatcher_Changed(null!, (FileSystemEventArgs)FileSystemEventArgs.Empty);
         }
     }
     private async void NginxConfWatcher_Changed(object sender, FileSystemEventArgs e)
