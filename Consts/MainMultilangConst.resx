@@ -123,6 +123,18 @@
   <data name="AboutButtonToolTip" xml:space="preserve">
     <value>Click to open the about window</value>
   </data>
+  <data name="BrowserButtonContent" xml:space="preserve">
+    <value>Start Cealing</value>
+  </data>
+  <data name="BrowserButtonToolTip" xml:space="preserve">
+    <value>Click to launch the injected browser</value>
+  </data>
+  <data name="ComihomoButtonIsInitingContent" xml:space="preserve">
+    <value>GLB. Purging CHA.</value>
+  </data>
+  <data name="ConginxButtonIsInitingContent" xml:space="preserve">
+    <value>GLB. Cealing INIT.</value>
+  </data>
   <data name="EditHostsConfButtonContent" xml:space="preserve">
     <value>Edit Hosts Conf</value>
   </data>
@@ -233,12 +245,6 @@
   </data>
   <data name="SettingsModeButtonUpstreamUrlContent" xml:space="preserve">
     <value>Upstream URL</value>
-  </data>
-  <data name="BrowserButtonContent" xml:space="preserve">
-    <value>Start Cealing</value>
-  </data>
-  <data name="BrowserButtonToolTip" xml:space="preserve">
-    <value>Click to launch the injected browser</value>
   </data>
   <data name="UpdateUpstreamHostButtonContent" xml:space="preserve">
     <value>Update Upstream Host</value>

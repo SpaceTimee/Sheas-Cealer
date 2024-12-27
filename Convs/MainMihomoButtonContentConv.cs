@@ -11,8 +11,11 @@ internal class MainMihomoButtonContentConv : IMultiValueConverter
     {
         bool isMihomoRunning = (bool)values[0];
         bool isMihomoIniting = (bool)values[1];
+        bool isCoproxyIniting = (bool)values[2];
+        bool isCoproxyStopping = (bool)values[3];
 
-        return isMihomoIniting ? MainConst.MihomoButtonIsInitingContent :
+        return isCoproxyIniting || isCoproxyStopping ? Binding.DoNothing :
+            isMihomoIniting ? MainConst.MihomoButtonIsInitingContent :
             isMihomoRunning ? MainConst.MihomoButtonIsRunningContent : MainConst.MihomoButtonIsStoppedContent;
     }
 

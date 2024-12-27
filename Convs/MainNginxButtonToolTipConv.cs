@@ -5,14 +5,15 @@ using System.Windows.Data;
 
 namespace Sheas_Cealer.Convs;
 
-internal class MainNginxButtonToolTipConv : IValueConverter
+internal class MainNginxButtonToolTipConv : IMultiValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        bool isNginxRunning = (bool)value;
+        bool isConginxRunning = (bool)values[0];
+        bool isNginxRunning = (bool)values[1];
 
-        return isNginxRunning ? MainConst.NginxButtonIsRunningToolTip : MainConst.NginxButtonIsStoppedToolTip;
+        return isConginxRunning || isNginxRunning ? MainConst.NginxButtonIsRunningToolTip : MainConst.NginxButtonIsStoppedToolTip;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

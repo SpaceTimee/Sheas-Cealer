@@ -75,19 +75,40 @@ internal partial class MainPres : GlobalPres
     private bool isUpstreamHostUtd = true;
 
     [ObservableProperty]
+    private bool isCoproxyIniting = false;
+
+    [ObservableProperty]
+    private bool isCoproxyStopping = false;
+
+    [ObservableProperty]
+    private bool isConginxExist = File.Exists(MainConst.ConginxPath);
+
+    [ObservableProperty]
     private bool isNginxExist = File.Exists(MainConst.NginxPath);
 
     [ObservableProperty]
     private bool isNginxIniting = false;
 
     [ObservableProperty]
+    private bool isConginxRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.ConginxPath)).Length != 0;
+
+    [ObservableProperty]
     private bool isNginxRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.NginxPath)).Length != 0;
+
+    [ObservableProperty]
+    private bool isComihomoExist = File.Exists(MainConst.ComihomoPath);
 
     [ObservableProperty]
     private bool isMihomoExist = File.Exists(MainConst.MihomoPath);
 
     [ObservableProperty]
+    private bool isComihomoIniting = false;
+
+    [ObservableProperty]
     private bool isMihomoIniting = false;
+
+    [ObservableProperty]
+    private bool isComihomoRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.ComihomoPath)).Length != 0;
 
     [ObservableProperty]
     private bool isMihomoRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)).Length != 0;

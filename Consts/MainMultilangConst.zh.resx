@@ -123,6 +123,18 @@
   <data name="AboutButtonToolTip" xml:space="preserve">
     <value>点击打开关于窗口</value>
   </data>
+  <data name="BrowserButtonContent" xml:space="preserve">
+    <value>启动伪造</value>
+  </data>
+  <data name="BrowserButtonToolTip" xml:space="preserve">
+    <value>点击启动参数注入完成的浏览器</value>
+  </data>
+  <data name="ComihomoButtonIsInitingContent" xml:space="preserve">
+    <value>全局净化调整中</value>
+  </data>
+  <data name="ConginxButtonIsInitingContent" xml:space="preserve">
+    <value>全局伪造启动中</value>
+  </data>
   <data name="EditHostsConfButtonContent" xml:space="preserve">
     <value>编辑 Hosts 配置</value>
   </data>
@@ -233,12 +245,6 @@
   </data>
   <data name="SettingsModeButtonUpstreamUrlContent" xml:space="preserve">
     <value>上游链接</value>
-  </data>
-  <data name="BrowserButtonContent" xml:space="preserve">
-    <value>启动伪造</value>
-  </data>
-  <data name="BrowserButtonToolTip" xml:space="preserve">
-    <value>点击启动参数注入完成的浏览器</value>
   </data>
   <data name="UpdateUpstreamHostButtonContent" xml:space="preserve">
     <value>更新上游规则</value>

@@ -4,12 +4,13 @@ internal static class MainConv
 {
     public static MainAdminControlVisibilityConv MainAdminControlVisibilityConv => new();
     public static MainMihomoButtonContentConv MainMihomoButtonContentConv => new();
+    public static MainMihomoButtonIsEnabledConv MainMihomoButtonIsEnabledConv => new();
     public static MainMihomoButtonToolTipConv MainMihomoButtonToolTipConv => new();
     public static MainNginxButtonContentConv MainNginxButtonContentConv => new();
     public static MainNginxButtonToolTipConv MainNginxButtonToolTipConv => new();
     public static MainNoClickButtonContentConv MainNoClickButtonContentConv => new();
     public static MainNoClickButtonToolTipConv MainNoClickButtonToolTipConv => new();
-    public static MainProxyButtonIsEnabledConv MainProxyButtonIsEnabledConv => new();
+    public static MainNginxButtonIsEnabledConv MainNginxButtonIsEnabledConv => new();
     public static MainProxyColumnWidthConv MainProxyColumnWidthConv => new();
     public static MainSettingsBoxHintConv MainSettingsBoxHintConv => new();
     public static MainSettingsBoxTextConv MainSettingsBoxTextConv => new();
