@@ -876,12 +876,14 @@ public partial class MainWin : Window
             {
                 enable = true,
                 listen = ":53",
+                ipv6 = true,
                 nameserver = MainConst.MihomoNameServers
             };
             hostsMihomoConfDict["dns"] = new
             {
                 enable = true,
-                listen = ":53"
+                listen = ":53",
+                ipv6 = true
             };
 
             MihomoConfs = new SerializerBuilder().WithNamingConvention(HyphenatedNamingConvention.Instance).Build().Serialize(mihomoConfDict);
