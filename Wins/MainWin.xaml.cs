@@ -87,7 +87,7 @@ public partial class MainWin : Window
 
             MihomoConfWatcher_Changed(null!, null!);
 
-            if (!MainPres.IsConginxRunning && !MainPres.IsNginxRunning)
+            if (MainConst.IsAdmin && !MainPres.IsConginxRunning && !MainPres.IsNginxRunning)
                 await NginxCleaner.Clean();
 
             if (Array.Exists(Environment.GetCommandLineArgs(), arg => arg.Equals("-s", StringComparison.OrdinalIgnoreCase)))
