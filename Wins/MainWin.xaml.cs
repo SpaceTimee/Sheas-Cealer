@@ -335,6 +335,8 @@ public partial class MainWin : Window
 
                     if (sender == null)
                         MihomoButtonHoldTimer_Tick(null, EventArgs.Empty);
+
+                    DnsFlusher.FlushDns();
                 }
                 finally
                 {
