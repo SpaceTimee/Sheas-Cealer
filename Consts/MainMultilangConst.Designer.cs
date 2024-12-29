@@ -430,6 +430,15 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 GLB. Purging STP. 的本地化字符串。
+        /// </summary>
+        public static string MihomoButtonIsStoppingContent {
+            get {
+                return ResourceManager.GetString("MihomoButtonIsStoppingContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 GLB. Cealing INIT. 的本地化字符串。
         /// </summary>
         public static string NginxButtonIsInitingContent {

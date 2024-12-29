@@ -180,6 +180,9 @@
   <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
     <value>点击启动本地 Mihomo</value>
   </data>
+  <data name="MihomoButtonIsStoppingContent" xml:space="preserve">
+    <value>全局净化停止中</value>
+  </data>
   <data name="NginxButtonIsInitingContent" xml:space="preserve">
     <value>全局伪造启动中</value>
   </data>

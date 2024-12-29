@@ -349,9 +349,10 @@ public partial class MainWin : Window
         }
         else
         {
-            MainPres.IsCoproxyStopping = true;
-
             bool isConginxRunning = MainPres.IsConginxRunning;
+
+            if (isConginxRunning)
+                MainPres.IsCoproxyStopping = true;
 
             foreach (Process nginxProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(isConginxRunning ? MainConst.ConginxPath : MainConst.NginxPath)))
             {

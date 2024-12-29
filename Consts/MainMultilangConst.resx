@@ -180,6 +180,9 @@
   <data name="MihomoButtonIsStoppedToolTip" xml:space="preserve">
     <value>Click to launch a local Mihomo</value>
   </data>
+  <data name="MihomoButtonIsStoppingContent" xml:space="preserve">
+    <value>GLB. Purging STP.</value>
+  </data>
   <data name="NginxButtonIsInitingContent" xml:space="preserve">
     <value>GLB. Cealing INIT.</value>
   </data>

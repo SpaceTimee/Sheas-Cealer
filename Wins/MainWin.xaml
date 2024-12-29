@@ -120,6 +120,7 @@
                 <Button.Content>
                     <MultiBinding Converter="{x:Static convs:MainConv.MainMihomoButtonContentConv}">
                         <Binding Path="IsMihomoRunning" />
+                        <Binding Path="IsComihomoIniting" />
                         <Binding Path="IsMihomoIniting" />
                         <Binding Path="IsCoproxyIniting" />
                         <Binding Path="IsCoproxyStopping" />
