@@ -12,7 +12,7 @@ internal class AboutVersionButtonContentConv : IMultiValueConverter
         string versionButtonVersionContent = (string)values[1];
         bool isSheasCealerUtd = (bool)values[2];
 
-        return $"{versionButtonVersionContent} (alpha)" + (isSheasCealerUtd ? string.Empty : " *");
+        return $"{versionButtonLabelContent} {versionButtonVersionContent}" + (isSheasCealerUtd ? string.Empty : " *");
     }
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
