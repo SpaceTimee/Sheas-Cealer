@@ -285,6 +285,9 @@
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>启动前将关闭所选浏览器的所有进程，是否继续？</value>
   </data>
+  <data name="_LaunchHostsNginxPrompt" xml:space="preserve">
+    <value>正在使用基于 Hosts 的非泛域名全局伪造，是否继续?</value>
+  </data>
   <data name="_LaunchMihomoErrorMsg" xml:space="preserve">
     <value>Mihomo 启动失败</value>
   </data>

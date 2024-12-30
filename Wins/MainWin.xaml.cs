@@ -85,8 +85,6 @@ public partial class MainWin : Window
             foreach (string cealHostPath in Directory.GetFiles(CealHostWatcher.Path, CealHostWatcher.Filter))
                 CealHostWatcher_Changed(null!, new(new(), Path.GetDirectoryName(cealHostPath)!, Path.GetFileName(cealHostPath)));
 
-            MihomoConfWatcher_Changed(null!, null!);
-
             if (MainConst.IsAdmin && !MainPres.IsConginxRunning && !MainPres.IsNginxRunning)
                 await NginxCleaner.Clean();
 
@@ -217,6 +215,7 @@ public partial class MainWin : Window
                     (CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._CealHostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                     (NginxHttpsPort != 443 && MessageBox.Show(string.Format(MainConst._NginxHttpsPortOccupiedPrompt, NginxHttpsPort), string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                     (NginxHttpPort != 80 && MessageBox.Show(string.Format(MainConst._NginxHttpPortOccupiedPrompt, NginxHttpPort), string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
+                    (sender != null && MessageBox.Show(MainConst._LaunchHostsNginxPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                     (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
                     (MainPres.IsFlashing && MessageBox.Show(MainConst._LaunchNginxFlashingPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
                     return;
@@ -755,6 +754,7 @@ public partial class MainWin : Window
             CealArgs = @$"--host-rules=""{hostRules.TrimEnd(',')}"" --host-resolver-rules=""{hostResolverRules.TrimEnd(',')}"" --test-type --ignore-certificate-errors";
 
             NginxConfWatcher_Changed(null!, null!);
+            MihomoConfWatcher_Changed(null!, null!);
         }
     }
     private async void NginxConfWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -799,7 +799,7 @@ public partial class MainWin : Window
             .AddOrUpdate("events:worker_connections", "65536")
             .AddOrUpdate("http:proxy_set_header", "Host $http_host")
             .AddOrUpdate("http:proxy_ssl_server_name", !MainPres.IsFlashing ? "on" : "off")
-            .AddOrUpdate("http:proxy_buffer_size", "8k")
+            .AddOrUpdate("http:proxy_buffer_size", "14k")
             .AddOrUpdate($"http:server[{serverIndex}]:listen", $"{NginxHttpPort} default_server")
             .AddOrUpdate($"http:server[{serverIndex}]:return", "https://$host$request_uri");
 

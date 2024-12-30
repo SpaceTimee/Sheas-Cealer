@@ -151,6 +151,15 @@ namespace Sheas_Cealer.Consts {
         }
         
         /// <summary>
+        ///   查找类似 You are using hosts-based non-wildcard domain global cealing. Do you want to continue? 的本地化字符串。
+        /// </summary>
+        public static string _LaunchHostsNginxPrompt {
+            get {
+                return ResourceManager.GetString("_LaunchHostsNginxPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Mihomo failed to launch 的本地化字符串。
         /// </summary>
         public static string _LaunchMihomoErrorMsg {

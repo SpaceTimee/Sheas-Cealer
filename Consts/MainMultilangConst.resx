@@ -285,6 +285,9 @@
   <data name="_KillBrowserProcessPrompt" xml:space="preserve">
     <value>All processes of the selected browser will be closed before launching. Do you want to continue?</value>
   </data>
+  <data name="_LaunchHostsNginxPrompt" xml:space="preserve">
+    <value>You are using hosts-based non-wildcard domain global cealing. Do you want to continue?</value>
+  </data>
   <data name="_LaunchMihomoErrorMsg" xml:space="preserve">
     <value>Mihomo failed to launch</value>
   </data>
