@@ -10,6 +10,7 @@ using Sheas_Cealer.Consts;
 using Sheas_Cealer.Preses;
 using Sheas_Cealer.Props;
 using Sheas_Cealer.Utils;
+using Microsoft.Win32;
 
 namespace Sheas_Cealer.Wins;
 
@@ -65,21 +66,24 @@ public partial class SettingsWin : Window
             Close();
     }
 
-    private void Enabled_SelfStarting_Click(object sender, RoutedEventArgs e) {
-        SelfStarting ss = new();
-        if (ss.RunCommand(SelfStarting.Action.add))
-            MessageBox.Show("已启用开机自启");
+	readonly SelfStarting selfStarting = new();
+    private void SelfStartingToggle_Click(object sender, RoutedEventArgs e) {
+        //在此处为了方便演示，就直接使用了按钮名字进行判断，不建议这么做
+        if( SelfStartingToggle.Content as string == "启用>>禁用 程序开机自启动") {
+            selfStarting.Setting = false;
+            SelfStartingToggle.Content = "禁用>>启用 程序开机自启动";
+		}
+        else {
+			selfStarting.Setting = true;
+			SelfStartingToggle.Content = "启用>>禁用 程序开机自启动";
+		}
     }
-    private void Disabled_SelfStarting_Click(object sender, RoutedEventArgs e) {
-        SelfStarting ss = new();
-        if (ss.RunCommand(SelfStarting.Action.remove))
-            MessageBox.Show("已移除开机自启");
-    }
-    private class SelfStarting {
+
+	private class SelfStarting {
         /// <summary>
         /// 自启动注册表路径
         /// </summary>
-        readonly string regPath = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run";
+        readonly string regPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
         /// <summary>
         /// 应用名
         /// </summary>
@@ -88,47 +92,37 @@ public partial class SettingsWin : Window
         /// 当前exe文件所在目录
         /// </summary>
         internal string ThisExeFilePath => System.Windows.Forms.Application.ExecutablePath;
-        //自启动程序时会添加启动参数，可以在程序启动时加个判断，判断有-selfStarting参数时进行自动最小化程序等操作
-        string AddCommands => $"{RemoveCommands} & reg add {regPath} /f /v \"{appName}\" /t REG_SZ /d \"{ThisExeFilePath} -selfStarting\"";// & pause";        
-        string RemoveCommands => $"reg delete {regPath} /f /v \"{appName}\"";
-        internal enum Action {
-            add,remove
-        }
-        /// <summary>
-        /// 运行命令
-        /// </summary>
-        /// <param name="action">操作方式</param>
-        /// <returns>返回布尔值代表执行是否成功</returns>
-        internal bool RunCommand(Action action) {
-            // 检查当前进程是否以管理员身份运行
-            //if (!new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
-            string commands = "";
-            switch (action) {
-                case Action.add:
-                    commands = AddCommands; break;
-                case Action.remove:
-                    commands = RemoveCommands; break;
-            }
 
-            Process process = new() {
-                StartInfo = new ProcessStartInfo {
-                    UseShellExecute = true,
-                    Verb = "RunAs", // 请求管理员权限
-                    CreateNoWindow = true,
-                    FileName = "cmd.exe",
-                    Arguments = $" /c \"{ commands }\""
-                }
-            };
-            bool isTrue = false;
-            try {
-                process.Start();
-                process.WaitForExit();
-                isTrue = true;
-            } 
-            catch (Win32Exception) { System.Windows.Forms.MessageBox.Show("用户取消了授权", "", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error); }
-            catch { System.Windows.Forms.MessageBox.Show("发生未知错误！", "", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error); }
-            process.Close();
-            return isTrue;
-        }
-    }
+        /// <summary>
+        /// 设置开机自启
+        /// </summary>
+		internal bool Setting {
+			get {
+				using RegistryKey? key = Registry.CurrentUser.OpenSubKey(regPath, false);
+				return key?.GetValue(appName) != null;
+			}
+			set {
+				void DeleteReg() {
+					using RegistryKey? key = Registry.CurrentUser.OpenSubKey(regPath, true);
+					key?.DeleteValue(appName, false);
+				}
+				switch (value) {
+					case true: {
+							DeleteReg();
+							using RegistryKey? key = Registry.CurrentUser.OpenSubKey(regPath, true);
+							//自启动程序时会添加启动参数，可以在程序启动时加个判断，判断有-selfStarting参数时进行自动最小化程序等操作
+							key?.SetValue(appName, $"{ThisExeFilePath} -selfStarting", RegistryValueKind.String);
+							break;
+						}
+					case false:
+						DeleteReg();
+						break;
+				}
+			}
+		}
+	}
+
+	private void Window_Loaded(object sender, RoutedEventArgs e) => 
+        //检查当前选项状态
+        SelfStartingToggle.Content = selfStarting.Setting ? "启用>>禁用 程序开机自启动" : "禁用>>启用 程序开机自启动";
 }
