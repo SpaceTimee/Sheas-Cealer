@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance preses:SettingsPres}"
         Style="{DynamicResource CommonWindow}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="500"
-        KeyDown="SettingsWin_KeyDown">
+        KeyDown="SettingsWin_KeyDown" Loaded="Window_Loaded">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -56,10 +56,8 @@
                 </Binding>
             </Button.Content>
         </Button>
-        
-        <Button Grid.Row="2" Grid.Column="0" Margin="5" Content="启用/修复 程序开机自启动" ToolTip="{Binding Source={x:Static consts:SettingsConst.ColorsButtonToolTip}}"
-                Click="Enabled_SelfStarting_Click"/>
-        <Button Grid.Row="2" Grid.Column="1" Margin="5" Content="禁用 程序开机自启动" ToolTip="{Binding Source={x:Static consts:SettingsConst.ColorsButtonToolTip}}"
-                Click="Disabled_SelfStarting_Click" />
+
+        <Button x:Name="SelfStartingToggle" Grid.Row="2" Grid.Column="0" Margin="5" Content="/ / / /" ToolTip="{Binding Source={x:Static consts:SettingsConst.ColorsButtonToolTip}}"
+                Click="SelfStartingToggle_Click"/>
     </Grid>
 </Window>
