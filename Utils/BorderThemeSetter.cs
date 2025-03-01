@@ -1,7 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows;
-
-namespace Sheas_Cealer_Nix.Utils;
+﻿namespace Sheas_Cealer_Nix.Utils;
 
 internal static partial class BorderThemeSetter
 {

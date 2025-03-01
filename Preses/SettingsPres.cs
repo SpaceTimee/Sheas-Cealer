@@ -1,6 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Sheas_Cealer_Nix.Props;
-using System.Diagnostics;
 
 namespace Sheas_Cealer_Nix.Preses;
 
