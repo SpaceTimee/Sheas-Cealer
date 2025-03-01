@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Sheas_Cealer.Utils;
+namespace Sheas_Cealer_Nix.Utils;
 
 internal static partial class DnsFlusher
 {

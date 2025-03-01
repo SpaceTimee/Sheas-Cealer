@@ -1,8 +1,8 @@
-﻿using Sheas_Cealer.Consts;
+﻿using Avalonia.Media;
+using Sheas_Cealer_Nix.Consts;
 using System;
-using System.Windows.Media;
 
-namespace Sheas_Cealer.Utils;
+namespace Sheas_Cealer_Nix.Utils;
 
 internal static class ForegroundGenerator
 {

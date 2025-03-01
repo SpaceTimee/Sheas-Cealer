@@ -1,9 +1,9 @@
-﻿using Sheas_Cealer.Consts;
-using Sheas_Cealer.Utils;
+﻿using Sheas_Cealer_Nix.Consts;
+using Sheas_Cealer_Nix.Utils;
 using Sheas_Core;
 using System;
 
-namespace Sheas_Cealer.Proces;
+namespace Sheas_Cealer_Nix.Proces;
 
 internal class ConginxProc : Proc
 {

@@ -1,10 +1,10 @@
-﻿using Sheas_Cealer.Consts;
+﻿using Sheas_Cealer_Nix.Consts;
 using System;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
-namespace Sheas_Cealer.Utils;
+namespace Sheas_Cealer_Nix.Utils;
 
 internal static class NginxCleaner
 {
