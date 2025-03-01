@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.1.32328.378
+VisualStudioVersion = 17.14.35806.103
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sheas-Cealer", "Sheas-Cealer.csproj", "{662F787A-474F-41FD-B813-645CAA89E531}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sheas-Cealer-Nix", "Sheas-Cealer-Nix.csproj", "{662F787A-474F-41FD-B813-645CAA89E531}"
 	ProjectSection(ProjectDependencies) = postProject
 		{42491572-0050-4CDA-9189-DFC98BDBBF73} = {42491572-0050-4CDA-9189-DFC98BDBBF73}
 		{76263DF7-E4E4-4846-8604-8CFCA7125E2F} = {76263DF7-E4E4-4846-8604-8CFCA7125E2F}
