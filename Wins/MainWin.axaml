@@ -1,7 +1,6 @@
 ﻿<Window x:Class="Sheas_Cealer_Nix.Wins.MainWin"
         x:DataType="preses:MainPres"
         xmlns="https://github.com/avaloniaui"
-        xmlns:vm="using:AvaloniaMVVMApplication2.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -203,7 +202,8 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Margin="5"
+            <Button IsEnabled="False"
+                    Grid.Column="0" Margin="5"
                     Content="{x:Static consts:MainConst.SettingsButtonContent}"
                     ToolTip.Tip="{x:Static consts:MainConst.SettingsButtonToolTip}"
                     Click="SettingsButton_Click" />
