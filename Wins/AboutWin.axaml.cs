@@ -54,7 +54,7 @@ public partial class AboutWin : Window
         Button senderButton = (Button)sender;
 
         if (senderButton == VersionButton)
-            await MessageBoxManager.GetMessageBoxStandard(string.Empty, $"{AboutConst._ReleasePagePasswordLabel} 3wnj").ShowAsync();
+            await MessageBoxManager.GetMessageBoxStandard(string.Empty, $"{AboutConst._ReleasePagePasswordLabel} 3wnj").ShowWindowDialogAsync(this);
 
         ProcessStartInfo processStartInfo = new(senderButton == EmailButton ? "mailto:" : string.Empty + ToolTip.GetTip(senderButton)) { UseShellExecute = true };
 
