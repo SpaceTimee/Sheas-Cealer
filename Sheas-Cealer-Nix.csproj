@@ -1,39 +1,43 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Title>Sheas Cealer</Title>
-    <Product>Sheas Cealer</Product>
-    <Trademark>Sheas Cealer</Trademark>
+    <Title>Sheas Cealer Nix</Title>
+    <Product>Sheas Cealer Nix</Product>
+    <Trademark>Sheas Cealer Nix</Trademark>
     <Description>Just Ceal It</Description>
     <PackageReleaseNotes>Just Ceal It</PackageReleaseNotes>
     <Authors>Space Time</Authors>
     <Company>Space Time</Company>
-    <AssemblyVersion>1.1.5</AssemblyVersion>
-    <Version>1.1.5</Version>
-    <FileVersion>1.1.5</FileVersion>
-    <InformationalVersion>1.1.5</InformationalVersion>
-    <PackageTags>Tool;Sheas;Cealer;Sni</PackageTags>
+    <AssemblyVersion>0.0.1</AssemblyVersion>
+    <Version>0.0.1</Version>
+    <FileVersion>0.0.1</FileVersion>
+    <InformationalVersion>0.0.1</InformationalVersion>
+    <PackageTags>Tool;Sheas;Cealer;Nix;Sni</PackageTags>
     <ApplicationIcon>Sheas-Cealer-Logo.ico</ApplicationIcon>
     <PackageIcon>Sheas Cealer Logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageProjectUrl>https://github.com/SpaceTimee/Sheas-Cealer</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/SpaceTimee/Sheas-Cealer</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/SpaceTimee/Sheas-Cealer-Nix</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SpaceTimee/Sheas-Cealer-Nix</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Copyright>Copyright © 2077</Copyright>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-    <WindowsSdkPackageVersion>10.0.26100.41</WindowsSdkPackageVersion>
-    <RootNamespace>Sheas_Cealer</RootNamespace>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Sheas_Cealer_Nix</RootNamespace>
     <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <UseWindowsForms>True</UseWindowsForms>
     <IsPublishable>True</IsPublishable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <ErrorReport>none</ErrorReport>
     <NoWin32Manifest>true</NoWin32Manifest>
     <AppDesignerFolder>Props</AppDesignerFolder>
     <NeutralLanguage>en</NeutralLanguage>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Avalonia">
+    <AvaloniaUseCompiledBindingsByDefault>True</AvaloniaUseCompiledBindingsByDefault>
+    <AvaloniaXamlIlDebuggerLaunch>True</AvaloniaXamlIlDebuggerLaunch>
+    <AvaloniaXamlVerboseExceptions>True</AvaloniaXamlVerboseExceptions>
+    <AvaloniaNameGeneratorViewFileNamingStrategy>ClassName</AvaloniaNameGeneratorViewFileNamingStrategy>
+    <AvaloniaNameGeneratorDefaultFieldModifier>Private</AvaloniaNameGeneratorDefaultFieldModifier>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -61,9 +65,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" Version="*" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="*" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="*" />
+    <PackageReference Include="Avalonia.Headless" Version="*" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="*" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="*" />
-    <PackageReference Include="MaterialDesignThemes" Version="*" />
+    <PackageReference Include="MessageBox.Avalonia" Version="*" />
     <PackageReference Include="NginxConfigParser" Version="*" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="*" />
     <PackageReference Include="YamlDotNet" Version="*" />
   </ItemGroup>
 
