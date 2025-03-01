@@ -28,7 +28,7 @@ public partial class SettingsWin : Window
     {
         SettingsPres.IsEnglishLang = SettingsPres.IsEnglishLang.HasValue ? SettingsPres.IsEnglishLang.Value ? null : true : false;
 
-        await MessageBoxManager.GetMessageBoxStandard(string.Empty, SettingsConst._ChangeLangSuccessMsg).ShowAsync();
+        await MessageBoxManager.GetMessageBoxStandard(string.Empty, SettingsConst._ChangeLangSuccessMsg).ShowWindowDialogAsync(this);
     }
     private void ColorsButton_Click(object sender, RoutedEventArgs e)
     {

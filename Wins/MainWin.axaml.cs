@@ -148,7 +148,7 @@ public partial class MainWin : Window
                 IReadOnlyList<IStorageFile> browserFiles = await TopLevel.GetTopLevel(this)!.StorageProvider.OpenFilePickerAsync(new() { Title = MainConst._BrowserPathDialogFilterFileType, AllowMultiple = false });  //Todo: Filter
 
                 if (browserFiles.Count > 0)
-                    MainPres.BrowserPath = browserFiles[0].Path.LocalPath;  //Todo: Test Absolute Path
+                    MainPres.BrowserPath = browserFiles[0].Path.LocalPath;
 
                 return;
             case MainConst.SettingsMode.UpstreamUrlMode:
@@ -186,8 +186,8 @@ public partial class MainWin : Window
     {
         HoldButtonTimer?.Stop();
 
-        if ((CealHostRulesDict.ContainsValue(null!) && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._CealHostErrorPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes) ||
-            (sender is not true && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._KillBrowserProcessPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes))
+        if ((CealHostRulesDict.ContainsValue(null!) && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._CealHostErrorPrompt, ButtonEnum.YesNo).ShowWindowDialogAsync(this) != ButtonResult.Yes) ||
+            (sender is not true && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._KillBrowserProcessPrompt, ButtonEnum.YesNo).ShowWindowDialogAsync(this) != ButtonResult.Yes))
             return;
 
         foreach (Process browserProcess in Process.GetProcessesByName(OperatingSystem.IsWindows() ? Path.GetFileNameWithoutExtension(MainPres.BrowserPath) : Path.GetFileName(MainPres.BrowserPath)))
@@ -213,12 +213,12 @@ public partial class MainWin : Window
             try
             {
                 if ((!MainPres.IsConginxExist && !MainPres.IsNginxExist) ||
-                    (CealHostRulesDict.ContainsValue(null!) && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._CealHostErrorPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes) ||
-                    (NginxHttpsPort != 443 && await MessageBoxManager.GetMessageBoxStandard(string.Empty, string.Format(MainConst._NginxHttpsPortOccupiedPrompt, NginxHttpsPort), ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes) ||
-                    (NginxHttpPort != 80 && await MessageBoxManager.GetMessageBoxStandard(string.Empty, string.Format(MainConst._NginxHttpPortOccupiedPrompt, NginxHttpPort), ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes) ||
-                    (sender != null && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchHostsNginxPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes) ||
-                    (await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchProxyPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes) ||
-                    (MainPres.IsFlashing && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchNginxFlashingPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes))
+                    (CealHostRulesDict.ContainsValue(null!) && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._CealHostErrorPrompt, ButtonEnum.YesNo).ShowWindowDialogAsync(this) != ButtonResult.Yes) ||
+                    (NginxHttpsPort != 443 && await MessageBoxManager.GetMessageBoxStandard(string.Empty, string.Format(MainConst._NginxHttpsPortOccupiedPrompt, NginxHttpsPort), ButtonEnum.YesNo).ShowWindowDialogAsync(this) != ButtonResult.Yes) ||
+                    (NginxHttpPort != 80 && await MessageBoxManager.GetMessageBoxStandard(string.Empty, string.Format(MainConst._NginxHttpPortOccupiedPrompt, NginxHttpPort), ButtonEnum.YesNo).ShowWindowDialogAsync(this) != ButtonResult.Yes) ||
+                    (sender != null && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchHostsNginxPrompt, ButtonEnum.YesNo).ShowWindowDialogAsync(this) != ButtonResult.Yes) ||
+                    (await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchProxyPrompt, ButtonEnum.YesNo).ShowWindowDialogAsync(this) != ButtonResult.Yes) ||
+                    (MainPres.IsFlashing && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchNginxFlashingPrompt, ButtonEnum.YesNo).ShowWindowDialogAsync(this) != ButtonResult.Yes))
                     return;
 
                 if (!File.Exists(MainConst.NginxConfPath))
@@ -327,7 +327,7 @@ public partial class MainWin : Window
                         if (sender == null ? MainPres.IsConginxRunning : MainPres.IsNginxRunning)
                             continue;
 
-                        if (await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchNginxErrorPrompt, ButtonEnum.YesNo).ShowAsync() == ButtonResult.Yes)
+                        if (await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchNginxErrorPrompt, ButtonEnum.YesNo).ShowWindowDialogAsync(this) == ButtonResult.Yes)
                             Process.Start(new ProcessStartInfo(MainConst.NginxErrorLogsPath) { UseShellExecute = true });
 
                         break;
@@ -391,7 +391,7 @@ public partial class MainWin : Window
                 return;
             if (string.IsNullOrWhiteSpace(MihomoConfs))
                 throw new(MainConst._MihomoConfErrorMsg);
-            if (!MainPres.IsConginxRunning && !MainPres.IsCoproxyStopping && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchProxyPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes)
+            if (!MainPres.IsConginxRunning && !MainPres.IsCoproxyStopping && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchProxyPrompt, ButtonEnum.YesNo).ShowWindowDialogAsync(this) != ButtonResult.Yes)
                 return;
 
             if (!File.Exists(MainConst.MihomoConfPath))
@@ -453,7 +453,7 @@ public partial class MainWin : Window
                     if (MainPres.IsComihomoExist ? MainPres.IsComihomoRunning : MainPres.IsMihomoRunning)
                         continue;
 
-                    await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchMihomoErrorMsg).ShowAsync();
+                    await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchMihomoErrorMsg).ShowWindowDialogAsync(this);
 
                     break;
                 }
@@ -577,11 +577,11 @@ public partial class MainWin : Window
                 {
                     MainPres.IsUpstreamHostUtd = true;
 
-                    await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._UpstreamHostUtdMsg).ShowAsync();
+                    await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._UpstreamHostUtdMsg).ShowWindowDialogAsync(this);
                 }
                 else
                 {
-                    ButtonResult overrideOptionResult = await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._OverrideUpstreamHostPrompt, ButtonEnum.YesNoCancel).ShowAsync();
+                    ButtonResult overrideOptionResult = await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._OverrideUpstreamHostPrompt, ButtonEnum.YesNoCancel).ShowWindowDialogAsync(this);
 
                     if (overrideOptionResult == ButtonResult.Yes)
                     {
@@ -589,7 +589,7 @@ public partial class MainWin : Window
 
                         MainPres.IsUpstreamHostUtd = true;
 
-                        await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._UpdateUpstreamHostSuccessMsg).ShowAsync();
+                        await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._UpdateUpstreamHostSuccessMsg).ShowWindowDialogAsync(this);
                     }
                     else if (overrideOptionResult == ButtonResult.No)
                         try { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true }); }
@@ -604,7 +604,7 @@ public partial class MainWin : Window
     {
         if (GameFlashInterval <= 10)
         {
-            await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameReviewEndingMsg).ShowAsync();
+            await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameReviewEndingMsg).ShowWindowDialogAsync(this);
 
             return;
         }
@@ -612,19 +612,19 @@ public partial class MainWin : Window
         switch (++GameClickTime)
         {
             case 1:
-                await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameClickOnceMsg).ShowAsync();
+                await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameClickOnceMsg).ShowWindowDialogAsync(this);
                 return;
             case 2:
-                await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameClickTwiceMsg).ShowAsync();
+                await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameClickTwiceMsg).ShowWindowDialogAsync(this);
                 return;
             case 3:
-                await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameClickThreeMsg).ShowAsync();
+                await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameClickThreeMsg).ShowWindowDialogAsync(this);
                 return;
         }
 
         if (!MainPres.IsFlashing)
         {
-            await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameStartMsg).ShowAsync();
+            await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameStartMsg).ShowWindowDialogAsync(this);
             MainPres.IsFlashing = true;
             NginxConfWatcher_Changed(null!, null!);
 
@@ -662,7 +662,7 @@ public partial class MainWin : Window
 
             MainPres.IsFlashing = false;
             NginxConfWatcher_Changed(null!, null!);
-            await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameEndingMsg).ShowAsync();
+            await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameEndingMsg).ShowWindowDialogAsync(this);
         }
         else
         {
@@ -680,7 +680,7 @@ public partial class MainWin : Window
             }
 
             if (GameFlashInterval > 10)
-                await MessageBoxManager.GetMessageBoxStandard(string.Empty, $"{MainConst._GameGradeMsg} {GameFlashInterval}").ShowAsync();
+                await MessageBoxManager.GetMessageBoxStandard(string.Empty, $"{MainConst._GameGradeMsg} {GameFlashInterval}").ShowWindowDialogAsync(this);
         }
     }
     private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWin().ShowDialog(this);
