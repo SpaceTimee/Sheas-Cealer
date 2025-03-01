@@ -3,7 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              RequestedThemeVariant="Default">
     <Application.Styles>
-        <FluentTheme DensityStyle="Compact" />
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Light" Accent="Red" />
+                <ColorPaletteResources x:Key="Dark" Accent="Red" />
+            </FluentTheme.Palettes>
+        </FluentTheme>
+
+        <Style Selector="Window">
+            <Setter Property="Title" Value="Sheas Cealer Nix" />
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
     </Application.Styles>
 
     <!--<Application.Resources>
