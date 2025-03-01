@@ -52,10 +52,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AdditionalFiles Remove="app.manifest" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove=".filenesting.json" />
     <None Remove=".gitattributes" />
     <None Remove=".gitignore" />
