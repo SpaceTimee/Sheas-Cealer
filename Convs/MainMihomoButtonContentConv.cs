@@ -1,13 +1,14 @@
-﻿using Sheas_Cealer.Consts;
+﻿using Avalonia.Data.Converters;
+using Sheas_Cealer_Nix.Consts;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Windows.Data;
 
-namespace Sheas_Cealer.Convs;
+namespace Sheas_Cealer_Nix.Convs;
 
 internal class MainMihomoButtonContentConv : IMultiValueConverter
 {
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
         bool isMihomoRunning = (bool)values[0];
         bool isComihomoIniting = (bool)values[1];
@@ -15,11 +16,9 @@ internal class MainMihomoButtonContentConv : IMultiValueConverter
         bool isCoproxyIniting = (bool)values[3];
         bool isCoproxyStopping = (bool)values[4];
 
-        return isCoproxyIniting || isCoproxyStopping ? Binding.DoNothing :
+        return isCoproxyIniting || isCoproxyStopping ? MainConst.MihomoButtonIsInitingContent :
             isComihomoIniting ? MainConst.MihomoButtonIsStoppingContent :
             isMihomoIniting ? MainConst.MihomoButtonIsInitingContent :
             isMihomoRunning ? MainConst.MihomoButtonIsRunningContent : MainConst.MihomoButtonIsStoppedContent;
     }
-
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

@@ -1,7 +1,7 @@
-﻿using Sheas_Cealer.Consts;
+﻿using Sheas_Cealer_Nix.Consts;
 using Sheas_Core;
 
-namespace Sheas_Cealer.Proces;
+namespace Sheas_Cealer_Nix.Proces;
 
 internal class ComihomoProc : Proc
 {

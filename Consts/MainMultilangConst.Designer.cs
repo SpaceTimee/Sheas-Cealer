@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sheas_Cealer.Consts {
+namespace Sheas_Cealer_Nix.Consts {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Sheas_Cealer.Consts {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sheas_Cealer.Consts.MainMultilangConst", typeof(MainMultilangConst).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sheas_Cealer_Nix.Consts.MainMultilangConst", typeof(MainMultilangConst).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

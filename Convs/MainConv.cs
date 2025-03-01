@@ -1,4 +1,4 @@
-﻿namespace Sheas_Cealer.Convs;
+﻿namespace Sheas_Cealer_Nix.Convs;
 
 internal static class MainConv
 {

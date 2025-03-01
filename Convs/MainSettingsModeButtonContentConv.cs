@@ -1,13 +1,13 @@
-﻿using Sheas_Cealer.Consts;
+﻿using Avalonia.Data.Converters;
+using Sheas_Cealer_Nix.Consts;
 using System;
 using System.Globalization;
-using System.Windows.Data;
 
-namespace Sheas_Cealer.Convs;
+namespace Sheas_Cealer_Nix.Convs;
 
 internal class MainSettingsModeButtonContentConv : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         MainConst.SettingsMode settingsMode = (MainConst.SettingsMode)value;
 
@@ -20,5 +20,5 @@ internal class MainSettingsModeButtonContentConv : IValueConverter
         };
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
 }

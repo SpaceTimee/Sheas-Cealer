@@ -1,0 +1,31 @@
+<Application x:Class="Sheas_Cealer_Nix.App"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             RequestedThemeVariant="Default">
+    <Application.Styles>
+        <FluentTheme DensityStyle="Compact" />
+    </Application.Styles>
+
+    <!--<Application.Resources>
+    <ResourceDictionary>
+    <ResourceDictionary.MergedDictionaries>
+    <materialDesign:BundledTheme BaseTheme="Inherit" PrimaryColor="Red" SecondaryColor="Orange" />
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="CommonWindow" TargetType="{x:Type Window}">
+    <Setter Property="AutomationProperties.Name" Value="Sheas Cealer" />
+    <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+    <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+    </Style>
+
+    <Style BasedOn="{StaticResource MaterialDesignFilledTextBox}" TargetType="{x:Type TextBox}" />
+
+    <Style BasedOn="{StaticResource MaterialDesignRaisedButton}" TargetType="{x:Type Button}">
+    <Setter Property="Height" Value="Auto" />
+    <Setter Property="Width" Value="Auto" />
+    <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBackground}" />
+    </Style>
+    </ResourceDictionary>
+    </Application.Resources>-->
+</Application>
