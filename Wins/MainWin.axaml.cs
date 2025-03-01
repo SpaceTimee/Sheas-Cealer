@@ -75,6 +75,10 @@ public partial class MainWin : Window
     {
         await Task.Run(async () =>
         {
+            BrowserButton.AddHandler(Button.PointerPressedEvent, LaunchButton_PointerPressed, handledEventsToo: true);
+            NginxButton.AddHandler(Button.PointerPressedEvent, LaunchButton_PointerPressed, handledEventsToo: true);
+            MihomoButton.AddHandler(Button.PointerPressedEvent, LaunchButton_PointerPressed, handledEventsToo: true);
+
             ProxyTimer.Tick += ProxyTimer_Tick;
             CealHostWatcher.Changed += CealHostWatcher_Changed;
             NginxConfWatcher.Changed += NginxConfWatcher_Changed;
@@ -174,7 +178,7 @@ public partial class MainWin : Window
         else
             BrowserButtonHoldTimer_Tick(sender == null, EventArgs.Empty);
     }
-    private void LaunchButton_PointerPressed(object sender, PointerPressedEventArgs e)
+    private void LaunchButton_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         Button senderButton = (Button)sender;
 
