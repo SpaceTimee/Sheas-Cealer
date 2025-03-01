@@ -1,13 +1,14 @@
-﻿using Sheas_Cealer.Consts;
+﻿using Avalonia.Data.Converters;
+using Sheas_Cealer_Nix.Consts;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Windows.Data;
 
-namespace Sheas_Cealer.Convs;
+namespace Sheas_Cealer_Nix.Convs;
 
 internal class MainNginxButtonContentConv : IMultiValueConverter
 {
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
         bool isConginxRunning = (bool)values[0];
         bool isNginxRunning = (bool)values[1];
@@ -18,6 +19,4 @@ internal class MainNginxButtonContentConv : IMultiValueConverter
             isNginxIniting ? MainConst.NginxButtonIsInitingContent :
             isConginxRunning || isNginxRunning ? MainConst.NginxButtonIsRunningContent : MainConst.NginxButtonIsStoppedContent;
     }
-
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

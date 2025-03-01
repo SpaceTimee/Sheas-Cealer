@@ -1,17 +1,17 @@
-﻿using Ona_Core;
-using Sheas_Cealer.Consts;
-using Sheas_Cealer.Preses;
-using Sheas_Cealer.Utils;
+﻿using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using MsBox.Avalonia;
+using Ona_Core;
+using Sheas_Cealer_Nix.Consts;
+using Sheas_Cealer_Nix.Preses;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 
-namespace Sheas_Cealer.Wins;
+namespace Sheas_Cealer_Nix.Wins;
 
 public partial class AboutWin : Window
 {
@@ -20,15 +20,15 @@ public partial class AboutWin : Window
 
     internal AboutWin()
     {
-        InitializeComponent();
-
         DataContext = AboutPres = new();
+
+        InitializeComponent();
     }
-    private void AboutWin_SourceInitialized(object sender, EventArgs e)
-    {
-        IconRemover.RemoveIcon(this);
-        BorderThemeSetter.SetBorderTheme(this, AboutPres.IsLightTheme);
-    }
+    //private void AboutWin_SourceInitialized(object sender, EventArgs e)
+    //{
+    //    IconRemover.RemoveIcon(this);
+    //    BorderThemeSetter.SetBorderTheme(this, AboutPres.IsLightTheme);
+    //}
     private async void AboutWin_Loaded(object sender, RoutedEventArgs e)
     {
         await Task.Run(async () =>
@@ -49,14 +49,14 @@ public partial class AboutWin : Window
         });
     }
 
-    private void AboutButton_Click(object sender, RoutedEventArgs e)
+    private async void AboutButton_Click(object sender, RoutedEventArgs e)
     {
         Button senderButton = (Button)sender;
 
         if (senderButton == VersionButton)
-            MessageBox.Show($"{AboutConst._ReleasePagePasswordLabel} 3wnj");
+            await MessageBoxManager.GetMessageBoxStandard(string.Empty, $"{AboutConst._ReleasePagePasswordLabel} 3wnj").ShowAsync();
 
-        ProcessStartInfo processStartInfo = new(senderButton == EmailButton ? "mailto:" : string.Empty + senderButton.ToolTip) { UseShellExecute = true };
+        ProcessStartInfo processStartInfo = new(senderButton == EmailButton ? "mailto:" : string.Empty + ToolTip.GetTip(senderButton)) { UseShellExecute = true };
 
         try { Process.Start(processStartInfo); }
         catch (UnauthorizedAccessException)

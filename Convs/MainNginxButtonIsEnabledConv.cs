@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Avalonia.Data.Converters;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Windows.Data;
 
-namespace Sheas_Cealer.Convs;
+namespace Sheas_Cealer_Nix.Convs;
 
 internal class MainNginxButtonIsEnabledConv : IMultiValueConverter
 {
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
         bool isConginxExist = (bool)values[0];
         bool isNginxExist = (bool)values[1];
@@ -17,6 +18,4 @@ internal class MainNginxButtonIsEnabledConv : IMultiValueConverter
 
         return !isCoproxyIniting && !isNginxIniting && !isComihomoIniting && !isMihomoIniting && (isConginxExist || isNginxExist);
     }
-
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

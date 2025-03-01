@@ -16,8 +16,8 @@
     <ApplicationIcon>Sheas-Cealer-Logo.ico</ApplicationIcon>
     <PackageIcon>Sheas Cealer Logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageProjectUrl>https://github.com/SpaceTimee/Sheas-Cealer-Nix</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/SpaceTimee/Sheas-Cealer-Nix</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Project-SheasCealerNix/Sheas-Cealer-Nix</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Project-SheasCealerNix/Sheas-Cealer-Nix</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Copyright>Copyright © 2077</Copyright>
     <OutputType>WinExe</OutputType>

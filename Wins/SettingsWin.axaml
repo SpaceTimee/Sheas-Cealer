@@ -1,16 +1,15 @@
-﻿<Window x:Class="Sheas_Cealer.Wins.SettingsWin"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<Window x:Class="Sheas_Cealer_Nix.Wins.SettingsWin"
+        x:DataType="preses:SettingsPres"
+        xmlns="https://github.com/avaloniaui"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:consts="clr-namespace:Sheas_Cealer.Consts"
-        xmlns:convs="clr-namespace:Sheas_Cealer.Convs"
-        xmlns:preses="clr-namespace:Sheas_Cealer.Preses"
+        xmlns:consts="clr-namespace:Sheas_Cealer_Nix.Consts"
+        xmlns:convs="clr-namespace:Sheas_Cealer_Nix.Convs"
+        xmlns:preses="clr-namespace:Sheas_Cealer_Nix.Preses"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height" Width="500"
-        d:DataContext="{d:DesignInstance preses:SettingsPres}"
-        Style="{DynamicResource CommonWindow}"
-        SourceInitialized="SettingsWin_SourceInitialized" KeyDown="SettingsWin_KeyDown">
+        WindowStartupLocation="CenterScreen" CanResize="False" SizeToContent="Height" Width="500"
+        KeyDown="SettingsWin_KeyDown">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -21,21 +20,21 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" Margin="5" d:Content="# # # #"
+        <Button Grid.Row="0" Grid.Column="0" Margin="5"
                 Content="{Binding IsLightTheme, Converter={x:Static convs:SettingsConv.SettingsThemesButtonContentConv}}"
-                ToolTip="{x:Static consts:SettingsConst.ThemesButtonToolTip}"
+                ToolTip.Tip="{x:Static consts:SettingsConst.ThemesButtonToolTip}"
                 Click="ThemesButton_Click" />
-        <Button Grid.Row="0" Grid.Column="1" Margin="5" d:Content="# # # #"
+        <Button Grid.Row="0" Grid.Column="1" Margin="5"
                 Content="{Binding IsEnglishLang, Converter={x:Static convs:SettingsConv.SettingsLangsButtonContentConv}}"
-                ToolTip="{x:Static consts:SettingsConst.LangsButtonToolTip}"
+                ToolTip.Tip="{x:Static consts:SettingsConst.LangsButtonToolTip}"
                 Click="LangsButton_Click" />
         <Button Grid.Row="1" Grid.Column="0" Margin="5"
                 Content="{x:Static consts:SettingsConst.ColorsButtonContent}"
-                ToolTip="{x:Static consts:SettingsConst.ColorsButtonToolTip}"
+                ToolTip.Tip="{x:Static consts:SettingsConst.ColorsButtonToolTip}"
                 Click="ColorsButton_Click" />
-        <Button Grid.Row="1" Grid.Column="1" Margin="5" d:Content="# # # #"
+        <Button Grid.Row="1" Grid.Column="1" Margin="5"
                 Content="{Binding IsLightWeight, Converter={x:Static convs:SettingsConv.SettingsWeightsButtonContentConv}}"
-                ToolTip="{x:Static consts:SettingsConst.WeightsButtonToolTip}"
+                ToolTip.Tip="{x:Static consts:SettingsConst.WeightsButtonToolTip}"
                 Click="WeightsButton_Click" />
     </Grid>
 </Window>

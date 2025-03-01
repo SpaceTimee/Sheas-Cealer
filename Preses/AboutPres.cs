@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Sheas_Cealer.Preses;
+namespace Sheas_Cealer_Nix.Preses;
 
 internal partial class AboutPres : GlobalPres
 {

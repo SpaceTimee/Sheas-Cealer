@@ -4,14 +4,14 @@ using System.IO;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 
-namespace Sheas_Cealer.Consts;
+namespace Sheas_Cealer_Nix.Consts;
 
 internal abstract partial class MainConst : MainMultilangConst
 {
     internal enum SettingsMode
     { BrowserPathMode, UpstreamUrlMode, ExtraArgsMode }
 
-    public static bool IsAdmin => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+    public static bool IsAdmin => OperatingSystem.IsWindows() ? new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator) : Environment.UserName == "root";
 
     internal static string EdgeBrowserRegistryPath => @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe";
     internal static string ChromeBrowserRegistryPath => @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe";
@@ -22,7 +22,7 @@ internal abstract partial class MainConst : MainMultilangConst
     internal static string LocalHostPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-L.json");
     internal static string UpstreamHostPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Host-U.json");
 
-    internal static string HostsConfPath => Path.Combine(Registry.LocalMachine.OpenSubKey(@"\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DataBasePath")?.GetValue("DataBasePath", null)?.ToString() ?? @"C:\Windows\System32\drivers\etc", "hosts");
+    internal static string HostsConfPath => OperatingSystem.IsWindows() ? Path.Combine(Registry.LocalMachine.OpenSubKey(@"\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\DataBasePath")?.GetValue("DataBasePath", null)?.ToString() ?? @"C:\Windows\System32\drivers\etc", "hosts") : "/etc/hosts";
     internal static string HostsConfStartMarker => $"# Cealing Nginx Start{Environment.NewLine}";
     internal static string HostsConfEndMarker => "# Cealing Nginx End";
 
@@ -42,7 +42,7 @@ internal abstract partial class MainConst : MainMultilangConst
     internal static string MihomoConfPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "config.yaml");
     internal static string[] MihomoNameServers => ["https://doh.apad.pro/dns-query", "https://ns.net.kg/dns-query"];
 
-    internal static string NotifyIconText => "Sheas Cealer";
+    internal static string NotifyIconText => "Sheas Cealer Nix";
 
     [GeneratedRegex(@"^(https?:\/\/)?[a-zA-Z0-9](-*[a-zA-Z0-9])*(\.[a-zA-Z0-9](-*[a-zA-Z0-9])*)*(:\d{1,5})?(\/[a-zA-Z0-9.\-_\~\!\$\&\'\(\)\*\+\,\;\=\:\@\%]*)*$")]
     internal static partial Regex UpstreamUrlRegex();

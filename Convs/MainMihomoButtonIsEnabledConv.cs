@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Avalonia.Data.Converters;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Windows.Data;
 
-namespace Sheas_Cealer.Convs;
+namespace Sheas_Cealer_Nix.Convs;
 
 internal class MainMihomoButtonIsEnabledConv : IMultiValueConverter
 {
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
         bool isCoMihomoExist = (bool)values[0];
         bool isMihomoExist = (bool)values[1];
@@ -16,6 +17,4 @@ internal class MainMihomoButtonIsEnabledConv : IMultiValueConverter
 
         return !isCoproxyIniting && !isComihomoIniting && !isMihomoIniting && (isCoMihomoExist || isMihomoExist);
     }
-
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

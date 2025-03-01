@@ -1,8 +1,7 @@
 ﻿using Sheas_Core;
 using System;
-using System.Windows;
 
-namespace Sheas_Cealer.Proces;
+namespace Sheas_Cealer_Nix.Proces;
 
 internal class BrowserProc : Proc
 {
@@ -18,6 +17,6 @@ internal class BrowserProc : Proc
     protected sealed override void Process_Exited(object? sender, EventArgs e)
     {
         if (ShutDownAppOnProcessExit)
-            Application.Current.Dispatcher.InvokeShutdown();
+            Environment.Exit(0);
     }
 }

@@ -1,37 +1,37 @@
-﻿using MaterialDesignThemes.Wpf;
-using Microsoft.Win32;
+﻿using Avalonia.Controls;
+using Avalonia.Headless;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
+using Avalonia.Threading;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using NginxConfigParser;
 using Ona_Core;
-using Sheas_Cealer.Consts;
-using Sheas_Cealer.Preses;
-using Sheas_Cealer.Proces;
-using Sheas_Cealer.Utils;
+using Sheas_Cealer_Nix.Consts;
+using Sheas_Cealer_Nix.Preses;
+using Sheas_Cealer_Nix.Proces;
+using Sheas_Cealer_Nix.Utils;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using File = System.IO.File;
 
-namespace Sheas_Cealer.Wins;
+namespace Sheas_Cealer_Nix.Wins;
 
 public partial class MainWin : Window
 {
@@ -62,15 +62,15 @@ public partial class MainWin : Window
 
     internal MainWin()
     {
-        InitializeComponent();
-
         DataContext = MainPres = new();
+
+        InitializeComponent();
     }
-    private void MainWin_SourceInitialized(object sender, EventArgs e)
-    {
-        IconRemover.RemoveIcon(this);
-        BorderThemeSetter.SetBorderTheme(this, MainPres.IsLightTheme);
-    }
+    //private void MainWin_SourceInitialized(object sender, EventArgs e)
+    //{
+    //    IconRemover.RemoveIcon(this);
+    //    BorderThemeSetter.SetBorderTheme(this, MainPres.IsLightTheme);
+    //}
     private async void MainWin_Loaded(object sender, RoutedEventArgs e)
     {
         await Task.Run(async () =>
@@ -94,25 +94,25 @@ public partial class MainWin : Window
             UpdateUpstreamHostButton_Click(null, null!);
         });
     }
-    private async void MainWin_Closing(object sender, CancelEventArgs e)
+    private async void MainWin_Closing(object sender, WindowClosingEventArgs e)
     {
         if (MainPres.IsNginxIniting)
             await File.WriteAllTextAsync(MainConst.NginxConfPath, ExtraNginxConfs);
         if (MainPres.IsMihomoIniting)
             await File.WriteAllTextAsync(MainConst.MihomoConfPath, ExtraMihomoConfs);
 
-        Application.Current.Shutdown();
+        Environment.Exit(0);
     }
 
     private void MainWin_DragEnter(object sender, DragEventArgs e)
     {
-        e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Link : DragDropEffects.None;
+        e.DragEffects = e.Data.GetFiles() != null ? DragDropEffects.Link : DragDropEffects.None;
         e.Handled = true;
     }
     private void MainWin_Drop(object sender, DragEventArgs e)
     {
-        if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            MainPres.BrowserPath = (e.Data.GetData(DataFormats.FileDrop) as string[])?[0] ?? string.Empty;
+        if (e.Data.GetFiles() != null)
+            MainPres.BrowserPath = e.Data.GetFiles()!.FirstOrDefault()!.Path.LocalPath;
     }
 
     private void SettingsBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -140,15 +140,16 @@ public partial class MainWin : Window
             _ => throw new UnreachableException()
         };
     }
-    private void SettingsFunctionButton_Click(object sender, RoutedEventArgs e)
+    private async void SettingsFunctionButton_Click(object sender, RoutedEventArgs e)
     {
-        OpenFileDialog browserPathDialog = new() { Filter = $"{MainConst._BrowserPathDialogFilterFileType} (*.exe)|*.exe" };
-
         switch (MainPres.SettingsMode)
         {
-            case MainConst.SettingsMode.BrowserPathMode when browserPathDialog.ShowDialog().GetValueOrDefault():
-                SettingsBox.Focus();
-                MainPres.BrowserPath = browserPathDialog.FileName;
+            case MainConst.SettingsMode.BrowserPathMode:
+                IReadOnlyList<IStorageFile> browserFiles = await TopLevel.GetTopLevel(this)!.StorageProvider.OpenFilePickerAsync(new() { Title = MainConst._BrowserPathDialogFilterFileType, AllowMultiple = false });  //Todo: Filter
+
+                if (browserFiles.Count > 0)
+                    MainPres.BrowserPath = browserFiles[0].Path.LocalPath;  //Todo: Test Absolute Path
+
                 return;
             case MainConst.SettingsMode.UpstreamUrlMode:
                 MainPres.UpstreamUrl = MainConst.DefaultUpstreamUrl;
@@ -173,7 +174,7 @@ public partial class MainWin : Window
         else
             BrowserButtonHoldTimer_Tick(sender == null, EventArgs.Empty);
     }
-    private void LaunchButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    private void LaunchButton_PointerPressed(object sender, PointerPressedEventArgs e)
     {
         Button senderButton = (Button)sender;
 
@@ -185,11 +186,11 @@ public partial class MainWin : Window
     {
         HoldButtonTimer?.Stop();
 
-        if ((CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._CealHostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-            (sender is not true && MessageBox.Show(MainConst._KillBrowserProcessPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
+        if ((CealHostRulesDict.ContainsValue(null!) && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._CealHostErrorPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes) ||
+            (sender is not true && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._KillBrowserProcessPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes))
             return;
 
-        foreach (Process browserProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainPres.BrowserPath)))
+        foreach (Process browserProcess in Process.GetProcessesByName(OperatingSystem.IsWindows() ? Path.GetFileNameWithoutExtension(MainPres.BrowserPath) : Path.GetFileName(MainPres.BrowserPath)))
         {
             browserProcess.Kill();
             await browserProcess.WaitForExitAsync();
@@ -212,12 +213,12 @@ public partial class MainWin : Window
             try
             {
                 if ((!MainPres.IsConginxExist && !MainPres.IsNginxExist) ||
-                    (CealHostRulesDict.ContainsValue(null!) && MessageBox.Show(MainConst._CealHostErrorPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-                    (NginxHttpsPort != 443 && MessageBox.Show(string.Format(MainConst._NginxHttpsPortOccupiedPrompt, NginxHttpsPort), string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-                    (NginxHttpPort != 80 && MessageBox.Show(string.Format(MainConst._NginxHttpPortOccupiedPrompt, NginxHttpPort), string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-                    (sender != null && MessageBox.Show(MainConst._LaunchHostsNginxPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-                    (MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes) ||
-                    (MainPres.IsFlashing && MessageBox.Show(MainConst._LaunchNginxFlashingPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes))
+                    (CealHostRulesDict.ContainsValue(null!) && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._CealHostErrorPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes) ||
+                    (NginxHttpsPort != 443 && await MessageBoxManager.GetMessageBoxStandard(string.Empty, string.Format(MainConst._NginxHttpsPortOccupiedPrompt, NginxHttpsPort), ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes) ||
+                    (NginxHttpPort != 80 && await MessageBoxManager.GetMessageBoxStandard(string.Empty, string.Format(MainConst._NginxHttpPortOccupiedPrompt, NginxHttpPort), ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes) ||
+                    (sender != null && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchHostsNginxPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes) ||
+                    (await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchProxyPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes) ||
+                    (MainPres.IsFlashing && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchNginxFlashingPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes))
                     return;
 
                 if (!File.Exists(MainConst.NginxConfPath))
@@ -326,7 +327,7 @@ public partial class MainWin : Window
                         if (sender == null ? MainPres.IsConginxRunning : MainPres.IsNginxRunning)
                             continue;
 
-                        if (MessageBox.Show(MainConst._LaunchNginxErrorPrompt, string.Empty, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        if (await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchNginxErrorPrompt, ButtonEnum.YesNo).ShowAsync() == ButtonResult.Yes)
                             Process.Start(new ProcessStartInfo(MainConst.NginxErrorLogsPath) { UseShellExecute = true });
 
                         break;
@@ -335,7 +336,8 @@ public partial class MainWin : Window
                     if (sender == null)
                         MihomoButtonHoldTimer_Tick(null, EventArgs.Empty);
 
-                    DnsFlusher.FlushDns();
+                    if (OperatingSystem.IsWindows())
+                        DnsFlusher.FlushDns();
                 }
                 finally
                 {
@@ -355,7 +357,7 @@ public partial class MainWin : Window
             if (isConginxRunning)
                 MainPres.IsCoproxyStopping = true;
 
-            foreach (Process nginxProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(isConginxRunning ? MainConst.ConginxPath : MainConst.NginxPath)))
+            foreach (Process nginxProcess in Process.GetProcessesByName(OperatingSystem.IsWindows() ? Path.GetFileNameWithoutExtension(isConginxRunning ? MainConst.ConginxPath : MainConst.NginxPath) : Path.GetFileName(isConginxRunning ? MainConst.ConginxPath : MainConst.NginxPath)))
             {
                 nginxProcess.Exited += async (_, _) =>
                 {
@@ -389,7 +391,7 @@ public partial class MainWin : Window
                 return;
             if (string.IsNullOrWhiteSpace(MihomoConfs))
                 throw new(MainConst._MihomoConfErrorMsg);
-            if (!MainPres.IsConginxRunning && !MainPres.IsCoproxyStopping && MessageBox.Show(MainConst._LaunchProxyPrompt, string.Empty, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+            if (!MainPres.IsConginxRunning && !MainPres.IsCoproxyStopping && await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchProxyPrompt, ButtonEnum.YesNo).ShowAsync() != ButtonResult.Yes)
                 return;
 
             if (!File.Exists(MainConst.MihomoConfPath))
@@ -451,7 +453,7 @@ public partial class MainWin : Window
                     if (MainPres.IsComihomoExist ? MainPres.IsComihomoRunning : MainPres.IsMihomoRunning)
                         continue;
 
-                    MessageBox.Show(MainConst._LaunchMihomoErrorMsg);
+                    await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchMihomoErrorMsg).ShowAsync();
 
                     break;
                 }
@@ -476,7 +478,7 @@ public partial class MainWin : Window
         {
             bool isComihomoRunning = MainPres.IsComihomoRunning;
 
-            foreach (Process mihomoProcess in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(isComihomoRunning ? MainConst.ComihomoPath : MainConst.MihomoPath)))
+            foreach (Process mihomoProcess in Process.GetProcessesByName(OperatingSystem.IsWindows() ? Path.GetFileNameWithoutExtension(isComihomoRunning ? MainConst.ComihomoPath : MainConst.MihomoPath) : Path.GetFileName(isComihomoRunning ? MainConst.ComihomoPath : MainConst.MihomoPath)))
             {
                 mihomoProcess.Exited += (_, _) => MihomoConfWatcher_Changed(null!, null!);
 
@@ -523,8 +525,12 @@ public partial class MainWin : Window
         if (!File.Exists(cealHostPath))
             await File.Create(cealHostPath).DisposeAsync();
 
-        try { Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true }); }
-        catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true, Verb = "RunAs" }); }
+        if (OperatingSystem.IsWindows())
+            try { Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true }); }
+            catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true, Verb = "RunAs" }); }
+        else
+            try { Process.Start("vi", cealHostPath); }
+            catch (UnauthorizedAccessException) { Process.Start("sudo", $"vi {cealHostPath}"); }
     }
     private async void EditConfButton_Click(object sender, RoutedEventArgs e)
     {
@@ -545,7 +551,10 @@ public partial class MainWin : Window
                 await File.Create(confPath).DisposeAsync();
         }
 
-        Process.Start(new ProcessStartInfo(confPath) { UseShellExecute = true });
+        if (OperatingSystem.IsWindows())
+            Process.Start(new ProcessStartInfo(confPath) { UseShellExecute = true });
+        else
+            Process.Start("vi", confPath);
     }
     private async void UpdateUpstreamHostButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -568,21 +577,21 @@ public partial class MainWin : Window
                 {
                     MainPres.IsUpstreamHostUtd = true;
 
-                    MessageBox.Show(MainConst._UpstreamHostUtdMsg);
+                    await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._UpstreamHostUtdMsg).ShowAsync();
                 }
                 else
                 {
-                    MessageBoxResult overrideOptionResult = MessageBox.Show(MainConst._OverrideUpstreamHostPrompt, string.Empty, MessageBoxButton.YesNoCancel);
+                    ButtonResult overrideOptionResult = await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._OverrideUpstreamHostPrompt, ButtonEnum.YesNoCancel).ShowAsync();
 
-                    if (overrideOptionResult == MessageBoxResult.Yes)
+                    if (overrideOptionResult == ButtonResult.Yes)
                     {
                         await File.WriteAllTextAsync(MainConst.UpstreamHostPath, upstreamUpstreamHostString);
 
                         MainPres.IsUpstreamHostUtd = true;
 
-                        MessageBox.Show(MainConst._UpdateUpstreamHostSuccessMsg);
+                        await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._UpdateUpstreamHostSuccessMsg).ShowAsync();
                     }
-                    else if (overrideOptionResult == MessageBoxResult.No)
+                    else if (overrideOptionResult == ButtonResult.No)
                         try { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true }); }
                         catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true, Verb = "RunAs" }); }
                 }
@@ -590,12 +599,12 @@ public partial class MainWin : Window
         catch when (sender == null) { }
     }
 
-    private void SettingsButton_Click(object sender, RoutedEventArgs e) => new SettingsWin().ShowDialog();
+    private void SettingsButton_Click(object sender, RoutedEventArgs e) => new SettingsWin().ShowDialog(this);
     private async void NoClickButton_Click(object sender, RoutedEventArgs e)
     {
         if (GameFlashInterval <= 10)
         {
-            MessageBox.Show(MainConst._GameReviewEndingMsg);
+            await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameReviewEndingMsg).ShowAsync();
 
             return;
         }
@@ -603,19 +612,19 @@ public partial class MainWin : Window
         switch (++GameClickTime)
         {
             case 1:
-                MessageBox.Show(MainConst._GameClickOnceMsg);
+                await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameClickOnceMsg).ShowAsync();
                 return;
             case 2:
-                MessageBox.Show(MainConst._GameClickTwiceMsg);
+                await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameClickTwiceMsg).ShowAsync();
                 return;
             case 3:
-                MessageBox.Show(MainConst._GameClickThreeMsg);
+                await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameClickThreeMsg).ShowAsync();
                 return;
         }
 
         if (!MainPres.IsFlashing)
         {
-            MessageBox.Show(MainConst._GameStartMsg);
+            await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameStartMsg).ShowAsync();
             MainPres.IsFlashing = true;
             NginxConfWatcher_Changed(null!, null!);
 
@@ -623,28 +632,27 @@ public partial class MainWin : Window
 
             while (GameFlashInterval > 10)
             {
-                Left = random.Next(0, (int)(SystemParameters.PrimaryScreenWidth - ActualWidth));
-                Top = random.Next(0, (int)(SystemParameters.PrimaryScreenHeight - ActualHeight));
+                Position = new(random.Next(0, (int)(Screens.Primary!.Bounds.Width - Bounds.Width)), random.Next(0, (int)(Screens.Primary.Bounds.Height - Bounds.Height)));
 
-                PaletteHelper paletteHelper = new();
-                Theme newTheme = paletteHelper.GetTheme();
-                Color newPrimaryColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
-                bool isLightTheme = random.Next(2) == 0;
+                //PaletteHelper paletteHelper = new();
+                //Theme newTheme = paletteHelper.GetTheme();
+                //Color newPrimaryColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+                //bool isLightTheme = random.Next(2) == 0;
 
-                newTheme.SetPrimaryColor(newPrimaryColor);
-                newTheme.SetBaseTheme(isLightTheme ? BaseTheme.Light : BaseTheme.Dark);
-                paletteHelper.SetTheme(newTheme);
+                //newTheme.SetPrimaryColor(newPrimaryColor);
+                //newTheme.SetBaseTheme(isLightTheme ? BaseTheme.Light : BaseTheme.Dark);
+                //paletteHelper.SetTheme(newTheme);
 
-                foreach (Window currentWindow in Application.Current.Windows)
-                    BorderThemeSetter.SetBorderTheme(currentWindow, isLightTheme);
+                //foreach (Window currentWindow in Application.Current.Windows)
+                //    BorderThemeSetter.SetBorderTheme(currentWindow, isLightTheme);
 
-                Style newButtonStyle = new(typeof(Button), Application.Current.Resources[typeof(Button)] as Style);
-                (Color? newForegroundColor, Color newAccentForegroundColor) = ForegroundGenerator.GetForeground(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
+                //Style newButtonStyle = new(typeof(Button), Application.Current.Resources[typeof(Button)] as Style);
+                //(Color? newForegroundColor, Color newAccentForegroundColor) = ForegroundGenerator.GetForeground(newPrimaryColor.R, newPrimaryColor.G, newPrimaryColor.B);
 
-                newButtonStyle.Setters.Add(new Setter(ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
-                Application.Current.Resources[typeof(Button)] = newButtonStyle;
+                //newButtonStyle.Setters.Add(new Setter(ForegroundProperty, newForegroundColor.HasValue ? new SolidColorBrush(newForegroundColor.Value) : new DynamicResourceExtension("MaterialDesignBackground")));
+                //Application.Current.Resources[typeof(Button)] = newButtonStyle;
 
-                MainPres.AccentForegroundColor = newAccentForegroundColor;
+                //MainPres.AccentForegroundColor = newAccentForegroundColor;
 
                 if (GameFlashInterval > 100)
                     GameFlashInterval += random.Next(1, 4);
@@ -654,7 +662,7 @@ public partial class MainWin : Window
 
             MainPres.IsFlashing = false;
             NginxConfWatcher_Changed(null!, null!);
-            MessageBox.Show(MainConst._GameEndingMsg);
+            await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._GameEndingMsg).ShowAsync();
         }
         else
         {
@@ -672,21 +680,21 @@ public partial class MainWin : Window
             }
 
             if (GameFlashInterval > 10)
-                MessageBox.Show($"{MainConst._GameGradeMsg} {GameFlashInterval}");
+                await MessageBoxManager.GetMessageBoxStandard(string.Empty, $"{MainConst._GameGradeMsg} {GameFlashInterval}").ShowAsync();
         }
     }
-    private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWin().ShowDialog();
+    private void AboutButton_Click(object sender, RoutedEventArgs e) => new AboutWin().ShowDialog(this);
 
     private void ProxyTimer_Tick(object? sender, EventArgs e)
     {
         MainPres.IsConginxExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, Path.GetFileName(MainConst.ConginxPath)));
         MainPres.IsNginxExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, Path.GetFileName(MainConst.NginxPath)));
-        MainPres.IsConginxRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.ConginxPath)).Length != 0;
-        MainPres.IsNginxRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.NginxPath)).Length != 0;
+        MainPres.IsConginxRunning = Process.GetProcessesByName(OperatingSystem.IsWindows() ? Path.GetFileNameWithoutExtension(MainConst.ConginxPath) : Path.GetFileName(MainConst.ConginxPath)).Length != 0;
+        MainPres.IsNginxRunning = Process.GetProcessesByName(OperatingSystem.IsWindows() ? Path.GetFileNameWithoutExtension(MainConst.NginxPath) : Path.GetFileName(MainConst.NginxPath)).Length != 0;
         MainPres.IsComihomoExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, Path.GetFileName(MainConst.ComihomoPath)));
         MainPres.IsMihomoExist = File.Exists(Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, Path.GetFileName(MainConst.MihomoPath)));
-        MainPres.IsComihomoRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.ComihomoPath)).Length != 0;
-        MainPres.IsMihomoRunning = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(MainConst.MihomoPath)).Length != 0;
+        MainPres.IsComihomoRunning = Process.GetProcessesByName(OperatingSystem.IsWindows() ? Path.GetFileNameWithoutExtension(MainConst.ComihomoPath) : Path.GetFileName(MainConst.ComihomoPath)).Length != 0;
+        MainPres.IsMihomoRunning = Process.GetProcessesByName(OperatingSystem.IsWindows() ? Path.GetFileNameWithoutExtension(MainConst.MihomoPath) : Path.GetFileName(MainConst.MihomoPath)).Length != 0;
     }
     private async void CealHostWatcher_Changed(object sender, FileSystemEventArgs e)
     {
@@ -921,23 +929,10 @@ public partial class MainWin : Window
     }
     private void MainWin_KeyDown(object sender, KeyEventArgs e)
     {
-        if (e.KeyboardDevice.Modifiers != ModifierKeys.Control)
+        if (e.KeyModifiers != KeyModifiers.Control)
             return;
 
         if (e.Key == Key.W)
-            Application.Current.Shutdown();
-        else if (e.Key == Key.H)
-        {
-            System.Windows.Forms.NotifyIcon notifyIcon = new() { Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location), Text = MainConst.NotifyIconText, Visible = true };
-
-            notifyIcon.Click += (_, _) =>
-            {
-                Show();
-
-                notifyIcon.Dispose();
-            };
-
-            Hide();
-        }
+            Environment.Exit(0);
     }
 }
