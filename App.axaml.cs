@@ -1,16 +1,9 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Primitives;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using Avalonia.Markup.Xaml.MarkupExtensions;
-using Avalonia.Media;
 using Avalonia.Styling;
-using Sheas_Cealer_Nix.Preses;
-using Sheas_Cealer_Nix.Utils;
 using Sheas_Cealer_Nix.Wins;
-using System;
 using System.Linq;
 
 namespace Sheas_Cealer_Nix;
