@@ -14,6 +14,7 @@ internal partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        // Todo: Check x11-utils & xdg-utils environment for Linux.
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             #region Upgrade Settings
