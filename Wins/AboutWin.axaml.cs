@@ -49,21 +49,29 @@ public partial class AboutWin : Window
         });
     }
 
-    private void AboutButton_Click(object sender, RoutedEventArgs e)
+    private async Task AboutButton_ClickAsync(object sender, RoutedEventArgs e)
     {
-        //Button senderButton = (Button)sender;
+        Button senderButton = (Button)sender;
 
-        //if (senderButton == VersionButton)
-        //    await MessageBoxManager.GetMessageBoxStandard(string.Empty, $"{AboutConst._ReleasePagePasswordLabel} 3wnj").ShowWindowDialogAsync(this);
+        if (senderButton == VersionButton)
+            await MessageBoxManager.GetMessageBoxStandard(string.Empty, $"{AboutConst._ReleasePagePasswordLabel} 3wnj").ShowWindowDialogAsync(this);
 
-        //ProcessStartInfo processStartInfo = new(senderButton == EmailButton ? "mailto:" : string.Empty + ToolTip.GetTip(senderButton)) { UseShellExecute = true };
+        string processStartUrl = senderButton == EmailButton ? "mailto:" : string.Empty + ToolTip.GetTip(senderButton);
 
-        //try { Process.Start(processStartInfo); }
-        //catch (UnauthorizedAccessException)
-        //{
-        //    processStartInfo.Verb = "RunAs";
-        //    Process.Start(processStartInfo);
-        //}
+        try
+        {
+            if (OperatingSystem.IsWindows())
+                Process.Start(new ProcessStartInfo(processStartUrl) { UseShellExecute = true });
+            else
+                Process.Start("xdg-open", processStartUrl);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            if (OperatingSystem.IsWindows())
+                Process.Start(new ProcessStartInfo(processStartUrl) { UseShellExecute = true, Verb = "RunAs" });
+            else
+                Process.Start("sudo", $"xdg-open {processStartUrl}");
+        }
     }
 
     private void AboutWin_KeyDown(object sender, KeyEventArgs e)
