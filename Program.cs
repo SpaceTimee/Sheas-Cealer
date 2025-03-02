@@ -8,7 +8,7 @@ namespace Sheas_Cealer_Nix;
 internal sealed class Program
 {
     [STAThread]
-    public static async Task Main(string[] args)
+    private static async Task Main(string[] args)
     {
         try
         {
