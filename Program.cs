@@ -10,14 +10,10 @@ internal sealed class Program
     [STAThread]
     private static async Task Main(string[] args)
     {
-        try
-        {
-            AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .WithInterFont()
-            .StartWithClassicDesktopLifetime(args);
-        }
+        try { BuildAvaloniaApp().StartWithClassicDesktopLifetime(args); }
         catch (Exception ex) { await MessageBoxManager.GetMessageBoxStandard(string.Empty, $"Error: {ex.Message}").ShowAsync(); }
     }
+
+    private static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>().UsePlatformDetect().WithInterFont();
 }
 
