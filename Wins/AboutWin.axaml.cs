@@ -18,7 +18,7 @@ public partial class AboutWin : Window
     private readonly AboutPres AboutPres;
     private readonly HttpClient AboutClient = new(new HttpClientHandler { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator });
 
-    internal AboutWin()
+    public AboutWin()
     {
         DataContext = AboutPres = new();
 
