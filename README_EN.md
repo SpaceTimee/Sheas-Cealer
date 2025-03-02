@@ -25,10 +25,7 @@
 Github: [https://github.com/Project-SheasCealerNix/Sheas-Cealer-Nix/releases](https://github.com/Project-SheasCealerNix/Sheas-Cealer-Nix/releases)
 
 ## Installation
-1. Setup Installer (preferred): Download Sheas Cealer Setup.exe and run -> Then follow the prompts to install
-2. Zip Package (installation-free): Download Sheas Cealer Zip.zip and unzip -> Then you can use it directly
-
-> Scd version: The Scd version has a built-in .Net runtime and can run in an environment without a .Net runtime, but the cost is a larger file size and worse cross-platform capabilities. If there is no special reason, it is not recommended to use the Scd version
+Zip Package: Download Sheas Cealer Nix.zip and unzip -> Then you can use it directly
 
 ## Documentation
 **[Sheas Cealer Documentation](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Documentation)**
