@@ -25,10 +25,7 @@
 Github: [https://github.com/Project-SheasCealerNix/Sheas-Cealer-Nix/releases](https://github.com/Project-SheasCealerNix/Sheas-Cealer-Nix/releases)
 
 ## 安装方式
-1. Setup 安装器 (首选): 下载 Sheas Cealer Setup.exe 并运行 -> 按照提示设置即可安装
-2. Zip 压缩包 (免安装): 下载 Sheas Cealer Zip.zip 并解压 -> 完成后即可直接使用
-
-> Scd 版本: Scd 版本内置 .Net 运行时，可在缺乏 .Net 运行时的环境下运行，但代价是更大的文件体积以及更差跨平台能力，如果没有特殊原因，不建议使用 Scd 版本
+Zip 压缩包: 下载 Sheas Cealer Nix.zip 并解压 -> 完成后即可直接使用
 
 ## 食用文档
 **[Sheas Cealer Documentation](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Documentation)**
