@@ -1,4 +1,4 @@
-<h1 align="center">Sheas ◁ Cealer</h1>
+<h1 align="center">Sheas Cealer Nix</h1>
 <h3 align="center">- Just Ceal It -</h3>
 </br>
 
@@ -6,24 +6,19 @@
 [English README](README_EN.md)
 
 ## 自我介绍
-**Sheas Cealer**: 一只基于 **WPF(.Net8)** 的 SNI 伪造工具
+**Sheas Cealer Nix**: 一只基于 **Avalonia(.Net8)** 的 SNI 伪造工具
 
-* 适用平台: Windows (Win10 之前的系统版本请使用 [1.1.0](https://github.com/SpaceTimee/Sheas-Cealer/releases/tag/1.1.0)) (其他平台请参考[相关项目](https://github.com/SpaceTimee/Sheas-Cealer#相关项目))
+* 适用平台: Linux & Windows (MacOS 待支持) (其他平台请参考[相关项目](https://github.com/SpaceTimee/Sheas-Cealer#相关项目))
 
 ## 词汇解释
 **[Sheas Cealer Dictionary](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Dictionary)**
 
 ## 注意事项
 1. 内置伪造规则在 [Cealing Host 存储库](https://github.com/SpaceTimee/Cealing-Host) 持续更新
-2. Sheas Cealer 更新时不会覆盖已有的伪造规则，如需与上游同步，需点击**更新上游规则**按钮，或**手动修改覆盖**
+2. Sheas Cealer Nix 更新时不会覆盖已有的伪造规则，如需与上游同步，需点击**更新上游规则**按钮，或**手动修改覆盖**
 3. 本项目及所有相关资源仅供**抵御网络非法监听**和**开展网络安全研究**使用，无意绕过任何国家审查设备的审查
-4. 为避免不必要的麻烦，使用前请先阅读**注意事项**和**用户协议**
-5. Sheas Cealer 仍处于**开发阶段**，但每个正式版发布前会尽量确保其**稳定可用**
-6. Github Release 中会保留目前能够使用的**所有版本**，但强烈推荐使用**最新版**
-
-## 用户协议
-1. [隐私政策](https://thoughts.teambition.com/share/6264eda98adeb10041b92fda#title=Sheas_Cealer_隐私政策)
-2. [使用协议](https://thoughts.teambition.com/share/6264edd78adeb10041b92fdb#title=Sheas_Cealer_使用协议)
+4. Sheas Cealer Nix 仍处于**开发阶段**，但每个正式版发布前会尽量确保其**稳定可用**
+5. Github Release 中会保留目前能够使用的**所有版本**，但强烈推荐使用**最新版**
 
 ## 下载地址
 Github: [https://github.com/SpaceTimee/Sheas-Cealer/releases](https://github.com/SpaceTimee/Sheas-Cealer/releases)
@@ -56,8 +51,8 @@ Github: [https://github.com/SpaceTimee/Sheas-Cealer/releases](https://github.com
 3. **邮箱: Zeus6_6@163.com**
 
 ## 相关项目
-1. [Sheas Cealer Droid](https://github.com/SpaceTimee/Sheas-Cealer-Droid): Sheas Cealer 安卓端
-2. [Sheas Cealer Nix](https://github.com/SpaceTimee/Sheas-Cealer/tree/nix): Sheas Cealer 跨平台分支
+1. [Sheas Cealer](https://github.com/SpaceTimee/Sheas-Cealer): Sheas Cealer Windows 端
+2. [Sheas Cealer Droid](https://github.com/SpaceTimee/Sheas-Cealer-Droid): Sheas Cealer 安卓端
 3. [Cealing Host](https://github.com/SpaceTimee/Cealing-Host): 最新的 Sheas Cealer 内置伪造规则
 4. [Sheas Dop](https://github.com/SpaceTimee/Sheas-Dop): DNS 抗污染解析工具 (Sheas Cealer 全局净化子项目)
 5. [Sheas Nginx](https://github.com/SpaceTimee/Sheas-Nginx): Pixiv Nginx 启动器 (Sheas Cealer 全局伪造 × Pixiv Nginx 合作子项目)

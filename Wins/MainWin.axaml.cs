@@ -331,7 +331,7 @@ public partial class MainWin : Window
                             if (OperatingSystem.IsWindows())
                                 Process.Start(new ProcessStartInfo(MainConst.NginxErrorLogsPath) { UseShellExecute = true });
                             else
-                                Process.Start("xdg-open", MainConst.NginxErrorLogsPath);
+                                Process.Start("xdg-open", $"\"{MainConst.NginxErrorLogsPath}\"");
 
                         break;
                     }
@@ -532,8 +532,8 @@ public partial class MainWin : Window
             try { Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true }); }
             catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true, Verb = "RunAs" }); }
         else
-            try { Process.Start("xdg-open", cealHostPath); }
-            catch (UnauthorizedAccessException) { Process.Start("sudo", $"xdg-open {cealHostPath}"); }
+            try { Process.Start("xdg-open", $"\"{cealHostPath}\""); }
+            catch (UnauthorizedAccessException) { Process.Start("sudo", $"xdg-open \"{cealHostPath}\""); }
     }
     private async void EditConfButton_Click(object sender, RoutedEventArgs e)
     {
@@ -557,7 +557,7 @@ public partial class MainWin : Window
         if (OperatingSystem.IsWindows())
             Process.Start(new ProcessStartInfo(confPath) { UseShellExecute = true });
         else
-            Process.Start("xdg-open", confPath);
+            Process.Start("xdg-open", $"\"{confPath}\"");
     }
     private async void UpdateUpstreamHostButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -599,8 +599,8 @@ public partial class MainWin : Window
                             try { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true }); }
                             catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true, Verb = "RunAs" }); }
                         else
-                            try { Process.Start("xdg-open", upstreamUpstreamHostUrl); }
-                            catch (UnauthorizedAccessException) { Process.Start("sudo", $"xdg-open {upstreamUpstreamHostUrl}"); }
+                            try { Process.Start("xdg-open", $"\"{upstreamUpstreamHostUrl}\""); }
+                            catch (UnauthorizedAccessException) { Process.Start("sudo", $"xdg-open \"{upstreamUpstreamHostUrl}\""); }
                 }
         }
         catch when (sender == null) { }
