@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Sheas_Cealer_Nix;
 
-public partial class App : Application
+internal partial class App : Application
 {
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
 
@@ -68,7 +68,7 @@ public partial class App : Application
         // Get an array of plugins to remove
         var dataValidationPluginsToRemove = BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
 
-        // remove each entry found
+        // Remove each entry found
         foreach (var plugin in dataValidationPluginsToRemove)
             BindingPlugins.DataValidators.Remove(plugin);
     }
