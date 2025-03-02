@@ -49,21 +49,21 @@ public partial class AboutWin : Window
         });
     }
 
-    private async void AboutButton_Click(object sender, RoutedEventArgs e)
+    private void AboutButton_Click(object sender, RoutedEventArgs e)
     {
-        Button senderButton = (Button)sender;
+        //Button senderButton = (Button)sender;
 
-        if (senderButton == VersionButton)
-            await MessageBoxManager.GetMessageBoxStandard(string.Empty, $"{AboutConst._ReleasePagePasswordLabel} 3wnj").ShowWindowDialogAsync(this);
+        //if (senderButton == VersionButton)
+        //    await MessageBoxManager.GetMessageBoxStandard(string.Empty, $"{AboutConst._ReleasePagePasswordLabel} 3wnj").ShowWindowDialogAsync(this);
 
-        ProcessStartInfo processStartInfo = new(senderButton == EmailButton ? "mailto:" : string.Empty + ToolTip.GetTip(senderButton)) { UseShellExecute = true };
+        //ProcessStartInfo processStartInfo = new(senderButton == EmailButton ? "mailto:" : string.Empty + ToolTip.GetTip(senderButton)) { UseShellExecute = true };
 
-        try { Process.Start(processStartInfo); }
-        catch (UnauthorizedAccessException)
-        {
-            processStartInfo.Verb = "RunAs";
-            Process.Start(processStartInfo);
-        }
+        //try { Process.Start(processStartInfo); }
+        //catch (UnauthorizedAccessException)
+        //{
+        //    processStartInfo.Verb = "RunAs";
+        //    Process.Start(processStartInfo);
+        //}
     }
 
     private void AboutWin_KeyDown(object sender, KeyEventArgs e)
