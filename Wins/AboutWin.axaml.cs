@@ -49,7 +49,7 @@ public partial class AboutWin : Window
         });
     }
 
-    private async Task AboutButton_ClickAsync(object sender, RoutedEventArgs e)
+    private async void AboutButton_Click(object sender, RoutedEventArgs e)
     {
         Button senderButton = (Button)sender;
 
