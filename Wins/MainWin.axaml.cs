@@ -328,7 +328,10 @@ public partial class MainWin : Window
                             continue;
 
                         if (await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._LaunchNginxErrorPrompt, ButtonEnum.YesNo).ShowWindowDialogAsync(this) == ButtonResult.Yes)
-                            Process.Start(new ProcessStartInfo(MainConst.NginxErrorLogsPath) { UseShellExecute = true });
+                            if (OperatingSystem.IsWindows())
+                                Process.Start(new ProcessStartInfo(MainConst.NginxErrorLogsPath) { UseShellExecute = true });
+                            else
+                                Process.Start("xdg-open", MainConst.NginxErrorLogsPath);
 
                         break;
                     }
@@ -529,8 +532,8 @@ public partial class MainWin : Window
             try { Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true }); }
             catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(cealHostPath) { UseShellExecute = true, Verb = "RunAs" }); }
         else
-            try { Process.Start("vi", cealHostPath); }
-            catch (UnauthorizedAccessException) { Process.Start("sudo", $"vi {cealHostPath}"); }
+            try { Process.Start("xdg-open", cealHostPath); }
+            catch (UnauthorizedAccessException) { Process.Start("sudo", $"xdg-open {cealHostPath}"); }
     }
     private async void EditConfButton_Click(object sender, RoutedEventArgs e)
     {
@@ -554,7 +557,7 @@ public partial class MainWin : Window
         if (OperatingSystem.IsWindows())
             Process.Start(new ProcessStartInfo(confPath) { UseShellExecute = true });
         else
-            Process.Start("vi", confPath);
+            Process.Start("xdg-open", confPath);
     }
     private async void UpdateUpstreamHostButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -592,8 +595,12 @@ public partial class MainWin : Window
                         await MessageBoxManager.GetMessageBoxStandard(string.Empty, MainConst._UpdateUpstreamHostSuccessMsg).ShowWindowDialogAsync(this);
                     }
                     else if (overrideOptionResult == ButtonResult.No)
-                        try { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true }); }
-                        catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true, Verb = "RunAs" }); }
+                        if (OperatingSystem.IsWindows())
+                            try { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true }); }
+                            catch (UnauthorizedAccessException) { Process.Start(new ProcessStartInfo(upstreamUpstreamHostUrl) { UseShellExecute = true, Verb = "RunAs" }); }
+                        else
+                            try { Process.Start("xdg-open", upstreamUpstreamHostUrl); }
+                            catch (UnauthorizedAccessException) { Process.Start("sudo", $"xdg-open {upstreamUpstreamHostUrl}"); }
                 }
         }
         catch when (sender == null) { }
