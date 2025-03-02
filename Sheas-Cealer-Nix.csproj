@@ -13,7 +13,7 @@
     <FileVersion>0.0.1</FileVersion>
     <InformationalVersion>0.0.1</InformationalVersion>
     <PackageTags>Tool;Sheas;Cealer;Nix;Sni</PackageTags>
-    <ApplicationIcon>Sheas-Cealer-Logo.ico</ApplicationIcon>
+    <ApplicationIcon>Sheas-Cealer-Nix-Logo.ico</ApplicationIcon>
     <PackageIcon>Sheas Cealer Logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/Project-SheasCealerNix/Sheas-Cealer-Nix</PackageProjectUrl>
@@ -61,7 +61,7 @@
     <None Remove=".gitignore" />
     <None Remove="README.md" />
     <None Remove="README_EN.md" />
-    <None Remove="Sheas-Cealer-Logo.ico" />
+    <None Remove="Sheas-Cealer-Nix-Logo.ico" />
   </ItemGroup>
 
   <ItemGroup>

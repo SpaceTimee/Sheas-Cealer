@@ -63,14 +63,14 @@ public partial class AboutWin : Window
             if (OperatingSystem.IsWindows())
                 Process.Start(new ProcessStartInfo(processStartUrl) { UseShellExecute = true });
             else
-                Process.Start("xdg-open", processStartUrl);
+                Process.Start("xdg-open", $"\"{processStartUrl}\"");
         }
         catch (UnauthorizedAccessException)
         {
             if (OperatingSystem.IsWindows())
                 Process.Start(new ProcessStartInfo(processStartUrl) { UseShellExecute = true, Verb = "RunAs" });
             else
-                Process.Start("sudo", $"xdg-open {processStartUrl}");
+                Process.Start("sudo", $"xdg-open \"{processStartUrl}\"");
         }
     }
 
