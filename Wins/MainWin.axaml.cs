@@ -59,7 +59,7 @@ public partial class MainWin : Window
     private int GameClickTime = 0;
     private int GameFlashInterval = 1000;
 
-    internal MainWin()
+    public MainWin()
     {
         DataContext = MainPres = new();
 
@@ -123,13 +123,13 @@ public partial class MainWin : Window
         switch (MainPres.SettingsMode)
         {
             case MainConst.SettingsMode.BrowserPathMode:
-                MainPres.BrowserPath = SettingsBox.Text;
+                MainPres.BrowserPath = SettingsBox.Text ?? string.Empty;
                 return;
             case MainConst.SettingsMode.UpstreamUrlMode:
-                MainPres.UpstreamUrl = SettingsBox.Text;
+                MainPres.UpstreamUrl = SettingsBox.Text ?? string.Empty;
                 return;
             case MainConst.SettingsMode.ExtraArgsMode:
-                MainPres.ExtraArgs = SettingsBox.Text;
+                MainPres.ExtraArgs = SettingsBox.Text ?? string.Empty;
                 return;
         }
     }
@@ -179,7 +179,7 @@ public partial class MainWin : Window
     }
     private void LaunchButton_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        Button senderButton = (Button)sender;
+        Button senderButton = (Button)sender!;
 
         HoldButtonTimer = new() { Interval = TimeSpan.FromSeconds(1) };
         HoldButtonTimer.Tick += senderButton == NginxButton ? NginxButtonHoldTimer_Tick : senderButton == MihomoButton ? MihomoButtonHoldTimer_Tick : BrowserButtonHoldTimer_Tick;

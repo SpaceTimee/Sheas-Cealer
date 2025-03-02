@@ -11,7 +11,7 @@ public partial class SettingsWin : Window
 {
     private readonly SettingsPres SettingsPres;
 
-    internal SettingsWin()
+    public SettingsWin()
     {
         DataContext = SettingsPres = new();
 
