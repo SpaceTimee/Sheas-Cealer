@@ -8,21 +8,25 @@
 ## About
 **Sheas Cealer Nix**: A SNI concealing tool based on **Avalonia(.Net8)**
 
-* Applicable platform: Linux & Windows (MacOS to be supported) (Windows users are recommended to use original [Sheas Cealer](https://github.com/SpaceTimee/Sheas-Cealer))
+* Applicable platform: Linux & Windows (MacOS to be supported) (For Windows system, recommend to use original [Sheas Cealer](https://github.com/SpaceTimee/Sheas-Cealer))
 
 ## Vocabulary
 **[Sheas Cealer Dictionary](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Dictionary)**
 
 ## Notes
 1. The Built-in Cealing Host is continuously updated in the [Cealing Host repository](https://github.com/SpaceTimee/Cealing-Host)
-2. When Sheas Cealer Nix is updated, it will not overwrite the existing configs. If you need to synchronize with the upstream, you need to click the **Update Upstream Host** button, or **manually overwrite**
+2. When Sheas Cealer is updated, it will not overwrite the existing configs. If you need to synchronize with the upstream, you need to click the **Update Upstream Host** button, or **manually overwrite**
 3. This project and all its resources are for the sole purpose of **defending against illegal network monitoring** and **conducting network security research**, and are not intended to bypass the censorship of any country
-4. Sheas Cealer Nix is still in the **development stage**, but each production version will be **stable and available** before release
-5. Github Release will retain **all versions** that can be used currently, but it is strongly recommended to use the **latest version**
-6. Note 3 will be officially and strictly implemented from 2024.12.31
+4. Please read the **Notes** and **Agreements** before use
+5. Sheas Cealer is still in the **development stage**, but each production version will be **stable and available** before release
+6. Github Release will retain **all versions** that can be used currently, but it is strongly recommended to use the **latest version**
+
+## Agreements
+1. [Privacy Policy](https://thoughts.teambition.com/share/6264eda98adeb10041b92fda#title=Sheas_Cealer_隐私政策)
+2. [EULA](https://thoughts.teambition.com/share/6264edd78adeb10041b92fdb#title=Sheas_Cealer_使用协议)
 
 ## Download
-Github: [https://github.com/Project-SheasCealerNix/Sheas-Cealer-Nix/releases](https://github.com/Project-SheasCealerNix/Sheas-Cealer-Nix/releases)
+Github: [https://github.com/SpaceTimee/Sheas-Cealer/releases](https://github.com/SpaceTimee/Sheas-Cealer/releases)
 
 ## Installation
 Zip Package: Download Sheas Cealer Nix.zip and unzip -> Then you can use it directly
@@ -49,7 +53,7 @@ Using the startup parameter feature of the Chromium kernel to conceal SNI. For m
 3. **Email: 4097507@gmail.com**
 
 ## Projects
-1. [Sheas Cealer](https://github.com/SpaceTimee/Sheas-Cealer): Original Sheas Cealer
+1. [Sheas Cealer](https://github.com/SpaceTimee/Sheas-Cealer): Sheas Cealer master branch (Sheas Cealer original version)
 2. [Cealing Host](https://github.com/SpaceTimee/Cealing-Host): The latest Built-in Cealing Host
 3. [Sheas Dop](https://github.com/SpaceTimee/Sheas-Dop): DNS anti-pollution resolution tool (Sheas Cealer Global Cealing subproject)
 4. [Sheas Nginx](https://github.com/SpaceTimee/Sheas-Nginx): Pixiv Nginx launcher (Sheas Cealer Global Purging × Pixiv Nginx cooperative subproject)
