@@ -15,10 +15,15 @@
 
 ## Notes
 1. The Built-in Cealing Host is continuously updated in the [Cealing Host repository](https://github.com/SpaceTimee/Cealing-Host)
-2. When Sheas Cealer Nix is updated, it will not overwrite the existing configs. If you need to synchronize with the upstream, you need to click the **Update Upstream Host** button, or **manually overwrite**
+2. When Sheas Cealer is updated, it will not overwrite the existing configs. If you need to synchronize with the upstream, you need to click the **Update Upstream Host** button, or **manually overwrite**
 3. This project and all its resources are for the sole purpose of **defending against illegal network monitoring** and **conducting network security research**, and are not intended to bypass the censorship of any country
-4. Sheas Cealer Nix is still in the **development stage**, but each production version will be **stable and available** before release
-5. Github Release will retain **all versions** that can be used currently, but it is strongly recommended to use the **latest version**
+4. Please read the **Notes** and **Agreements** before use
+5. Sheas Cealer is still in the **development stage**, but each production version will be **stable and available** before release
+6. Github Release will retain **all versions** that can be used currently, but it is strongly recommended to use the **latest version**
+
+## Agreements
+1. [Privacy Policy](https://thoughts.teambition.com/share/6264eda98adeb10041b92fda#title=Sheas_Cealer_隐私政策)
+2. [EULA](https://thoughts.teambition.com/share/6264edd78adeb10041b92fdb#title=Sheas_Cealer_使用协议)
 
 ## Download
 Github: [https://github.com/SpaceTimee/Sheas-Cealer/releases](https://github.com/SpaceTimee/Sheas-Cealer/releases)
