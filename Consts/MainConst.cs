@@ -40,7 +40,7 @@ internal abstract partial class MainConst : MainMultilangConst
     internal static string ComihomoPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Comihomo.exe");
     internal static string MihomoPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "Cealing-Mihomo.exe");
     internal static string MihomoConfPath => Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase!, "config.yaml");
-    internal static string[] MihomoNameServers => ["https://doh.apad.pro/dns-query", "https://ns.net.kg/dns-query"];
+    internal static string[] MihomoNameServers => ["https://ns.net.kg/dns-query", "https://dnschina1.soraharu.com/dns-query", "https://0ms.dev/dns-query"];
 
     internal static string NotifyIconText => "Sheas Cealer";
 
