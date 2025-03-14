@@ -14,6 +14,6 @@ internal class MainBrowserButtonIsEnabledConv : IMultiValueConverter
         string browserPath = (string)values[0];
         string extraArgs = (string)values[1];
 
-        return File.Exists(browserPath) && Path.GetFileName(browserPath).ToLowerInvariant().EndsWith(".exe") && MainConst.ExtraArgsRegex().IsMatch(extraArgs);
+        return File.Exists(browserPath) && MainConst.ExtraArgsRegex().IsMatch(extraArgs);
     }
 }

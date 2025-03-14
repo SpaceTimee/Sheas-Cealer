@@ -43,7 +43,7 @@ internal partial class MainPres : GlobalPres
     private string browserPath;
     partial void OnBrowserPathChanged(string value)
     {
-        //if (!File.Exists(value) || !Path.GetFileName(value).ToLowerInvariant().EndsWith(".exe"))
+        //if (!File.Exists(value))
         //    return;
 
         //Settings.Default.BrowserPath = value;
