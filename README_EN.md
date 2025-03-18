@@ -52,8 +52,8 @@ Using the startup parameter feature of the Chromium kernel to conceal SNI. For m
 **Space Time**
 
 ## Contacts
-1. **QQ Group (Main Group): 716266896, 338919498**
-2. TG Group (Sub Group): [PixCealerChat](https://t.me/PixCealerChat)
+1. **QQ Group: 1034315671, 716266896, 338919498**
+2. TG Group: [PixCealerChat](https://t.me/PixCealerChat)
 3. **Email: Zeus6_6@163.com**
 
 ## Projects
