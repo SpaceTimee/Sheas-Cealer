@@ -8,7 +8,7 @@
 ## About
 **Sheas Cealer**: A SNI concealing tool based on **WPF(.Net8)**
 
-* Applicable platform: Windows (For system versions before Win10, please use [1.1.0](https://github.com/SpaceTimee/Sheas-Cealer/releases/tag/1.1.0)) (For Linux system, please use [Sheas Cealer Nix](https://github.com/SpaceTimee/Sheas-Cealer/tree/nix))
+* Applicable platform: Windows (For system versions before Win10, please use [1.1.0](https://github.com/SpaceTimee/Sheas-Cealer/releases/tag/1.1.0)) (For other system, please refer to [Projects](https://github.com/SpaceTimee/Sheas-Cealer#Projects))
 
 ## Vocabulary
 **[Sheas Cealer Dictionary](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Dictionary)**
@@ -26,8 +26,7 @@
 2. [EULA](https://thoughts.teambition.com/share/6264edd78adeb10041b92fdb#title=Sheas_Cealer_使用协议)
 
 ## Download
-1. Github (preferred): [https://github.com/SpaceTimee/Sheas-Cealer/releases](https://github.com/SpaceTimee/Sheas-Cealer/releases)
-2. Lanzou (password 3wnj) (recommended in mainland China): [https://spacetime.lanzouu.com/b017hp0lc](https://spacetime.lanzouu.com/b017hp0lc)
+Github (preferred): [https://github.com/SpaceTimee/Sheas-Cealer/releases](https://github.com/SpaceTimee/Sheas-Cealer/releases)
 
 ## Installation
 1. Setup Installer (preferred): Download Sheas Cealer Setup.exe and run -> Then follow the prompts to install
@@ -57,13 +56,14 @@ Using the startup parameter feature of the Chromium kernel to conceal SNI. For m
 3. **Email: Zeus6_6@163.com**
 
 ## Projects
-1. [Sheas Cealer Nix](https://github.com/SpaceTimee/Sheas-Cealer/tree/nix): Sheas Cealer cross-platform branch
-2. [Cealing Host](https://github.com/SpaceTimee/Cealing-Host): The latest Built-in Cealing Host
-3. [Sheas Dop](https://github.com/SpaceTimee/Sheas-Dop): DNS anti-pollution resolution tool (Sheas Cealer Global Cealing subproject)
-4. [Sheas Nginx](https://github.com/SpaceTimee/Sheas-Nginx): Pixiv Nginx launcher (Sheas Cealer Global Purging × Pixiv Nginx cooperative subproject)
-5. [Bot CealingCat](https://github.com/SpaceTimee/Bot-CealingCat): Telegram Bot providing Sheas Cealer related services
-6. [Console HostChecker](https://github.com/SpaceTimee/Console-HostChecker): Cealing Host automated checking script
-7. [Console HostGenerator](https://github.com/SpaceTimee/Console-HostGenerator): Cealing Host automated generation script
+1. [Sheas Cealer Droid](https://github.com/SpaceTimee/Sheas-Cealer-Droid): Sheas Cealer for Android
+2. [Sheas Cealer Nix](https://github.com/SpaceTimee/Sheas-Cealer/tree/nix): Sheas Cealer cross-platform branch
+3. [Cealing Host](https://github.com/SpaceTimee/Cealing-Host): The latest Built-in Cealing Host
+4. [Sheas Dop](https://github.com/SpaceTimee/Sheas-Dop): DNS anti-pollution resolution tool (Sheas Cealer Global Cealing subproject)
+5. [Sheas Nginx](https://github.com/SpaceTimee/Sheas-Nginx): Pixiv Nginx launcher (Sheas Cealer Global Purging × Pixiv Nginx cooperative subproject)
+6. [Bot CealingCat](https://github.com/SpaceTimee/Bot-CealingCat): Telegram Bot providing Sheas Cealer related services
+7. [Console HostChecker](https://github.com/SpaceTimee/Console-HostChecker): Cealing Host automated checking script
+8. [Console HostGenerator](https://github.com/SpaceTimee/Console-HostGenerator): Cealing Host automated generation script
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer?ref=badge_large)

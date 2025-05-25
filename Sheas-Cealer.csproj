@@ -30,18 +30,11 @@
     <UseWindowsForms>True</UseWindowsForms>
     <IsPublishable>True</IsPublishable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <ErrorReport>none</ErrorReport>
     <NoWin32Manifest>true</NoWin32Manifest>
     <AppDesignerFolder>Props</AppDesignerFolder>
     <NeutralLanguage>en</NeutralLanguage>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
 
   <ItemGroup>

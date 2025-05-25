@@ -8,7 +8,7 @@
 ## 自我介绍
 **Sheas Cealer**: 一只基于 **WPF(.Net8)** 的 SNI 伪造工具
 
-* 适用平台: Windows (Win10 之前的系统版本请使用 [1.1.0](https://github.com/SpaceTimee/Sheas-Cealer/releases/tag/1.1.0)) (Linux 系统请使用 [Sheas Cealer Nix](https://github.com/SpaceTimee/Sheas-Cealer/tree/nix))
+* 适用平台: Windows (Win10 之前的系统版本请使用 [1.1.0](https://github.com/SpaceTimee/Sheas-Cealer/releases/tag/1.1.0)) (其他平台请参考[相关项目](https://github.com/SpaceTimee/Sheas-Cealer#相关项目))
 
 ## 词汇解释
 **[Sheas Cealer Dictionary](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Dictionary)**
@@ -26,8 +26,7 @@
 2. [使用协议](https://thoughts.teambition.com/share/6264edd78adeb10041b92fdb#title=Sheas_Cealer_使用协议)
 
 ## 下载地址
-1. Github (首选): [https://github.com/SpaceTimee/Sheas-Cealer/releases](https://github.com/SpaceTimee/Sheas-Cealer/releases)
-2. 蓝奏云 (密码 3wnj) (大陆推荐): [https://spacetime.lanzouu.com/b017hp0lc](https://spacetime.lanzouu.com/b017hp0lc)
+Github: [https://github.com/SpaceTimee/Sheas-Cealer/releases](https://github.com/SpaceTimee/Sheas-Cealer/releases)
 
 ## 安装方式
 1. Setup 安装器 (首选): 下载 Sheas Cealer Setup.exe 并运行 -> 按照提示设置即可安装
@@ -57,13 +56,14 @@
 3. **邮箱: Zeus6_6@163.com**
 
 ## 相关项目
-1. [Sheas Cealer Nix](https://github.com/SpaceTimee/Sheas-Cealer/tree/nix): Sheas Cealer 跨平台分支
-2. [Cealing Host](https://github.com/SpaceTimee/Cealing-Host): 最新的 Sheas Cealer 内置伪造规则
-3. [Sheas Dop](https://github.com/SpaceTimee/Sheas-Dop): DNS 抗污染解析工具 (Sheas Cealer 全局净化子项目)
-4. [Sheas Nginx](https://github.com/SpaceTimee/Sheas-Nginx): Pixiv Nginx 启动器 (Sheas Cealer 全局伪造 × Pixiv Nginx 合作子项目)
-5. [Bot CealingCat](https://github.com/SpaceTimee/Bot-CealingCat): 提供 Sheas Cealer 相关服务的 Telegram Bot
-6. [Console HostChecker](https://github.com/SpaceTimee/Console-HostChecker): Cealing Host 自动化检查脚本
-7. [Console HostGenerator](https://github.com/SpaceTimee/Console-HostGenerator): Cealing Host 自动化生成脚本
+1. [Sheas Cealer Droid](https://github.com/SpaceTimee/Sheas-Cealer-Droid): Sheas Cealer 安卓端
+2. [Sheas Cealer Nix](https://github.com/SpaceTimee/Sheas-Cealer/tree/nix): Sheas Cealer 跨平台分支
+3. [Cealing Host](https://github.com/SpaceTimee/Cealing-Host): 最新的 Sheas Cealer 内置伪造规则
+4. [Sheas Dop](https://github.com/SpaceTimee/Sheas-Dop): DNS 抗污染解析工具 (Sheas Cealer 全局净化子项目)
+5. [Sheas Nginx](https://github.com/SpaceTimee/Sheas-Nginx): Pixiv Nginx 启动器 (Sheas Cealer 全局伪造 × Pixiv Nginx 合作子项目)
+6. [Bot CealingCat](https://github.com/SpaceTimee/Bot-CealingCat): 提供 Sheas Cealer 相关服务的 Telegram Bot
+7. [Console HostChecker](https://github.com/SpaceTimee/Console-HostChecker): Cealing Host 自动化检查脚本
+8. [Console HostGenerator](https://github.com/SpaceTimee/Console-HostGenerator): Cealing Host 自动化生成脚本
 
 ## 许可证
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FSpaceTimee%2FSheas-Cealer?ref=badge_large)
