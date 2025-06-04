@@ -201,7 +201,7 @@ public partial class MainWin : Window
 
         await Task.Run(() =>
         {
-            new BrowserProc(MainPres.BrowserPath, sender is bool).Run(Path.GetDirectoryName(MainPres.BrowserPath)!, $"{CealArgs} {MainPres.ExtraArgs.Trim()}");
+            new BrowserProc(MainPres.BrowserPath, sender is bool).Run(Path.GetDirectoryName(MainPres.BrowserPath)!, $"{CealArgs} {MainPres.ExtraArgs.Trim()} {(MainConst.IsAdmin ? "--no-sandbox" : string.Empty)}");
         });
     }
     private async void NginxButtonHoldTimer_Tick(object? sender, EventArgs e)
