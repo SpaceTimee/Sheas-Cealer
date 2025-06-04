@@ -690,7 +690,7 @@ public partial class MainWin : Window
     }
     private async void CealHostWatcher_Changed(object sender, FileSystemEventArgs e)
     {
-        string cealHostName = e.Name!.TrimStart("Cealing-Host-".ToCharArray()).TrimEnd(".json".ToCharArray());
+        string cealHostName = MainConst.CealHostPrefixRegex().Replace(Path.GetFileNameWithoutExtension(e.Name!), string.Empty);
 
         try
         {

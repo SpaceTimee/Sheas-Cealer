@@ -44,6 +44,9 @@ internal abstract partial class MainConst : MainMultilangConst
 
     internal static string NotifyIconText => "Sheas Cealer";
 
+    [GeneratedRegex("^Cealing-Host-")]
+    internal static partial Regex CealHostPrefixRegex();
+
     [GeneratedRegex(@"^(https?:\/\/)?[a-zA-Z0-9](-*[a-zA-Z0-9])*(\.[a-zA-Z0-9](-*[a-zA-Z0-9])*)*(:\d{1,5})?(\/[a-zA-Z0-9.\-_\~\!\$\&\'\(\)\*\+\,\;\=\:\@\%]*)*$")]
     internal static partial Regex UpstreamUrlRegex();
 
