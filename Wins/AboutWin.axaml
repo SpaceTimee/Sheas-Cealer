@@ -28,7 +28,6 @@
                 ToolTip.Tip="{x:Static consts:AboutConst.DeveloperButtonUrl}"
                 Click="AboutButton_Click" />
         <Button Grid.Row="1" Grid.Column="0" Margin="5"
-                d:Foreground="{Binding Source={x:Static consts:AboutConst.AccentBlueColor}, Converter={x:Static convs:AboutConv.AboutAccentButtonForegroundConv}}"
                 Foreground="{Binding AccentForegroundColor, Converter={x:Static convs:AboutConv.AboutAccentButtonForegroundConv}}"
                 ToolTip.Tip="{x:Static consts:AboutConst.VersionButtonUrl}"
                 Click="AboutButton_Click">
