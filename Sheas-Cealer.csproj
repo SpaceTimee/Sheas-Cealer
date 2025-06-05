@@ -70,36 +70,29 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Consts\AboutMultilangConst.Designer.cs">
+    <Compile Update="Consts\MainMultilangConst.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>AboutMultilangConst.resx</DependentUpon>
+      <DependentUpon>MainMultilangConst.resx</DependentUpon>
     </Compile>
     <Compile Update="Consts\SettingsMultilangConst.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SettingsMultilangConst.resx</DependentUpon>
     </Compile>
+    <Compile Update="Consts\AboutMultilangConst.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AboutMultilangConst.resx</DependentUpon>
+    </Compile>
     <Compile Update="Props\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="Consts\MainMultilangConst.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MainMultilangConst.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Wins\SettingsWin.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Consts\AboutMultilangConst.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AboutMultilangConst.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Update="Consts\MainMultilangConst.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MainMultilangConst.Designer.cs</LastGenOutput>
@@ -108,9 +101,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SettingsMultilangConst.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
+    <EmbeddedResource Update="Consts\AboutMultilangConst.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AboutMultilangConst.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Update="Props\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
