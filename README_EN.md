@@ -6,7 +6,7 @@
 [中文 README](README.md)
 
 ## About
-**Sheas Cealer**: A SNI concealing tool based on **WPF(.Net8)**
+**Sheas Cealer**: A desktop SNI concealing tool based on **WPF(.Net8)**
 
 * Applicable platform: Windows (For system versions before Win10, please use [1.1.0](https://github.com/SpaceTimee/Sheas-Cealer/releases/tag/1.1.0)) (For other system, please refer to [Projects](https://github.com/SpaceTimee/Sheas-Cealer#Projects))
 

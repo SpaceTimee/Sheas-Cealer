@@ -6,7 +6,7 @@
 [English README](README_EN.md)
 
 ## 自我介绍
-**Sheas Cealer**: 一只基于 **WPF(.Net8)** 的 SNI 伪造工具
+**Sheas Cealer**: 一只基于 **WPF(.Net8)** 的桌面端 SNI 伪造工具
 
 * 适用平台: Windows (Win10 之前的系统版本请使用 [1.1.0](https://github.com/SpaceTimee/Sheas-Cealer/releases/tag/1.1.0)) (其他平台请参考[相关项目](https://github.com/SpaceTimee/Sheas-Cealer#相关项目))
 
