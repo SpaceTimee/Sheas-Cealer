@@ -204,6 +204,8 @@ public partial class MainWin : Window
     {
         HoldButtonTimer?.Stop();
 
+		NginxConfWatcher_Changed(null!, null!);
+		
         if (!MainPres.IsConginxRunning && !MainPres.IsNginxRunning)
         {
             try
@@ -769,13 +771,9 @@ public partial class MainWin : Window
         NginxHttpPort = 80;
         NginxHttpsPort = 443;
 
-        foreach (IPEndPoint activeTcpListener in IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners())
-            if (activeTcpListener.Port == NginxHttpPort)
-                NginxHttpPort++;
-            else if (activeTcpListener.Port == NginxHttpsPort)
-                NginxHttpsPort++;
-            else if (activeTcpListener.Port > NginxHttpsPort)
-                break;
+        HashSet<int> activePorts = new(IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners().Select(listener => listener.Port));
+        while (activePorts.Contains(NginxHttpPort)) NginxHttpPort++;
+        while (activePorts.Contains(NginxHttpsPort)) NginxHttpsPort++;
 
         await using FileStream nginxConfStream = new(MainConst.NginxConfPath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
         NginxConfig extraNginxConfig = NginxConfig.Load(ExtraNginxConfs = new StreamReader(nginxConfStream).ReadToEnd());
