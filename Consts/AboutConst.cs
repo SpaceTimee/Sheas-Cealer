@@ -3,7 +3,7 @@
 internal abstract class AboutConst : AboutMultilangConst
 {
     public static string RepoAboutInfoUrl => "https://github.com/SpaceTimee/Sheas-Cealer";
-    public static string DocsAboutInfoUrl => "https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Documentation";
+    public static string DocsAboutInfoUrl => "https://docs.spacetimee.xyz/sheas-cealer";
     public static string ContactAboutInfoUrl => "https://github.com/SpaceTimee/Sheas-Cealer#联系方式";
     public static string IssueAboutInfoUrl => "https://github.com/SpaceTimee/Sheas-Cealer/issues";
     public static string CenterAboutInfoUrl => "https://www.spacetimee.xyz";

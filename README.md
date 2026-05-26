@@ -10,9 +10,6 @@
 
 * 适用平台: Windows (Win10 之前的系统版本请使用 [1.1.0](https://github.com/SpaceTimee/Sheas-Cealer/releases/tag/1.1.0)) (其他平台请参考[相关项目](https://github.com/SpaceTimee/Sheas-Cealer#相关项目))
 
-## 词汇解释
-**[Sheas Cealer Dictionary](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Dictionary)**
-
 ## 注意事项
 1. 内置伪造规则在 [Cealing Host 存储库](https://github.com/SpaceTimee/Cealing-Host) 持续更新
 2. Sheas Cealer 更新时不会覆盖已有的伪造规则，如需与上游同步，需点击**更新上游规则**按钮，或**手动修改覆盖**
@@ -37,10 +34,9 @@
 > Scd 版本: Scd 版本内置 .Net 运行时，可在缺乏 .Net 运行时的环境下运行，但代价是更大的文件体积以及更差的跨平台能力，如果没有特殊原因，不建议使用 Scd 版本
 
 ## 食用文档
-**[Sheas Cealer Documentation](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Documentation)**
+术语解释、软件食用、项目构建等文档请参考**[Sheas Cealer Docs](https://docs.spacetimee.xyz/sheas-cealer)**
 
-## 项目构建
-[Sheas Cealer Build](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Build)
+> 可在 [Github Wiki](https://github.com/SpaceTimee/Sheas-Cealer/wiki) 共同参与文档编写
 
 ## 项目原理
 利用 Chromium 内核的启动参数特性伪造 SNI 拓展标记，详细原理可参考[这篇文章](https://nicebowl.fun/24_8)

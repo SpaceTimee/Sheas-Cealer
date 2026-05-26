@@ -1,0 +1,17 @@
+name: Sync Docs
+
+on:
+  gollum:
+  workflow_dispatch:
+
+env:
+  VERCEL_HOOK_URL: ${{ secrets.VERCEL_HOOK_URL }}
+
+jobs:
+  sync-docs:
+    name: Sync Docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Deployment
+        run: curl -fsS -o "/dev/null" -X POST "$VERCEL_HOOK_URL"

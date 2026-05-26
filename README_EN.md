@@ -10,9 +10,6 @@
 
 * Applicable platform: Windows (For system versions before Win10, please use [1.1.0](https://github.com/SpaceTimee/Sheas-Cealer/releases/tag/1.1.0)) (For more platforms, please refer to [Projects](https://github.com/SpaceTimee/Sheas-Cealer#Projects))
 
-## Vocabulary
-**[Sheas Cealer Dictionary](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Dictionary)**
-
 ## Notes
 1. The Built-in Cealing Host is continuously updated in the [Cealing Host repository](https://github.com/SpaceTimee/Cealing-Host)
 2. When Sheas Cealer is updated, it will not overwrite the existing configs. If you need to synchronize with the upstream, you need to click the **Update Upstream Host** button, or **manually overwrite**
@@ -37,10 +34,9 @@
 > Scd version: The Scd version has a built-in .Net runtime and can run in an environment without a .Net runtime, but the cost is a larger file size and worse cross-platform capabilities. If there is no special reason, it is not recommended to use the Scd version
 
 ## Documentation
-**[Sheas Cealer Documentation](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Documentation)**
+For terminology glossary, software docs and project building, please refer to **[Sheas Cealer Docs](https://docs.spacetimee.xyz/sheas-cealer)**
 
-## Build
-[Sheas Cealer Build](https://github.com/SpaceTimee/Sheas-Cealer/wiki/Sheas-Cealer-Build)
+> You are welcome to contribute to documentation on the [Github Wiki](https://github.com/SpaceTimee/Sheas-Cealer/wiki)
 
 ## Principles
 Using the startup parameter feature of the Chromium kernel to conceal SNI. For more detailes, please refer to [this article](https://nicebowl.fun/24_8)
